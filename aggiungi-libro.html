@@ -33,11 +33,6 @@ body{
     center/cover fixed no-repeat;
 }
 
-
-/* =========================
-   STRUTTURA
-========================= */
-
 .library-app{
   width:min(1180px,calc(100vw - 24px));
   min-height:calc(100vh - 24px);
@@ -64,11 +59,6 @@ body{
   -webkit-backdrop-filter:blur(2px);
 }
 
-
-/* =========================
-   MENU
-========================= */
-
 .sidebar{
   padding:17px 12px;
 
@@ -86,14 +76,10 @@ body{
 .logo{
   text-align:center;
   margin-bottom:14px;
-
   color:#4E3524;
-
   font-size:12px;
   font-weight:bold;
-
   line-height:1.4;
-
   letter-spacing:.8px;
 
   text-shadow:
@@ -104,9 +90,7 @@ body{
 .logo::after{
   content:"── ❦ ──";
   display:block;
-
   margin-top:8px;
-
   color:#5A3E2B;
   font-size:8px;
 }
@@ -114,20 +98,15 @@ body{
 .menu a{
   display:flex;
   align-items:center;
-
   gap:8px;
-
   margin-bottom:5px;
-
   padding:8px 9px;
 
   border:1px solid transparent;
   border-radius:12px;
 
   color:#4E3524;
-
   font-size:10px;
-
   text-decoration:none;
 
   transition:
@@ -138,12 +117,8 @@ body{
 
 .menu a:hover{
   transform:translateX(3px);
-
-  background:
-    rgba(255,255,255,.42);
-
-  border-color:
-    rgba(255,255,255,.50);
+  background:rgba(255,255,255,.42);
+  border-color:rgba(255,255,255,.50);
 
   box-shadow:
     0 5px 14px
@@ -152,22 +127,12 @@ body{
 
 .menu .active{
   color:white;
-
-  background:
-    rgba(122,130,103,.90);
-
-  border-color:
-    rgba(255,255,255,.35);
+  background:rgba(122,130,103,.90);
+  border-color:rgba(255,255,255,.35);
 }
-
-
-/* =========================
-   CENTRO
-========================= */
 
 .main{
   min-width:0;
-
   padding:15px;
 
   background:
@@ -177,18 +142,10 @@ body{
   -webkit-backdrop-filter:blur(5px);
 }
 
-
-/* =========================
-   TITOLO
-========================= */
-
 h1{
   margin:0;
-
   text-align:center;
-
   color:#4E3524;
-
   font-size:36px;
   font-weight:normal;
   font-style:italic;
@@ -205,7 +162,6 @@ h1{
     5px auto 15px;
 
   padding-bottom:8px;
-
   text-align:center;
 
   border-bottom:
@@ -213,21 +169,13 @@ h1{
     rgba(198,139,89,.70);
 
   color:#5A3E2B;
-
   font-size:9px;
-
   font-weight:600;
   font-style:italic;
 }
 
-
-/* =========================
-   SEZIONI
-========================= */
-
 .section{
   margin-bottom:12px;
-
   padding:13px;
 
   border:
@@ -252,8 +200,7 @@ h1{
 }
 
 .section:hover{
-  background:
-    rgba(255,255,255,.43);
+  background:rgba(255,255,255,.43);
 
   box-shadow:
     0 11px 25px
@@ -262,47 +209,31 @@ h1{
 
 .section h2{
   margin:0 0 12px;
-
   color:#4E3524;
-
   font-size:15px;
 }
 
-
-/* =========================
-   FORM
-========================= */
-
 .form-grid{
   display:grid;
-
-  grid-template-columns:
-    repeat(2,1fr);
-
+  grid-template-columns:repeat(2,1fr);
   gap:9px;
 }
 
 .full{
-  grid-column:
-    1/-1;
+  grid-column:1/-1;
 }
 
 label{
   display:block;
-
   margin-bottom:4px;
-
   color:#5A3E2B;
-
   font-size:9px;
-
   font-weight:bold;
 }
 
 input,
 select{
   width:100%;
-
   padding:8px 9px;
 
   border:
@@ -310,7 +241,6 @@ select{
     rgba(111,76,48,.25);
 
   border-radius:11px;
-
   outline:none;
 
   background:
@@ -332,11 +262,8 @@ select{
 
 input:focus,
 select:focus{
-  background:
-    rgba(255,255,255,.78);
-
-  border-color:
-    rgba(198,139,89,.75);
+  background:rgba(255,255,255,.78);
+  border-color:rgba(198,139,89,.75);
 
   box-shadow:
     0 0 0 2px
@@ -347,18 +274,10 @@ input::placeholder{
   color:#7B6758;
 }
 
-
-/* =========================
-   PULSANTI
-========================= */
-
 button{
   border:none;
-
   border-radius:11px;
-
   padding:8px 11px;
-
   cursor:pointer;
 
   font-family:
@@ -366,7 +285,6 @@ button{
     serif;
 
   font-size:10px;
-
   font-weight:bold;
 
   transition:
@@ -376,11 +294,14 @@ button{
 }
 
 button:hover{
-  transform:
-    translateY(-2px);
+  transform:translateY(-2px);
+  filter:brightness(1.04);
+}
 
-  filter:
-    brightness(1.04);
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
 }
 
 .primary{
@@ -409,32 +330,20 @@ button:hover{
 
 .actions{
   display:flex;
-
   gap:8px;
-
   flex-wrap:wrap;
-
   margin-top:10px;
 }
 
-
-/* =========================
-   ANTEPRIMA
-========================= */
-
 .preview{
   margin-top:11px;
-
   text-align:center;
 }
 
 .preview img{
   width:100px;
-
   aspect-ratio:2/3;
-
   object-fit:cover;
-
   border-radius:9px;
 
   box-shadow:
@@ -442,27 +351,16 @@ button:hover{
     rgba(50,40,30,.17);
 }
 
-
-/* =========================
-   RISULTATI COPERTINE
-========================= */
-
 .results{
   display:grid;
-
-  grid-template-columns:
-    repeat(5,1fr);
-
+  grid-template-columns:repeat(5,1fr);
   gap:8px;
-
   margin-top:12px;
 }
 
 .result{
   padding:5px;
-
   cursor:pointer;
-
   overflow:hidden;
 
   border:
@@ -488,9 +386,7 @@ button:hover{
 
 .result:hover{
   transform:translateY(-4px);
-
-  background:
-    rgba(255,255,255,.66);
+  background:rgba(255,255,255,.66);
 
   box-shadow:
     0 10px 20px
@@ -499,44 +395,28 @@ button:hover{
 
 .result img{
   width:100%;
-
   aspect-ratio:2/3;
-
   display:block;
-
   object-fit:cover;
-
   border-radius:7px;
 }
 
 .result-title{
   margin-top:5px;
-
   color:#4E3524;
-
   font-size:8px;
-
   line-height:1.2;
-
   font-weight:bold;
 }
 
 .result-author{
   margin-top:2px;
-
   color:#5A3E2B;
-
   font-size:7px;
 }
 
-
-/* =========================
-   MESSAGGI
-========================= */
-
 .message{
   margin-top:10px;
-
   padding:8px 10px;
 
   border:
@@ -549,37 +429,22 @@ button:hover{
     rgba(244,235,225,.70);
 
   color:#4E3524;
-
   font-size:9px;
-
   font-weight:600;
 }
 
 .small{
-  margin:
-    3px 0 11px;
-
+  margin:3px 0 11px;
   color:#5A3E2B;
-
   font-size:9px;
-
   line-height:1.5;
 }
 
-
-/* =========================
-   SEZIONI APRI / CHIUDI
-========================= */
-
 .toggle-button{
   width:100%;
-
   display:flex;
-
   align-items:center;
-
   justify-content:space-between;
-
   gap:10px;
 
   padding:10px 12px;
@@ -591,7 +456,6 @@ button:hover{
   border-radius:13px;
 
   background:#E8D6C2;
-
   color:#4E3524;
 
   box-shadow:
@@ -605,21 +469,17 @@ button:hover{
 
 .toggle-left{
   display:flex;
-
   align-items:center;
-
   gap:7px;
 }
 
 .toggle-right{
   color:#5A3E2B;
-
   font-size:8px;
 }
 
 .collapsible{
   display:none;
-
   margin-top:12px;
 }
 
@@ -627,16 +487,9 @@ button:hover{
   display:block;
 }
 
-
-/* =========================
-   LISTA LIBRI SALVATI
-========================= */
-
 .book-list{
   display:flex;
-
   flex-direction:column;
-
   gap:7px;
 }
 
@@ -649,9 +502,7 @@ button:hover{
     auto;
 
   align-items:center;
-
   gap:9px;
-
   padding:7px;
 
   border:
@@ -673,20 +524,14 @@ button:hover{
 }
 
 .book-row:hover{
-  transform:
-    translateY(-1px);
-
-  background:
-    rgba(255,255,255,.62);
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.62);
 }
 
 .book-row img{
   width:42px;
-
   height:62px;
-
   object-fit:cover;
-
   border-radius:6px;
 
   box-shadow:
@@ -696,66 +541,48 @@ button:hover{
 
 .book-placeholder{
   width:42px;
-
   height:62px;
 
   display:flex;
-
   align-items:center;
-
   justify-content:center;
 
   border-radius:6px;
-
   background:#E8D6C2;
-
   font-size:18px;
 }
 
 .book-name{
   color:#4E3524;
-
   font-size:9px;
-
   font-weight:bold;
 }
 
 .book-meta{
   margin-top:3px;
-
   color:#5A3E2B;
-
   font-size:8px;
 }
 
 .row-buttons{
   display:flex;
-
   gap:5px;
 }
 
 .row-buttons button{
   padding:6px 7px;
-
   font-size:9px;
 }
 
 .reading-button{
   background:#C68B59;
-
   color:white;
 }
 
 .reading-button.active-reading{
   background:#7A8267;
-
   color:white;
 }
-
-
-/* =========================
-   DESTRA
-========================= */
 
 .rightbar{
   padding:13px 10px;
@@ -773,7 +600,6 @@ button:hover{
 
 .right-card{
   margin-bottom:9px;
-
   padding:11px 8px;
 
   border:
@@ -786,9 +612,7 @@ button:hover{
     rgba(255,255,255,.39);
 
   color:#5A3E2B;
-
   text-align:center;
-
   font-size:9px;
 
   box-shadow:
@@ -801,36 +625,23 @@ button:hover{
 
 .right-card strong{
   display:block;
-
   margin-top:5px;
-
   color:#4E3524;
-
   font-size:25px;
 }
 
 .right-icon{
   margin-bottom:5px;
-
   font-size:21px;
 }
 
 .right-title{
   margin-bottom:5px;
-
   color:#4E3524;
-
   font-size:8px;
-
   font-weight:bold;
-
   letter-spacing:.8px;
 }
-
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media(max-width:900px){
 
@@ -843,9 +654,7 @@ button:hover{
   .rightbar{
     display:none;
   }
-
 }
-
 
 @media(max-width:650px){
 
@@ -855,7 +664,6 @@ button:hover{
 
   .library-app{
     display:block;
-
     width:100%;
   }
 
@@ -869,11 +677,8 @@ button:hover{
 
   .menu{
     display:flex;
-
     flex-wrap:wrap;
-
     gap:4px;
-
     justify-content:center;
   }
 
@@ -890,18 +695,14 @@ button:hover{
   }
 
   .results{
-    grid-template-columns:
-      repeat(3,1fr);
+    grid-template-columns:repeat(3,1fr);
   }
-
 }
-
 
 @media(max-width:430px){
 
   .results{
-    grid-template-columns:
-      repeat(2,1fr);
+    grid-template-columns:repeat(2,1fr);
   }
 
   .book-row{
@@ -911,27 +712,18 @@ button:hover{
   }
 
   .row-buttons{
-    grid-column:
-      1/-1;
-
+    grid-column:1/-1;
     justify-content:flex-end;
   }
-
 }
 
 </style>
 
 </head>
 
-
 <body>
 
 <div class="library-app">
-
-
-<!-- =========================
-     MENU SINISTRO
-========================= -->
 
 <aside class="sidebar">
 
@@ -981,11 +773,6 @@ class="active"
 
 </aside>
 
-
-<!-- =========================
-     CENTRO
-========================= -->
-
 <main class="main">
 
 <h1>
@@ -996,20 +783,13 @@ Gestisci libri
 Aggiungi, modifica e organizza la tua libreria ♡
 </div>
 
-
-<!-- =========================
-     AGGIUNGI LIBRO
-========================= -->
-
 <section class="section">
 
 <h2>
 ➕ Aggiungi libro
 </h2>
 
-
 <div class="form-grid">
-
 
 <div class="full">
 
@@ -1025,7 +805,6 @@ placeholder="Es. The Love Hypothesis"
 
 </div>
 
-
 <div>
 
 <label>
@@ -1034,26 +813,14 @@ Categoria
 
 <select id="categoria">
 
-<option>
-Romance
-</option>
-
-<option>
-Dark Romance
-</option>
-
-<option>
-Fantasy Romance
-</option>
-
-<option>
-Manga
-</option>
+<option>Romance</option>
+<option>Dark Romance</option>
+<option>Fantasy Romance</option>
+<option>Manga</option>
 
 </select>
 
 </div>
-
 
 <div>
 
@@ -1063,18 +830,12 @@ Stato
 
 <select id="stato">
 
-<option>
-Letto
-</option>
-
-<option>
-Da leggere
-</option>
+<option>Letto</option>
+<option>Da leggere</option>
 
 </select>
 
 </div>
-
 
 <div class="full">
 
@@ -1091,9 +852,7 @@ placeholder="https://..."
 
 </div>
 
-
 </div>
-
 
 <div class="actions">
 
@@ -1114,30 +873,21 @@ onclick="salvaLibro()"
 
 </div>
 
-
 <div
 id="anteprimaAggiunta"
 class="preview"
 ></div>
-
 
 <div
 id="risultatiAggiunta"
 class="results"
 ></div>
 
-
 <div
 id="messaggioAggiunta"
 ></div>
 
-
 </section>
-
-
-<!-- =========================
-     SISTEMA COPERTINE
-========================= -->
 
 <section class="section">
 
@@ -1160,7 +910,6 @@ Apri ▾
 
 </button>
 
-
 <div
 id="contenitoreCopertine"
 class="collapsible"
@@ -1170,9 +919,7 @@ class="collapsible"
 Cerca online la copertina corretta oppure incolla direttamente il link dell'immagine.
 </p>
 
-
 <div class="form-grid">
-
 
 <div class="full">
 
@@ -1188,7 +935,6 @@ placeholder="Es. 36 domande per farti innamorare di me"
 
 </div>
 
-
 <div>
 
 <label>
@@ -1202,7 +948,6 @@ placeholder="Facoltativo"
 >
 
 </div>
-
 
 <div>
 
@@ -1218,7 +963,6 @@ placeholder="Facoltativo"
 
 </div>
 
-
 <div class="full">
 
 <label>
@@ -1233,9 +977,7 @@ placeholder="https://..."
 
 </div>
 
-
 </div>
-
 
 <div class="actions">
 
@@ -1255,32 +997,23 @@ onclick="salvaCopertinaManuale()"
 
 </div>
 
-
 <div
 id="anteprimaCorrezione"
 class="preview"
 ></div>
-
 
 <div
 id="risultatiCorrezione"
 class="results"
 ></div>
 
-
 <div
 id="messaggioCorrezione"
 ></div>
 
-
 </div>
 
 </section>
-
-
-<!-- =========================
-     LIBRI SALVATI
-========================= -->
 
 <section class="section">
 
@@ -1303,7 +1036,6 @@ Apri ▾
 
 </button>
 
-
 <div
 id="contenitoreLibriSalvati"
 class="collapsible"
@@ -1318,16 +1050,9 @@ class="book-list"
 
 </section>
 
-
 </main>
 
-
-<!-- =========================
-     DESTRA
-========================= -->
-
 <aside class="rightbar">
-
 
 <div class="right-card">
 
@@ -1340,11 +1065,25 @@ LIBRI GESTITI
 </strong>
 
 <div>
-nella tua libreria
+nel cloud
 </div>
 
 </div>
 
+<div class="right-card">
+
+<div class="right-icon">
+☁️
+</div>
+
+<div class="right-title">
+SINCRONIZZAZIONE
+</div>
+
+Chromebook e telefono<br>
+usano lo stesso database.
+
+</div>
 
 <div class="right-card">
 
@@ -1361,34 +1100,17 @@ un libro alla volta.
 
 </div>
 
-
-<div class="right-card">
-
-<div class="right-icon">
-🌿
-</div>
-
-Ogni storia merita<br>
-il suo posto.
-
-</div>
-
-
 </aside>
 
 </div>
 
-
 <script>
 
-
-const CHIAVE_LIBRI =
-"mieiLibriAggiunti";
-
+let libriCloud = [];
 
 let copertinaScelta = "";
 
-let indiceModifica = null;
+let idModifica = null;
 
 
 /* =========================
@@ -1416,45 +1138,294 @@ function chiaveCopertina(titolo){
 
 
 /* =========================
-   LOCAL STORAGE
+   COMPATIBILITÀ TEMPORANEA
+   CON LE ALTRE PAGINE
 ========================= */
 
-function leggiLibri(){
+function aggiornaCacheLocale(){
 
-  const dati =
-    localStorage.getItem(
-      CHIAVE_LIBRI
+  const libriCompatibili =
+    libriCloud.map(
+      function(libro){
+
+        return {
+          titolo:libro.titolo,
+          categoria:libro.categoria,
+          stato:libro.stato,
+          copertina:libro.copertina || ""
+        };
+
+      }
     );
 
 
-  if(!dati){
+  localStorage.setItem(
+    "mieiLibriAggiunti",
+    JSON.stringify(libriCompatibili)
+  );
 
-    return [];
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(libro.copertina){
+
+        localStorage.setItem(
+          chiaveCopertina(
+            libro.titolo
+          ),
+          libro.copertina
+        );
+
+      }
+
+    }
+  );
+
+
+  const lettura =
+    libriCloud.find(
+      function(libro){
+
+        return (
+          libro.lettura_attuale
+          === true
+        );
+
+      }
+    );
+
+
+  if(lettura){
+
+    localStorage.setItem(
+      "letturaAttuale",
+      JSON.stringify({
+        titolo:
+          lettura.titolo,
+
+        categoria:
+          lettura.categoria,
+
+        copertina:
+          lettura.copertina || ""
+      })
+    );
 
   }
 
+  else{
 
-  try{
-
-    return JSON.parse(dati);
-
-  }
-
-  catch{
-
-    return [];
+    localStorage.removeItem(
+      "letturaAttuale"
+    );
 
   }
 
 }
 
 
-function salvaLibri(libri){
+/* =========================
+   API LIBRI
+========================= */
 
-  localStorage.setItem(
-    CHIAVE_LIBRI,
-    JSON.stringify(libri)
-  );
+async function caricaLibri(){
+
+  const lista =
+    document.getElementById(
+      "listaLibri"
+    );
+
+
+  lista.innerHTML =
+    '<div class="message">'
+    +
+    '☁️ Caricamento libri...'
+    +
+    '</div>';
+
+
+  try{
+
+    const risposta =
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    const dati =
+      await risposta.json();
+
+
+    if(!risposta.ok){
+
+      throw new Error(
+        dati.errore
+        ||
+        "Errore nel caricamento."
+      );
+
+    }
+
+
+    libriCloud =
+      Array.isArray(dati.libri)
+      ?
+      dati.libri
+      :
+      [];
+
+
+    aggiornaCacheLocale();
+
+    mostraListaLibri();
+
+  }
+
+  catch(errore){
+
+    lista.innerHTML =
+      '<div class="message">'
+      +
+      '⚠️ Non riesco a collegarmi al database.'
+      +
+      '</div>';
+
+
+    document.getElementById(
+      "numeroLibri"
+    ).textContent =
+      "—";
+
+
+    console.error(
+      errore
+    );
+
+  }
+
+}
+
+
+async function creaLibro(libro){
+
+  const risposta =
+    await fetch(
+      "/api/libri",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+          "application/json"
+        },
+
+        body:
+          JSON.stringify(
+            libro
+          )
+      }
+    );
+
+
+  const dati =
+    await risposta.json();
+
+
+  if(!risposta.ok){
+
+    throw new Error(
+      dati.errore
+      ||
+      "Impossibile salvare il libro."
+    );
+
+  }
+
+
+  return dati.libro;
+
+}
+
+
+async function modificaLibroCloud(
+  id,
+  libro
+){
+
+  const risposta =
+    await fetch(
+      "/api/libri/"
+      +
+      id,
+      {
+        method:"PUT",
+
+        headers:{
+          "Content-Type":
+          "application/json"
+        },
+
+        body:
+          JSON.stringify(
+            libro
+          )
+      }
+    );
+
+
+  const dati =
+    await risposta.json();
+
+
+  if(!risposta.ok){
+
+    throw new Error(
+      dati.errore
+      ||
+      "Impossibile modificare il libro."
+    );
+
+  }
+
+
+  return dati.libro;
+
+}
+
+
+async function eliminaLibroCloud(id){
+
+  const risposta =
+    await fetch(
+      "/api/libri/"
+      +
+      id,
+      {
+        method:"DELETE"
+      }
+    );
+
+
+  const dati =
+    await risposta.json();
+
+
+  if(!risposta.ok){
+
+    throw new Error(
+      dati.errore
+      ||
+      "Impossibile eliminare il libro."
+    );
+
+  }
+
+
+  return dati;
 
 }
 
@@ -1591,7 +1562,9 @@ function mostraAnteprima(
     };
 
 
-  contenitore.appendChild(img);
+  contenitore.appendChild(
+    img
+  );
 
 }
 
@@ -1678,11 +1651,17 @@ function mostraRisultati(
         "";
 
 
-      card.appendChild(img);
+      card.appendChild(
+        img
+      );
 
-      card.appendChild(titolo);
+      card.appendChild(
+        titolo
+      );
 
-      card.appendChild(autore);
+      card.appendChild(
+        autore
+      );
 
 
       card.onclick =
@@ -1793,11 +1772,16 @@ async function cercaCopertinaAggiunta(){
 
   }
 
-  catch{
+  catch(errore){
 
     mostraMessaggio(
       messaggio,
       "Errore nella ricerca."
+    );
+
+
+    console.error(
+      errore
     );
 
   }
@@ -1806,10 +1790,10 @@ async function cercaCopertinaAggiunta(){
 
 
 /* =========================
-   SALVA LIBRO
+   SALVA LIBRO SU NEON
 ========================= */
 
-function salvaLibro(){
+async function salvaLibro(){
 
   const titolo =
     document.getElementById(
@@ -1841,6 +1825,12 @@ function salvaLibro(){
     );
 
 
+  const pulsante =
+    document.getElementById(
+      "pulsanteSalvaLibro"
+    );
+
+
   if(!titolo){
 
     mostraMessaggio(
@@ -1851,10 +1841,6 @@ function salvaLibro(){
     return;
 
   }
-
-
-  let libri =
-    leggiLibri();
 
 
   const libro = {
@@ -1873,105 +1859,108 @@ function salvaLibro(){
       ||
       copertinaScelta
       ||
-      ""
+      "",
+
+    lettura_attuale:
+      false
 
   };
 
 
-  if(
-    indiceModifica !== null
-  ){
-
-    libri[indiceModifica] =
-      libro;
+  pulsante.disabled =
+    true;
 
 
-    indiceModifica =
-      null;
-
-
-    mostraMessaggio(
-      messaggio,
-      "✅ Libro modificato."
-    );
-
-  }
-
-  else{
-
-
-    const indiceEsistente =
-      libri.findIndex(
-        function(item){
-
-          return (
-            normalizza(
-              item.titolo
-            )
-            ===
-            normalizza(
-              titolo
-            )
-          );
-
-        }
-      );
-
+  try{
 
     if(
-      indiceEsistente !== -1
+      idModifica !== null
     ){
 
-      libri[indiceEsistente] =
-        libro;
+      const vecchioLibro =
+        libriCloud.find(
+          function(item){
+
+            return (
+              item.id
+              ===
+              idModifica
+            );
+
+          }
+        );
 
 
-      mostraMessaggio(
-        messaggio,
-        "✅ Libro aggiornato."
-      );
+      libro.lettura_attuale =
+        vecchioLibro
+        ?
+        Boolean(
+          vecchioLibro.lettura_attuale
+        )
+        :
+        false;
 
-    }
 
-    else{
-
-      libri.push(
+      await modificaLibroCloud(
+        idModifica,
         libro
       );
 
 
       mostraMessaggio(
         messaggio,
-        "✅ Libro aggiunto."
+        "✅ Libro modificato e sincronizzato."
+      );
+
+
+      idModifica =
+        null;
+
+    }
+
+    else{
+
+      await creaLibro(
+        libro
+      );
+
+
+      mostraMessaggio(
+        messaggio,
+        "✅ Libro salvato nel cloud."
       );
 
     }
 
+
+    pulisciForm();
+
+    await caricaLibri();
+
   }
 
+  catch(errore){
 
-  salvaLibri(
-    libri
-  );
+    mostraMessaggio(
+      messaggio,
+      "⚠️ "
+      +
+      errore.message
+    );
 
 
-  if(
-    libro.copertina
-  ){
-
-    localStorage.setItem(
-      chiaveCopertina(
-        libro.titolo
-      ),
-      libro.copertina
+    console.error(
+      errore
     );
 
   }
 
+  finally{
 
-  pulisciForm();
+    pulsante.disabled =
+      false;
 
-  mostraListaLibri();
+  }
 
 }
 
@@ -2003,6 +1992,9 @@ function pulisciForm(){
 
 
   copertinaScelta = "";
+
+
+  idModifica = null;
 
 
   document.getElementById(
@@ -2092,7 +2084,7 @@ async function cercaCopertineCorrezione(){
     mostraRisultati(
       risultatiBox,
       risultati,
-      function(url){
+      async function(url){
 
         if(!titolo){
 
@@ -2104,14 +2096,6 @@ async function cercaCopertineCorrezione(){
           return;
 
         }
-
-
-        localStorage.setItem(
-          chiaveCopertina(
-            titolo
-          ),
-          url
-        );
 
 
         document.getElementById(
@@ -2128,7 +2112,7 @@ async function cercaCopertineCorrezione(){
         );
 
 
-        aggiornaCopertinaLibro(
+        await aggiornaCopertinaLibro(
           titolo,
           url
         );
@@ -2144,11 +2128,16 @@ async function cercaCopertineCorrezione(){
 
   }
 
-  catch{
+  catch(errore){
 
     mostraMessaggio(
       messaggio,
       "Errore nella ricerca."
+    );
+
+
+    console.error(
+      errore
     );
 
   }
@@ -2160,7 +2149,7 @@ async function cercaCopertineCorrezione(){
    COPERTINA MANUALE
 ========================= */
 
-function salvaCopertinaManuale(){
+async function salvaCopertinaManuale(){
 
   const titolo =
     document.getElementById(
@@ -2228,15 +2217,7 @@ function salvaCopertinaManuale(){
   );
 
 
-  localStorage.setItem(
-    chiaveCopertina(
-      titolo
-    ),
-    url
-  );
-
-
-  aggiornaCopertinaLibro(
+  await aggiornaCopertinaLibro(
     titolo,
     url
   );
@@ -2254,53 +2235,68 @@ function salvaCopertinaManuale(){
    AGGIORNA COPERTINA
 ========================= */
 
-function aggiornaCopertinaLibro(
+async function aggiornaCopertinaLibro(
   titolo,
   url
 ){
 
-  const libri =
-    leggiLibri();
+  localStorage.setItem(
+    chiaveCopertina(
+      titolo
+    ),
+    url
+  );
 
 
-  let cambiato =
-    false;
+  const libro =
+    libriCloud.find(
+      function(item){
 
-
-  libri.forEach(
-    function(libro){
-
-      if(
-        normalizza(
-          libro.titolo
-        )
-        ===
-        normalizza(
-          titolo
-        )
-      ){
-
-        libro.copertina =
-          url;
-
-        cambiato =
-          true;
+        return (
+          normalizza(
+            item.titolo
+          )
+          ===
+          normalizza(
+            titolo
+          )
+        );
 
       }
+    );
 
+
+  if(!libro){
+
+    return;
+
+  }
+
+
+  await modificaLibroCloud(
+    libro.id,
+    {
+      titolo:
+        libro.titolo,
+
+      categoria:
+        libro.categoria,
+
+      stato:
+        libro.stato,
+
+      copertina:
+        url,
+
+      lettura_attuale:
+        Boolean(
+          libro.lettura_attuale
+        )
     }
   );
 
 
-  if(cambiato){
-
-    salvaLibri(
-      libri
-    );
-
-    mostraListaLibri();
-
-  }
+  await caricaLibri();
 
 }
 
@@ -2370,47 +2366,21 @@ function toggleLibriSalvati(){
 
 
 /* =========================
-   LETTURA ATTUALE
+   STO LEGGENDO
 ========================= */
 
-function leggiLetturaAttuale(){
-
-  const dati =
-    localStorage.getItem(
-      "letturaAttuale"
-    );
-
-
-  if(!dati){
-
-    return null;
-
-  }
-
-
-  try{
-
-    return JSON.parse(dati);
-
-  }
-
-  catch{
-
-    return null;
-
-  }
-
-}
-
-
-function impostaLettura(indice){
-
-  const libri =
-    leggiLibri();
-
+async function impostaLettura(id){
 
   const libro =
-    libri[indice];
+    libriCloud.find(
+      function(item){
+
+        return (
+          item.id === id
+        );
+
+      }
+    );
 
 
   if(!libro){
@@ -2437,67 +2407,65 @@ function impostaLettura(indice){
   }
 
 
-  libro.stato =
-    "Da leggere";
+  try{
+
+    const risposta =
+      await fetch(
+        "/api/lettura-attuale/"
+        +
+        id,
+        {
+          method:"POST"
+        }
+      );
 
 
-  salvaLibri(
-    libri
-  );
+    const dati =
+      await risposta.json();
 
 
-  const copertina =
-    localStorage.getItem(
-      chiaveCopertina(
-        libro.titolo
-      )
-    )
-    ||
-    libro.copertina
-    ||
-    "";
+    if(!risposta.ok){
+
+      throw new Error(
+        dati.errore
+        ||
+        "Impossibile impostare la lettura."
+      );
+
+    }
 
 
-  localStorage.setItem(
-    "letturaAttuale",
-    JSON.stringify({
-
-      titolo:
-        libro.titolo,
-
-      categoria:
-        libro.categoria,
-
-      copertina:
-        copertina
-
-    })
-  );
+    await caricaLibri();
 
 
-  alert(
-    '📖 Ora stai leggendo "'
-    +
-    libro.titolo
-    +
-    '".'
-  );
+    alert(
+      '📖 Ora stai leggendo "'
+      +
+      libro.titolo
+      +
+      '".'
+    );
 
+  }
 
-  mostraListaLibri();
+  catch(errore){
+
+    alert(
+      "⚠️ "
+      +
+      errore.message
+    );
+
+  }
 
 }
 
 
 /* =========================
-   MOSTRA LIBRI SALVATI
+   MOSTRA LIBRI
 ========================= */
 
 function mostraListaLibri(){
-
-  const libri =
-    leggiLibri();
-
 
   const lista =
     document.getElementById(
@@ -2512,32 +2480,18 @@ function mostraListaLibri(){
 
 
   numero.textContent =
-    libri.length;
+    libriCloud.length;
 
 
   lista.innerHTML = "";
 
 
-  const letturaAttuale =
-    leggiLetturaAttuale();
-
-
-  const titoloInLettura =
-    letturaAttuale
-    ?
-    normalizza(
-      letturaAttuale.titolo
-    )
-    :
-    "";
-
-
-  if(!libri.length){
+  if(!libriCloud.length){
 
     lista.innerHTML =
       '<div class="message">'
       +
-      'Non hai ancora libri salvati.'
+      'Il database è collegato. Non hai ancora libri salvati nel cloud.'
       +
       '</div>';
 
@@ -2546,12 +2500,8 @@ function mostraListaLibri(){
   }
 
 
-  libri.forEach(
-    function(
-      libro,
-      indice
-    ){
-
+  libriCloud.forEach(
+    function(libro){
 
       const row =
         document.createElement(
@@ -2566,18 +2516,14 @@ function mostraListaLibri(){
       let immagine;
 
 
-      const override =
+      const copertina =
+        libro.copertina
+        ||
         localStorage.getItem(
           chiaveCopertina(
             libro.titolo
           )
-        );
-
-
-      const copertina =
-        override
-        ||
-        libro.copertina
+        )
         ||
         "";
 
@@ -2667,26 +2613,13 @@ function mostraListaLibri(){
         "book-meta";
 
 
-      const questoTitolo =
-        normalizza(
-          libro.titolo
-        );
-
-
-      const inLettura =
-        titoloInLettura
-        &&
-        questoTitolo ===
-        titoloInLettura;
-
-
       meta.textContent =
         libro.categoria
         +
         " • "
         +
         (
-          inLettura
+          libro.lettura_attuale
           ?
           "📖 In lettura"
           :
@@ -2714,8 +2647,6 @@ function mostraListaLibri(){
         "row-buttons";
 
 
-      /* STO LEGGENDO */
-
       const lettura =
         document.createElement(
           "button"
@@ -2723,7 +2654,7 @@ function mostraListaLibri(){
 
 
       lettura.className =
-        inLettura
+        libro.lettura_attuale
         ?
         "reading-button active-reading"
         :
@@ -2731,7 +2662,7 @@ function mostraListaLibri(){
 
 
       lettura.textContent =
-        inLettura
+        libro.lettura_attuale
         ?
         "📖 ✓"
         :
@@ -2739,7 +2670,7 @@ function mostraListaLibri(){
 
 
       lettura.title =
-        inLettura
+        libro.lettura_attuale
         ?
         "In lettura"
         :
@@ -2750,13 +2681,11 @@ function mostraListaLibri(){
         function(){
 
           impostaLettura(
-            indice
+            libro.id
           );
 
         };
 
-
-      /* MODIFICA */
 
       const modifica =
         document.createElement(
@@ -2779,14 +2708,12 @@ function mostraListaLibri(){
       modifica.onclick =
         function(){
 
-          modificaLibro(
-            indice
+          preparaModifica(
+            libro.id
           );
 
         };
 
-
-      /* ELIMINA */
 
       const elimina =
         document.createElement(
@@ -2810,7 +2737,7 @@ function mostraListaLibri(){
         function(){
 
           eliminaLibro(
-            indice
+            libro.id
           );
 
         };
@@ -2860,14 +2787,18 @@ function mostraListaLibri(){
    MODIFICA
 ========================= */
 
-function modificaLibro(indice){
-
-  const libri =
-    leggiLibri();
-
+function preparaModifica(id){
 
   const libro =
-    libri[indice];
+    libriCloud.find(
+      function(item){
+
+        return (
+          item.id === id
+        );
+
+      }
+    );
 
 
   if(!libro){
@@ -2895,38 +2826,26 @@ function modificaLibro(indice){
     libro.stato;
 
 
-  const copertina =
-    localStorage.getItem(
-      chiaveCopertina(
-        libro.titolo
-      )
-    )
-    ||
-    libro.copertina
-    ||
-    "";
-
-
   document.getElementById(
     "copertinaManuale"
   ).value =
-    copertina;
+    libro.copertina || "";
 
 
   copertinaScelta =
-    copertina;
+    libro.copertina || "";
 
 
   mostraAnteprima(
     document.getElementById(
       "anteprimaAggiunta"
     ),
-    copertina
+    copertinaScelta
   );
 
 
-  indiceModifica =
-    indice;
+  idModifica =
+    libro.id;
 
 
   document.getElementById(
@@ -2936,11 +2855,8 @@ function modificaLibro(indice){
 
 
   window.scrollTo({
-
     top:0,
-
     behavior:"smooth"
-
   });
 
 }
@@ -2950,14 +2866,18 @@ function modificaLibro(indice){
    ELIMINA
 ========================= */
 
-function eliminaLibro(indice){
-
-  const libri =
-    leggiLibri();
-
+async function eliminaLibro(id){
 
   const libro =
-    libri[indice];
+    libriCloud.find(
+      function(item){
+
+        return (
+          item.id === id
+        );
+
+      }
+    );
 
 
   if(!libro){
@@ -2984,49 +2904,35 @@ function eliminaLibro(indice){
   }
 
 
-  const letturaAttuale =
-    leggiLetturaAttuale();
+  try{
+
+    await eliminaLibroCloud(
+      id
+    );
 
 
-  if(
-    letturaAttuale
-    &&
-    normalizza(
-      letturaAttuale.titolo
-    )
-    ===
-    normalizza(
-      libro.titolo
-    )
-  ){
+    await caricaLibri();
 
-    localStorage.removeItem(
-      "letturaAttuale"
+  }
+
+  catch(errore){
+
+    alert(
+      "⚠️ "
+      +
+      errore.message
     );
 
   }
 
-
-  libri.splice(
-    indice,
-    1
-  );
-
-
-  salvaLibri(
-    libri
-  );
-
-
-  mostraListaLibri();
-
 }
 
 
-/* AVVIO */
+/* =========================
+   AVVIO
+========================= */
 
-mostraListaLibri();
-
+caricaLibri();
 
 </script>
 
