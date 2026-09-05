@@ -14,6 +14,7 @@ PORT = int(os.environ.get("PORT", "8000"))
 # Google Books
 GOOGLE_BOOKS_API_KEY = "AIzaSyBcoCAZjqAbSYWOasvy93iODPPIe1LtJkE"
 
+
 # Neon
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
@@ -27,16 +28,12 @@ def connessione_database():
 
 class LibreriaHandler(SimpleHTTPRequestHandler):
 
-    # =========================================================
-    # GET
-    # =========================================================
-
     def do_GET(self):
         parsed = urlparse(self.path)
 
-        # -----------------------------------------------------
-        # TEST DATABASE
-        # -----------------------------------------------------
+        # =====================================================
+        # TEST DATABASE NEON
+        # =====================================================
 
         if parsed.path == "/api/database-test":
             try:
@@ -55,14 +52,14 @@ class LibreriaHandler(SimpleHTTPRequestHandler):
 
                 self.invia_json({
                     "ok": False,
-                    "errore": "Connessione al database non riuscita."
+                    "errore": str(errore)
                 }, 500)
 
             return
 
-        # -----------------------------------------------------
+        # =====================================================
         # GOOGLE BOOKS
-        # -----------------------------------------------------
+        # =====================================================
 
         if parsed.path == "/api/copertine":
             params = parse_qs(parsed.query)
@@ -234,15 +231,11 @@ class LibreriaHandler(SimpleHTTPRequestHandler):
 
             return
 
-        # -----------------------------------------------------
+        # =====================================================
         # FILE NORMALI DEL SITO
-        # -----------------------------------------------------
+        # =====================================================
 
         super().do_GET()
-
-    # =========================================================
-    # JSON
-    # =========================================================
 
     def invia_json(self, dati, codice=200):
         contenuto = json.dumps(
