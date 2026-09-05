@@ -1,22 +1,68 @@
+import os
+import json
+
 from urllib.parse import urlparse, parse_qs, quote_plus
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import urlparse, parse_qs, quote_plus
-from urllib.request import Request, urlopen
-from urllib.error import HTTPError, URLError
-import json
 
-PORT = 8000
+import psycopg
 
-# 🔑 INCOLLA QUI LA TUA CHIAVE GOOGLE BOOKS
+
+PORT = int(os.environ.get("PORT", "8000"))
+
+# Google Books
 GOOGLE_BOOKS_API_KEY = "AIzaSyBcoCAZjqAbSYWOasvy93iODPPIe1LtJkE"
+
+# Neon
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+
+def connessione_database():
+    if not DATABASE_URL:
+        raise RuntimeError("DATABASE_URL non configurato.")
+
+    return psycopg.connect(DATABASE_URL)
 
 
 class LibreriaHandler(SimpleHTTPRequestHandler):
 
+    # =========================================================
+    # GET
+    # =========================================================
+
     def do_GET(self):
         parsed = urlparse(self.path)
+
+        # -----------------------------------------------------
+        # TEST DATABASE
+        # -----------------------------------------------------
+
+        if parsed.path == "/api/database-test":
+            try:
+                with connessione_database() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute("SELECT 1")
+                        risultato = cur.fetchone()
+
+                self.invia_json({
+                    "ok": True,
+                    "database": risultato[0]
+                })
+
+            except Exception as errore:
+                print("Errore database:", errore)
+
+                self.invia_json({
+                    "ok": False,
+                    "errore": "Connessione al database non riuscita."
+                }, 500)
+
+            return
+
+        # -----------------------------------------------------
+        # GOOGLE BOOKS
+        # -----------------------------------------------------
 
         if parsed.path == "/api/copertine":
             params = parse_qs(parsed.query)
@@ -27,7 +73,10 @@ class LibreriaHandler(SimpleHTTPRequestHandler):
 
             if not titolo and not isbn:
                 self.invia_json(
-                    {"errore": "Scrivi almeno il titolo oppure l'ISBN."},
+                    {
+                        "errore":
+                        "Scrivi almeno il titolo oppure l'ISBN."
+                    },
                     400
                 )
                 return
@@ -35,6 +84,7 @@ class LibreriaHandler(SimpleHTTPRequestHandler):
             try:
                 if isbn:
                     query = "isbn:" + isbn
+
                 else:
                     query = titolo
 
@@ -86,6 +136,7 @@ class LibreriaHandler(SimpleHTTPRequestHandler):
                     )
 
                     autori = info.get("authors", [])
+
                     identificatori = info.get(
                         "industryIdentifiers",
                         []
@@ -143,7 +194,7 @@ class LibreriaHandler(SimpleHTTPRequestHandler):
             except HTTPError as errore:
                 try:
                     dettaglio = errore.read().decode("utf-8")
-                except:
+                except Exception:
                     dettaglio = ""
 
                 print(
@@ -183,7 +234,15 @@ class LibreriaHandler(SimpleHTTPRequestHandler):
 
             return
 
+        # -----------------------------------------------------
+        # FILE NORMALI DEL SITO
+        # -----------------------------------------------------
+
         super().do_GET()
+
+    # =========================================================
+    # JSON
+    # =========================================================
 
     def invia_json(self, dati, codice=200):
         contenuto = json.dumps(
@@ -203,6 +262,11 @@ class LibreriaHandler(SimpleHTTPRequestHandler):
             str(len(contenuto))
         )
 
+        self.send_header(
+            "Cache-Control",
+            "no-store"
+        )
+
         self.end_headers()
 
         self.wfile.write(contenuto)
@@ -215,8 +279,19 @@ server = ThreadingHTTPServer(
 
 print("📚 Martina's Virtual Library")
 print("✅ Google Books API attiva")
-print("Apri: http://localhost:8000")
+
+if DATABASE_URL:
+    print("✅ DATABASE_URL trovata")
+else:
+    print("⚠️ DATABASE_URL non trovata")
+
+print(
+    "Apri: http://localhost:"
+    + str(PORT)
+)
+
 print("Per fermare il server: Ctrl+C")
+
 
 try:
     server.serve_forever()
