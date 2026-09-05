@@ -1,4 +1,4 @@
-aaaaaaaaaaaaaaafrom urllib.request import Request, urlopenPORT = 8000
+from urllib.request import Request, urlopenPORT = 8000
 
 
 class LibreriaHandler(SimpleHTTPRequestHandler):
