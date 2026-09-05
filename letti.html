@@ -1273,7 +1273,7 @@ function chiaveCopertina(titolo){
 }
 
 
-function trovaCopertina(titolo){
+function trovaCopertinaLocale(titolo){
 
   return (
     localStorage.getItem(
@@ -1285,6 +1285,10 @@ function trovaCopertina(titolo){
 
 }
 
+
+/* =========================
+   LIBRI BASE
+========================= */
 
 const libriBase=[];
 
@@ -1355,7 +1359,13 @@ const libriBase=[];
 ].forEach(
   function(titolo){
 
-    libriBase.push(titolo);
+    libriBase.push({
+      titolo:titolo,
+      categoria:"Fantasy Romance",
+      stato:"Letto",
+      copertina:"",
+      id:null
+    });
 
   }
 );
@@ -1461,7 +1471,13 @@ const libriBase=[];
 ].forEach(
   function(titolo){
 
-    libriBase.push(titolo);
+    libriBase.push({
+      titolo:titolo,
+      categoria:"Romance",
+      stato:"Letto",
+      copertina:"",
+      id:null
+    });
 
   }
 );
@@ -1482,11 +1498,17 @@ function aggiungiSerie(
     i++
   ){
 
-    libriBase.push(
-      nome +
-      " — Vol. " +
-      i
-    );
+    libriBase.push({
+      titolo:
+        nome +
+        " — Vol. " +
+        i,
+
+      categoria:"Manga",
+      stato:"Letto",
+      copertina:"",
+      id:null
+    });
 
   }
 
@@ -1529,187 +1551,133 @@ aggiungiSerie(
 );
 
 
-libriBase.push(
-  "Le 100 ragazze che ti amano tanto tanto tanto tanto tanto — Vol. 1"
-);
-
-libriBase.push(
-  "First Kiss"
-);
-
-libriBase.push(
-  "Gli agenti delle quattro stagioni — Vol. 1"
-);
-
-libriBase.push(
+[
+  "Le 100 ragazze che ti amano tanto tanto tanto tanto tanto — Vol. 1",
+  "First Kiss",
+  "Gli agenti delle quattro stagioni — Vol. 1",
   "Gli agenti delle quattro stagioni — Vol. 2"
-);
-
-
-/* =========================
-   LIBRI SALVATI
-========================= */
-
-let libriSalvati=[];
-
-
-try{
-
-  libriSalvati=
-    JSON.parse(
-      localStorage.getItem(
-        "mieiLibriAggiunti"
-      )
-      ||
-      "[]"
-    );
-
-}
-
-catch{
-
-  libriSalvati=[];
-
-}
-
-
-/* =========================
-   VERSIONI GESTITE
-========================= */
-
-const gestitiPerTitolo=
-  new Map();
-
-
-libriSalvati.forEach(
-  function(libro){
-
-    const nome=
-      normalizza(
-        libro.titolo
-      );
-
-
-    if(nome){
-
-      gestitiPerTitolo.set(
-        nome,
-        libro
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================
-   LISTA FINALE
-========================= */
-
-const libriFinali=
-  new Map();
-
-
-libriBase.forEach(
+].forEach(
   function(titolo){
 
-    const nome=
-      normalizza(titolo);
+    libriBase.push({
+      titolo:titolo,
+      categoria:"Manga",
+      stato:"Letto",
+      copertina:"",
+      id:null
+    });
+
+  }
+);
 
 
-    const versioneGestita=
-      gestitiPerTitolo.get(
-        nome
-      );
+/* =========================
+   CLOUD
+========================= */
+
+let libriCloud=[];
+
+let elencoFinale=[];
 
 
-    if(
-      !versioneGestita
-    ){
+/* =========================
+   CREA LISTA FINALE
+========================= */
 
-      libriFinali.set(
-        nome,
+function creaElencoFinale(){
+
+  const mappa=
+    new Map();
+
+
+  libriBase.forEach(
+    function(libro){
+
+      mappa.set(
+        normalizza(
+          libro.titolo
+        ),
         {
-          titolo: titolo,
-          copertina: ""
+          ...libro
         }
       );
 
-      return;
-
     }
+  );
 
 
-    if(
-      versioneGestita.stato
-      ===
-      "Letto"
-    ){
+  libriCloud.forEach(
+    function(libro){
 
-      libriFinali.set(
+      const nome=
+        normalizza(
+          libro.titolo
+        );
+
+
+      if(!nome){
+
+        return;
+
+      }
+
+
+      /*
+        Se il libro è nel cloud,
+        il cloud decide lo stato.
+
+        Se è diventato "Da leggere",
+        viene tolto da questa pagina.
+      */
+
+      if(
+        libro.stato !== "Letto"
+      ){
+
+        mappa.delete(nome);
+
+        return;
+
+      }
+
+
+      /*
+        Se è "Letto",
+        sostituisce la versione base
+        oppure viene aggiunto come
+        nuovo libro.
+      */
+
+      mappa.set(
         nome,
         {
+          id:
+            libro.id,
+
           titolo:
-            versioneGestita.titolo,
+            libro.titolo,
+
+          categoria:
+            libro.categoria,
+
+          stato:
+            libro.stato,
 
           copertina:
-            versioneGestita.copertina
-            ||
-            ""
+            libro.copertina || ""
         }
       );
 
     }
-
-  }
-);
+  );
 
 
-/* LIBRI LETTI AGGIUNTI */
-
-libriSalvati.forEach(
-  function(libro){
-
-    if(
-      libro.stato
-      !==
-      "Letto"
-    ){
-
-      return;
-
-    }
-
-
-    const nome=
-      normalizza(
-        libro.titolo
-      );
-
-
-    if(!nome){
-
-      return;
-
-    }
-
-
-    libriFinali.set(
-      nome,
-      {
-        titolo:
-          libro.titolo,
-
-        copertina:
-          libro.copertina
-          ||
-          ""
-      }
+  elencoFinale=
+    Array.from(
+      mappa.values()
     );
 
-  }
-);
+}
 
 
 /* =========================
@@ -1750,15 +1718,22 @@ function creaScheda(libro){
     "book-cover";
 
 
+  /*
+    Prima prova la copertina salvata
+    sul dispositivo.
+
+    Se non c'è, usa quella sincronizzata
+    nel cloud.
+  */
+
   let copertina=
-    trovaCopertina(
+    trovaCopertinaLocale(
       libro.titolo
     );
 
 
   if(
-    !copertina
-    &&
+    !copertina &&
     libro.copertina
   ){
 
@@ -1849,15 +1824,29 @@ function creaScheda(libro){
     "✓ Letto";
 
 
-  info.appendChild(titolo);
+  info.appendChild(
+    titolo
+  );
 
-  info.appendChild(stato);
 
-  scheda.appendChild(cover);
+  info.appendChild(
+    stato
+  );
 
-  scheda.appendChild(info);
 
-  lista.appendChild(scheda);
+  scheda.appendChild(
+    cover
+  );
+
+
+  scheda.appendChild(
+    info
+  );
+
+
+  lista.appendChild(
+    scheda
+  );
 
 }
 
@@ -1866,58 +1855,121 @@ function creaScheda(libro){
    MOSTRA LIBRI
 ========================= */
 
-const elencoFinale=
-  Array.from(
-    libriFinali.values()
+function mostraLibri(){
+
+  lista.innerHTML="";
+
+
+  elencoFinale.forEach(
+    function(libro){
+
+      creaScheda(libro);
+
+    }
   );
 
 
-elencoFinale.forEach(
-  function(libro){
+  const totale=
+    elencoFinale.length;
 
-    creaScheda(libro);
+
+  document.getElementById(
+    "totaleLetti"
+  ).textContent=
+    totale;
+
+
+  document.getElementById(
+    "numeroProgresso"
+  ).textContent=
+    totale;
+
+
+  if(totale === 0){
+
+    messaggioVuoto.style.display=
+      "block";
 
   }
-);
 
+  else{
 
-/* =========================
-   CONTATORI
-========================= */
+    messaggioVuoto.style.display=
+      "none";
 
-const totale=
-  elencoFinale.length;
-
-
-document.getElementById(
-  "totaleLetti"
-).textContent=
-  totale;
-
-
-document.getElementById(
-  "numeroProgresso"
-).textContent=
-  totale;
-
-
-/* =========================
-   LISTA VUOTA
-========================= */
-
-if(
-  totale === 0
-){
-
-  messaggioVuoto.style.display=
-    "block";
+  }
 
 }
 
-else{
 
-  messaggioVuoto.style.display=
-    "none";
+/* =========================
+   CARICA DA NEON
+========================= */
+
+async function caricaLibriCloud(){
+
+  try{
+
+    const risposta=
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    const dati=
+      await risposta.json();
+
+
+    if(!risposta.ok){
+
+      throw new Error(
+        dati.errore ||
+        "Errore database"
+      );
+
+    }
+
+
+    libriCloud=
+      Array.isArray(
+        dati.libri
+      )
+      ?
+      dati.libri
+      :
+      [];
+
+
+    creaElencoFinale();
+
+    mostraLibri();
+
+  }
+
+  catch(errore){
+
+    console.error(
+      "Errore cloud:",
+      errore
+    );
+
+
+    /*
+      Se internet o cloud non rispondono,
+      vengono comunque mostrati
+      i 224 libri letti di base.
+    */
+
+    libriCloud=[];
+
+    creaElencoFinale();
+
+    mostraLibri();
+
+  }
 
 }
 
@@ -2004,6 +2056,13 @@ input.addEventListener(
 
   }
 );
+
+
+/* =========================
+   AVVIO
+========================= */
+
+caricaLibriCloud();
 
 </script>
 
