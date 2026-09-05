@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manga - Martina's Virtual Library</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  padding:12px;
+  font-family:Georgia,"Times New Roman",serif;
+  color:#4E3524;
+
+  background:
+    linear-gradient(
+      rgba(48,40,31,.12),
+      rgba(48,40,31,.18)
+    ),
+    url("copertine/sfondo-home.jpg")
+    center/cover fixed no-repeat;
+}
+
+
+/* STRUTTURA */
+
+.library-app{
+  width:min(1180px,calc(100vw - 24px));
+  min-height:calc(100vh - 24px);
+
+  margin:0 auto;
+
+  display:grid;
+  grid-template-columns:175px minmax(0,1fr) 190px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.26);
+  border-radius:28px;
+
+  background:rgba(255,255,255,.08);
+
+  box-shadow:0 22px 55px rgba(55,43,32,.28);
+
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+
+/* SIDEBAR */
+
+.sidebar{
+  padding:17px 12px;
+
+  border-right:1px solid rgba(255,255,255,.25);
+
+  background:rgba(247,244,239,.34);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.sidebar-title{
+  margin-bottom:13px;
+
+  text-align:center;
+
+  color:#4E3524;
+
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:1.4px;
+}
+
+.sidebar-title::after{
+  content:"── ♡ ──";
+
+  display:block;
+
+  margin-top:8px;
+
+  color:#A98970;
+
+  font-size:8px;
+}
+
+.nav a{
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:5px;
+
+  padding:8px 9px;
+
+  border:1px solid transparent;
+  border-radius:12px;
+
+  color:#5A3E2B;
+
+  font-size:10px;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+.nav a:hover{
+  transform:translateX(3px);
+
+  background:rgba(255,255,255,.30);
+
+  border-color:rgba(255,255,255,.38);
+}
+
+.nav a.active{
+  color:#4E3524;
+
+  background:#E8E1D8;
+
+  border-color:rgba(255,255,255,.42);
+
+  box-shadow:0 6px 15px rgba(84,64,46,.16);
+}
+
+.nav-icon{
+  width:18px;
+  text-align:center;
+}
+
+.sidebar-divider{
+  height:1px;
+
+  margin:11px 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(169,137,112,.65),
+      transparent
+    );
+}
+
+.sidebar-decoration{
+  margin-top:17px;
+
+  text-align:center;
+
+  color:#A98970;
+
+  font-size:14px;
+
+  letter-spacing:5px;
+}
+
+
+/* CENTRO */
+
+.main{
+  position:relative;
+
+  min-width:0;
+
+  padding:15px;
+
+  background:rgba(247,244,239,.16);
+
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+
+.main::before{
+  content:"🌸";
+
+  position:absolute;
+
+  top:15px;
+  left:16px;
+
+  font-size:14px;
+
+  opacity:.82;
+}
+
+.main::after{
+  content:"✧";
+
+  position:absolute;
+
+  top:15px;
+  right:17px;
+
+  color:#A98970;
+
+  font-size:14px;
+
+  opacity:.78;
+}
+
+
+/* HEADER */
+
+.header{
+  margin-bottom:14px;
+
+  padding:4px 10px 7px;
+
+  text-align:center;
+}
+
+.script-title{
+  margin:0;
+
+  color:#7A5A43;
+
+  font-size:43px;
+
+  line-height:1;
+
+  font-style:italic;
+  font-weight:normal;
+
+  text-shadow:0 2px 5px rgba(255,255,255,.70);
+}
+
+.virtual-title{
+  margin-top:4px;
+
+  color:#4E3524;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  letter-spacing:5px;
+
+  text-shadow:0 1px 2px rgba(255,255,255,.65);
+}
+
+.header-decoration{
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+
+  width:min(290px,75%);
+
+  margin:7px auto 4px;
+
+  color:#A98970;
+}
+
+.header-decoration::before,
+.header-decoration::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:rgba(169,137,112,.72);
+}
+
+.subtitle{
+  margin:0;
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-weight:600;
+  font-style:italic;
+
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
+}
+
+
+/* TOTALE */
+
+.total-card{
+  position:relative;
+
+  width:min(430px,100%);
+
+  margin:0 auto 12px;
+
+  overflow:hidden;
+
+  padding:10px 8px;
+
+  border:1px solid rgba(169,137,112,.28);
+  border-radius:17px;
+
+  background:#E8E1D8;
+
+  text-align:center;
+
+  box-shadow:0 9px 21px rgba(84,64,46,.14);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
+}
+
+.total-card::before{
+  content:"";
+
+  position:absolute;
+
+  width:65px;
+  height:130px;
+
+  top:-40px;
+  left:-90px;
+
+  transform:rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,250,236,.55),
+      transparent
+    );
+
+  transition:left .65s ease;
+}
+
+.total-card::after{
+  content:"🌸";
+
+  position:absolute;
+
+  top:7px;
+  right:10px;
+
+  font-size:10px;
+
+  opacity:.72;
+}
+
+.total-card:hover{
+  transform:translateY(-3px);
+
+  box-shadow:0 13px 27px rgba(84,64,46,.20);
+
+  filter:brightness(1.025);
+}
+
+.total-card:hover::before{
+  left:120%;
+}
+
+.total-small{
+  position:relative;
+
+  z-index:2;
+
+  color:#6B4D38;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:1px;
+}
+
+.total-number{
+  position:relative;
+
+  z-index:2;
+
+  margin:1px 0;
+
+  color:#6B4D38;
+
+  font-size:29px;
+
+  font-weight:bold;
+}
+
+.total-text{
+  position:relative;
+
+  z-index:2;
+
+  color:#6B513F;
+
+  font-size:8px;
+}
+
+
+/* CARDS */
+
+.cards{
+  display:grid;
+
+  grid-template-columns:repeat(2,minmax(0,1fr));
+
+  gap:11px;
+
+  max-width:620px;
+
+  margin:0 auto;
+}
+
+.card{
+  position:relative;
+
+  min-height:140px;
+
+  overflow:hidden;
+
+  padding:17px 10px 43px;
+
+  border:1px solid rgba(169,137,112,.28);
+  border-radius:19px;
+
+  color:#4E3524;
+
+  text-align:center;
+
+  text-decoration:none;
+
+  box-shadow:0 8px 20px rgba(84,64,46,.14);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease,
+    border-color .25s ease;
+}
+
+.card::before{
+  content:"";
+
+  position:absolute;
+
+  width:75px;
+  height:155px;
+
+  top:-35px;
+  left:-115px;
+
+  transform:rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,250,236,.52),
+      transparent
+    );
+
+  transition:left .65s ease;
+}
+
+.card::after{
+  content:"✧";
+
+  position:absolute;
+
+  top:8px;
+  right:10px;
+
+  color:#A98970;
+
+  font-size:9px;
+
+  opacity:.72;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+
+  border-color:rgba(169,137,112,.42);
+
+  box-shadow:
+    0 14px 28px rgba(84,64,46,.20),
+    inset 0 0 24px rgba(255,247,230,.22);
+
+  filter:brightness(1.035);
+}
+
+.card:hover::before{
+  left:135%;
+}
+
+.card-icon{
+  position:relative;
+
+  z-index:2;
+
+  margin-bottom:9px;
+
+  color:#7A5A43;
+
+  font-size:28px;
+}
+
+.card h2{
+  position:relative;
+
+  z-index:2;
+
+  margin:0;
+
+  color:#5A3E2B;
+
+  font-size:13px;
+
+  letter-spacing:1.4px;
+}
+
+.card p{
+  position:relative;
+
+  z-index:2;
+
+  margin:6px 0 0;
+
+  color:#6B513F;
+
+  font-size:8px;
+}
+
+.card-bottom{
+  position:absolute;
+
+  z-index:3;
+
+  left:9px;
+  right:9px;
+  bottom:9px;
+
+  padding:5px;
+
+  border:1px solid rgba(169,137,112,.22);
+  border-radius:11px;
+
+  background:rgba(255,250,239,.42);
+
+  color:#6B4D38;
+
+  font-size:8px;
+
+  font-weight:bold;
+}
+
+
+/* COLORI CARD */
+
+.card-read{
+  background:#E8E1D8;
+}
+
+.card-tbr{
+  background:#EFE8DF;
+}
+
+
+/* HOME */
+
+.home-button{
+  display:block;
+
+  width:fit-content;
+
+  margin:11px auto 4px;
+
+  padding:7px 14px;
+
+  border:1px solid rgba(169,137,112,.25);
+  border-radius:13px;
+
+  background:rgba(247,244,239,.62);
+
+  color:#5A3E2B;
+
+  text-decoration:none;
+
+  font-size:9px;
+
+  font-weight:bold;
+
+  box-shadow:0 6px 16px rgba(55,39,32,.10);
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.home-button:hover{
+  transform:translateY(-2px);
+
+  background:rgba(255,250,242,.80);
+
+  box-shadow:0 10px 21px rgba(55,39,32,.16);
+}
+
+
+/* FOOTER */
+
+.footer{
+  margin-top:9px;
+
+  text-align:center;
+
+  color:#6B4D38;
+
+  font-size:12px;
+
+  font-style:italic;
+
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
+}
+
+
+/* DESTRA */
+
+.rightbar{
+  padding:13px 10px;
+
+  border-left:1px solid rgba(255,255,255,.24);
+
+  background:rgba(232,225,216,.36);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.widget{
+  position:relative;
+
+  overflow:hidden;
+
+  margin-bottom:9px;
+
+  padding:11px 9px;
+
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:16px;
+
+  background:rgba(247,244,239,.34);
+
+  text-align:center;
+
+  box-shadow:0 8px 20px rgba(84,64,46,.13);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.widget:hover{
+  transform:translateY(-3px);
+
+  background:rgba(247,244,239,.46);
+
+  box-shadow:0 12px 26px rgba(84,64,46,.18);
+}
+
+.widget h3{
+  position:relative;
+
+  z-index:2;
+
+  margin:0 0 6px;
+
+  color:#5A3E2B;
+
+  font-size:8px;
+
+  letter-spacing:.9px;
+}
+
+.big-number{
+  position:relative;
+
+  z-index:2;
+
+  margin:3px 0;
+
+  color:#6B4D38;
+
+  font-size:27px;
+
+  font-weight:bold;
+}
+
+.small-text{
+  position:relative;
+
+  z-index:2;
+
+  color:#6B513F;
+
+  font-size:8px;
+
+  font-weight:600;
+}
+
+.progress{
+  position:relative;
+
+  z-index:2;
+
+  height:8px;
+
+  margin-top:7px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(169,137,112,.30);
+  border-radius:20px;
+
+  background:rgba(245,240,228,.55);
+}
+
+.progress-inner{
+  width:0%;
+
+  height:100%;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #A98970,
+      #C5A98F,
+      #E0CDBA
+    );
+
+  transition:width .35s ease;
+}
+
+.progress-percent{
+  position:relative;
+
+  z-index:2;
+
+  margin-top:4px;
+
+  color:#6B513F;
+
+  font-size:8px;
+
+  font-weight:bold;
+}
+
+.quote-symbol{
+  position:relative;
+
+  z-index:2;
+
+  height:15px;
+
+  color:#7A5A43;
+
+  font-size:19px;
+}
+
+.quote{
+  position:relative;
+
+  z-index:2;
+
+  margin:4px 0 6px;
+
+  color:#5A493D;
+
+  font-size:9px;
+
+  font-style:italic;
+
+  line-height:1.5;
+}
+
+.flower{
+  position:relative;
+
+  z-index:2;
+
+  font-size:18px;
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+  .library-app{
+    grid-template-columns:150px 1fr;
+  }
+
+  .rightbar{
+    grid-column:1/-1;
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:8px;
+
+    border-left:none;
+
+    border-top:1px solid rgba(255,255,255,.24);
+  }
+
+  .widget{
+    margin:0;
+  }
+
+}
+
+@media(max-width:650px){
+
+  body{
+    padding:6px;
+  }
+
+  .library-app{
+    display:block;
+
+    width:100%;
+  }
+
+  .sidebar{
+    border-right:none;
+
+    border-bottom:1px solid rgba(255,255,255,.24);
+  }
+
+  .nav{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:4px;
+  }
+
+  .nav a{
+    margin:0;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .rightbar{
+    display:block;
+  }
+
+  .widget{
+    margin-bottom:8px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="library-app">
+
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+☰ LA MIA LIBRERIA
+</div>
+
+<nav class="nav">
+
+<a href="index.html">
+<span class="nav-icon">⌂</span>
+Home
+</a>
+
+<a href="letti.html">
+<span class="nav-icon">📚</span>
+I miei libri
+</a>
+
+<a href="da-leggere.html">
+<span class="nav-icon">♡</span>
+Da leggere
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="dark-romance.html">
+<span class="nav-icon">🥀</span>
+Dark Romance
+</a>
+
+<a href="fantasy-romance.html">
+<span class="nav-icon">✦</span>
+Fantasy Romance
+</a>
+
+<a href="romance.html">
+<span class="nav-icon">🌷</span>
+Romance
+</a>
+
+<a href="manga.html" class="active">
+<span class="nav-icon">🌸</span>
+Manga
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="aggiungi-libro.html">
+<span class="nav-icon">✎</span>
+Gestisci libri
+</a>
+
+</nav>
+
+<div class="sidebar-decoration">
+🌸 ♡ ✧
+</div>
+
+</aside>
+
+
+<main class="main">
+
+<header class="header">
+
+<h1 class="script-title">
+Martina's
+</h1>
+
+<div class="virtual-title">
+MANGA
+</div>
+
+<div class="header-decoration">
+🌸
+</div>
+
+<p class="subtitle">
+Le storie illustrate della mia collezione.
+</p>
+
+</header>
+
+
+<div class="total-card">
+
+<div class="total-small">
+🌸 LA MIA COLLEZIONE MANGA
+</div>
+
+<div
+class="total-number"
+id="totaleManga"
+>
+0
+</div>
+
+<div class="total-text">
+manga
+</div>
+
+</div>
+
+
+<section class="cards">
+
+
+<a
+class="card card-read"
+href="manga-letti.html"
+>
+
+<div class="card-icon">
+✓
+</div>
+
+<h2>
+LETTI
+</h2>
+
+<p>
+Manga già letti
+</p>
+
+<div
+class="card-bottom"
+id="testoLetti"
+>
+0 manga · Apri
+</div>
+
+</a>
+
+
+<a
+class="card card-tbr"
+href="manga-da-leggere.html"
+>
+
+<div class="card-icon">
+♡
+</div>
+
+<h2>
+DA LEGGERE
+</h2>
+
+<p>
+I prossimi manga
+</p>
+
+<div
+class="card-bottom"
+id="testoDaLeggere"
+>
+0 manga · Apri
+</div>
+
+</a>
+
+</section>
+
+
+<a
+href="index.html"
+class="home-button"
+>
+⌂ Torna alla Home
+</a>
+
+
+<div class="footer">
+🌸 &nbsp; “Una storia può vivere anche tra vignette e pagine.” &nbsp; 🌸
+</div>
+
+</main>
+
+
+<aside class="rightbar">
+
+
+<div class="widget">
+
+<h3>
+MANGA 🌸
+</h3>
+
+<div class="small-text">
+Totale manga
+</div>
+
+<div
+class="big-number"
+id="numeroManga"
+>
+0
+</div>
+
+<div
+class="small-text"
+id="dettaglioManga"
+>
+0 letti · 0 da leggere
+</div>
+
+<div class="progress">
+
+<div
+class="progress-inner"
+id="barraManga"
+></div>
+
+</div>
+
+<div
+class="progress-percent"
+id="percentualeManga"
+>
+0%
+</div>
+
+</div>
+
+
+<div class="widget">
+
+<div class="quote-symbol">
+“
+</div>
+
+<p class="quote">
+Ogni volume apre<br>
+un nuovo mondo.
+</p>
+
+<div class="flower">
+🌸
+</div>
+
+</div>
+
+
+</aside>
+
+</div>
+
+
+<script>
+
+function normalizza(titolo){
+
+  return String(titolo || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+
+}
+
+
+const mangaBaseLetti=[];
+
+
+function aggiungiSerie(
+  nome,
+  volumi
+){
+
+  for(
+    let i=1;
+    i<=volumi;
+    i++
+  ){
+
+    mangaBaseLetti.push(
+      nome +
+      " — Vol. " +
+      i
+    );
+
+  }
+
+}
+
+
+aggiungiSerie(
+  "My Dress-Up Darling",
+  15
+);
+
+
+aggiungiSerie(
+  "The Fragrant Flower Blooms with Dignity",
+  5
+);
+
+
+aggiungiSerie(
+  "Inazuma & Romance",
+  6
+);
+
+
+aggiungiSerie(
+  "Lei e il suo cane da guardia",
+  6
+);
+
+
+aggiungiSerie(
+  "Ice Guy & Cool Girl",
+  11
+);
+
+
+aggiungiSerie(
+  "I diari della speziale",
+  15
+);
+
+
+aggiungiSerie(
+  "A Sign of Affection",
+  12
+);
+
+
+mangaBaseLetti.push(
+  "Le 100 ragazze che ti amano tanto tanto tanto tanto tanto — Vol. 1"
+);
+
+
+mangaBaseLetti.push(
+  "First Kiss"
+);
+
+
+mangaBaseLetti.push(
+  "Gli agenti delle quattro stagioni — Vol. 1"
+);
+
+
+mangaBaseLetti.push(
+  "Gli agenti delle quattro stagioni — Vol. 2"
+);
+
+
+let libriSalvati=[];
+
+
+try{
+
+  libriSalvati=
+    JSON.parse(
+      localStorage.getItem(
+        "mieiLibriAggiunti"
+      )
+      ||
+      "[]"
+    );
+
+}
+
+catch(errore){
+
+  libriSalvati=[];
+
+}
+
+
+const gestitiPerTitolo=
+  new Map();
+
+
+libriSalvati.forEach(
+  function(libro){
+
+    const nome=
+      normalizza(
+        libro.titolo
+      );
+
+
+    if(nome){
+
+      gestitiPerTitolo.set(
+        nome,
+        libro
+      );
+
+    }
+
+  }
+);
+
+
+const mangaLettiSet=
+  new Set();
+
+
+const mangaDaLeggereSet=
+  new Set();
+
+
+mangaBaseLetti.forEach(
+  function(titolo){
+
+    const nome=
+      normalizza(
+        titolo
+      );
+
+
+    const versioneGestita=
+      gestitiPerTitolo.get(
+        nome
+      );
+
+
+    if(!versioneGestita){
+
+      mangaLettiSet.add(
+        nome
+      );
+
+      return;
+
+    }
+
+
+    if(
+      versioneGestita.categoria
+      !==
+      "Manga"
+    ){
+
+      return;
+
+    }
+
+
+    if(
+      versioneGestita.stato
+      ===
+      "Letto"
+    ){
+
+      mangaLettiSet.add(
+        nome
+      );
+
+    }
+
+
+    if(
+      versioneGestita.stato
+      ===
+      "Da leggere"
+    ){
+
+      mangaDaLeggereSet.add(
+        nome
+      );
+
+    }
+
+  }
+);
+
+
+libriSalvati.forEach(
+  function(libro){
+
+    if(
+      libro.categoria
+      !==
+      "Manga"
+    ){
+
+      return;
+
+    }
+
+
+    const nome=
+      normalizza(
+        libro.titolo
+      );
+
+
+    if(!nome){
+
+      return;
+
+    }
+
+
+    if(
+      libro.stato
+      ===
+      "Letto"
+    ){
+
+      mangaDaLeggereSet.delete(
+        nome
+      );
+
+      mangaLettiSet.add(
+        nome
+      );
+
+    }
+
+
+    if(
+      libro.stato
+      ===
+      "Da leggere"
+    ){
+
+      mangaLettiSet.delete(
+        nome
+      );
+
+      mangaDaLeggereSet.add(
+        nome
+      );
+
+    }
+
+  }
+);
+
+
+const mangaLetti=
+  mangaLettiSet.size;
+
+
+const mangaDaLeggere=
+  mangaDaLeggereSet.size;
+
+
+const totaleManga=
+  mangaLetti +
+  mangaDaLeggere;
+
+
+document.getElementById(
+  "totaleManga"
+).textContent=
+  totaleManga;
+
+
+document.getElementById(
+  "numeroManga"
+).textContent=
+  totaleManga;
+
+
+document.getElementById(
+  "dettaglioManga"
+).textContent=
+  mangaLetti +
+  " letti · " +
+  mangaDaLeggere +
+  " da leggere";
+
+
+document.getElementById(
+  "testoLetti"
+).textContent=
+  mangaLetti +
+  " manga · Apri";
+
+
+document.getElementById(
+  "testoDaLeggere"
+).textContent=
+  mangaDaLeggere +
+  " manga · Apri";
+
+
+let percentuale=0;
+
+
+if(
+  totaleManga>0
+){
+
+  percentuale=
+    Math.round(
+      (
+        mangaLetti /
+        totaleManga
+      )
+      *
+      100
+    );
+
+}
+
+
+document.getElementById(
+  "barraManga"
+).style.width=
+  percentuale +
+  "%";
+
+
+document.getElementById(
+  "percentualeManga"
+).textContent=
+  percentuale +
+  "%";
+
+</script>
+
+</body>
+
+</html>

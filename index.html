@@ -1,0 +1,3229 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Martina's Virtual Library</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  padding:12px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  color:#4E3524;
+
+  background:
+    linear-gradient(
+      rgba(48,40,31,.12),
+      rgba(48,40,31,.18)
+    ),
+    url("copertine/sfondo-home.jpg")
+    center/cover fixed no-repeat;
+}
+
+button,
+input{
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+}
+
+
+/* =========================
+   STRUTTURA GENERALE
+========================= */
+
+.library-app{
+  width:min(
+    1180px,
+    calc(100vw - 24px)
+  );
+
+  min-height:
+    calc(100vh - 24px);
+
+  margin:0 auto;
+
+  display:grid;
+
+  grid-template-columns:
+    175px
+    minmax(0,1fr)
+    190px;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.28);
+
+  border-radius:28px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  box-shadow:
+    0 22px 55px
+    rgba(42,34,25,.26);
+
+  backdrop-filter:
+    blur(2px);
+
+  -webkit-backdrop-filter:
+    blur(2px);
+}
+
+
+/* =========================
+   MENU SINISTRO
+========================= */
+
+.sidebar{
+  padding:
+    17px 12px;
+
+  background:
+    rgba(247,244,239,.34);
+
+  border-right:
+    1px solid
+    rgba(255,255,255,.30);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+}
+
+.sidebar-title{
+  text-align:center;
+
+  margin-bottom:13px;
+
+  color:#4E3524;
+
+  font-size:10px;
+
+  font-weight:bold;
+
+  letter-spacing:1.4px;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.72);
+}
+
+.sidebar-title::after{
+  content:"── ❦ ──";
+
+  display:block;
+
+  margin-top:8px;
+
+  color:#5A3E2B;
+
+  font-size:8px;
+
+  font-weight:normal;
+}
+
+.nav a{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:5px;
+
+  padding:
+    8px 9px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:12px;
+
+  color:#4E3524;
+
+  font-size:10px;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+.nav a:hover{
+  transform:
+    translateX(3px);
+
+  background:
+    rgba(255,255,255,.40);
+
+  border-color:
+    rgba(255,255,255,.48);
+
+  box-shadow:
+    0 5px 14px
+    rgba(92,65,42,.10);
+}
+
+.nav a.active{
+  color:white;
+
+  background:
+    rgba(122,130,103,.82);
+
+  border-color:
+    rgba(255,255,255,.34);
+
+  box-shadow:
+    0 5px 12px
+    rgba(63,70,53,.17);
+}
+
+.nav-icon{
+  width:18px;
+
+  text-align:center;
+}
+
+.sidebar-divider{
+  height:1px;
+
+  margin:
+    11px 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(198,139,89,.86),
+      transparent
+    );
+}
+
+.sidebar-decoration{
+  margin-top:17px;
+
+  text-align:center;
+
+  color:#5A3E2B;
+
+  font-size:14px;
+
+  letter-spacing:5px;
+}
+
+
+/* =========================
+   CENTRO
+========================= */
+
+.main{
+  min-width:0;
+
+  padding:
+    14px 15px 13px;
+
+  background:
+    rgba(247,244,239,.16);
+
+  backdrop-filter:
+    blur(5px);
+
+  -webkit-backdrop-filter:
+    blur(5px);
+}
+
+
+/* =========================
+   TITOLO
+========================= */
+
+.header{
+  position:relative;
+
+  text-align:center;
+
+  padding:
+    3px 0 8px;
+}
+
+.header::before,
+.header::after{
+  content:"❦";
+
+  position:absolute;
+
+  top:9px;
+
+  color:#5A3E2B;
+
+  opacity:.80;
+}
+
+.header::before{
+  left:3px;
+}
+
+.header::after{
+  right:3px;
+
+  transform:
+    scaleX(-1);
+}
+
+.script-title{
+  margin:0;
+
+  color:#4E3524;
+
+  font-size:
+    clamp(
+      33px,
+      4vw,
+      48px
+    );
+
+  line-height:1;
+
+  font-weight:normal;
+
+  font-style:italic;
+
+  letter-spacing:-1px;
+
+  text-shadow:
+    0 2px 4px
+    rgba(255,255,255,.78);
+}
+
+.virtual-title{
+  margin-top:4px;
+
+  color:#4E3524;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  letter-spacing:5px;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.75);
+}
+
+.header-line{
+  display:flex;
+
+  align-items:center;
+
+  width:min(
+    320px,
+    80%
+  );
+
+  margin:
+    7px auto 4px;
+
+  gap:8px;
+
+  color:#5A3E2B;
+}
+
+.header-line::before,
+.header-line::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:
+    rgba(198,139,89,.82);
+}
+
+.subtitle{
+  margin:0;
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-style:italic;
+
+  font-weight:600;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.80);
+}
+
+
+/* =========================
+   STO LEGGENDO
+========================= */
+
+.coffee-table{
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    115px;
+
+  gap:10px;
+
+  margin:
+    10px 0;
+}
+
+.current-reading-main{
+  position:relative;
+
+  min-height:106px;
+
+  padding:
+    11px 13px;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.34);
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.35);
+
+  box-shadow:
+    0 8px 22px
+    rgba(67,53,39,.12);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.current-reading-main:hover{
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(255,255,255,.44);
+
+  box-shadow:
+    0 13px 30px
+    rgba(100,74,48,.17);
+}
+
+.current-reading-main::before{
+  content:"☕";
+
+  position:absolute;
+
+  right:12px;
+
+  bottom:7px;
+
+  font-size:28px;
+
+  opacity:.14;
+}
+
+.section-label{
+  margin-bottom:7px;
+
+  color:#5A3E2B;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:1.2px;
+}
+
+.current-empty{
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-weight:600;
+
+  line-height:1.5;
+}
+
+.current-empty-icon{
+  margin-right:5px;
+
+  font-size:17px;
+}
+
+.current-book-row{
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+}
+
+.current-cover{
+  width:50px;
+
+  height:73px;
+
+  flex:none;
+
+  overflow:hidden;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border:
+    1px solid
+    rgba(255,255,255,.40);
+
+  border-radius:7px;
+
+  background:
+    rgba(255,255,255,.30);
+
+  box-shadow:
+    0 4px 8px
+    rgba(53,43,33,.18);
+}
+
+.current-cover img{
+  width:100%;
+
+  height:100%;
+
+  object-fit:cover;
+}
+
+.current-info{
+  min-width:0;
+
+  flex:1;
+}
+
+.current-label{
+  display:inline-block;
+
+  padding:
+    3px 6px;
+
+  margin-bottom:4px;
+
+  border-radius:20px;
+
+  background:
+    rgba(122,130,103,.88);
+
+  color:white;
+
+  font-size:6px;
+
+  letter-spacing:.8px;
+}
+
+.current-title{
+  margin-bottom:3px;
+
+  color:#4E3524;
+
+  font-size:10px;
+
+  font-weight:bold;
+
+  line-height:1.25;
+}
+
+.current-category{
+  margin-bottom:6px;
+
+  color:#5A3E2B;
+
+  font-size:7px;
+
+  font-weight:600;
+}
+
+.finish-reading{
+  padding:
+    5px 8px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.30);
+
+  border-radius:8px;
+
+  background:
+    rgba(122,130,103,.88);
+
+  color:white;
+
+  font-size:7px;
+
+  cursor:pointer;
+}
+
+.finish-reading:hover{
+  background:#6D765C;
+}
+
+.coffee-deco{
+  min-height:106px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:8px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.32);
+
+  border-radius:18px;
+
+  background:
+    rgba(222,226,207,.34);
+
+  text-align:center;
+
+  color:#4E3524;
+
+  box-shadow:
+    0 8px 22px
+    rgba(67,53,39,.10);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+.coffee-deco .plant{
+  font-size:24px;
+}
+
+.coffee-deco span{
+  margin-top:5px;
+
+  color:#5A3E2B;
+
+  font-size:7px;
+
+  font-weight:600;
+
+  font-style:italic;
+
+  line-height:1.4;
+}
+
+
+/* =========================
+   RICERCA
+========================= */
+
+.search{
+  width:min(
+    500px,
+    100%
+  );
+
+  margin:
+    7px auto 11px;
+
+  display:flex;
+
+  padding:4px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.36);
+
+  border-radius:22px;
+
+  background:
+    rgba(255,255,255,.34);
+
+  box-shadow:
+    0 7px 19px
+    rgba(70,56,42,.10);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+.search:focus-within{
+  background:
+    rgba(255,255,255,.48);
+}
+
+.search input{
+  flex:1;
+
+  min-width:0;
+
+  padding:
+    8px 11px;
+
+  border:none;
+
+  outline:none;
+
+  background:transparent;
+
+  color:#4E3524;
+
+  font-size:9px;
+
+  font-weight:600;
+}
+
+.search input::placeholder{
+  color:#5A3E2B;
+
+  opacity:.80;
+}
+
+.search button{
+  width:31px;
+
+  height:31px;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:
+    rgba(122,130,103,.86);
+
+  color:white;
+
+  cursor:pointer;
+}
+
+.search button:hover{
+  background:#6D765C;
+}
+
+#risultatoRicerca{
+  width:min(
+    500px,
+    100%
+  );
+
+  margin:
+    0 auto 8px;
+}
+
+.risultato{
+  margin-bottom:5px;
+
+  padding:
+    8px 10px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.36);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,255,255,.42);
+
+  color:#4E3524;
+
+  text-align:center;
+
+  font-size:9px;
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+.risultato p{
+  margin:
+    4px 0;
+
+  color:#5A3E2B;
+}
+
+.risultato a{
+  display:inline-block;
+
+  padding:
+    4px 8px;
+
+  border-radius:8px;
+
+  background:
+    rgba(198,139,89,.55);
+
+  color:#4E3524;
+
+  font-weight:bold;
+
+  text-decoration:none;
+}
+
+
+/* =========================
+   CONTATORI
+========================= */
+
+.summary-row{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:8px;
+
+  margin-bottom:11px;
+}
+
+.summary-card{
+  position:relative;
+
+  overflow:hidden;
+
+  padding:
+    8px 7px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.34);
+
+  border-radius:15px;
+
+  background:
+    rgba(255,255,255,.35);
+
+  text-align:center;
+
+  box-shadow:
+    0 8px 22px
+    rgba(64,52,39,.10);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.summary-card::before{
+  content:"";
+
+  position:absolute;
+
+  width:70px;
+
+  height:110px;
+
+  top:-35px;
+
+  left:-95px;
+
+  transform:
+    rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,247,215,.34),
+      transparent
+    );
+
+  transition:
+    left .55s ease;
+}
+
+.summary-card:hover{
+  transform:
+    translateY(-4px);
+
+  background:
+    rgba(255,255,255,.50);
+
+  border-color:
+    rgba(255,255,255,.65);
+
+  box-shadow:
+    0 13px 29px
+    rgba(105,79,52,.18),
+    inset 0 0 24px
+    rgba(255,244,214,.18);
+}
+
+.summary-card:hover::before{
+  left:120%;
+}
+
+.summary-icon{
+  position:relative;
+
+  z-index:2;
+
+  font-size:16px;
+}
+
+.summary-number{
+  position:relative;
+
+  z-index:2;
+
+  margin-top:2px;
+
+  color:#4E3524;
+
+  font-size:18px;
+
+  font-weight:bold;
+}
+
+.summary-title{
+  position:relative;
+
+  z-index:2;
+
+  color:#5A3E2B;
+
+  font-size:7px;
+
+  font-weight:bold;
+
+  letter-spacing:.7px;
+}
+
+
+/* =========================
+   GRANDI SCAFFALI
+========================= */
+
+.shelves-title{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin:
+    3px 0 8px;
+
+  color:#4E3524;
+
+  font-size:9px;
+
+  font-weight:bold;
+
+  letter-spacing:1px;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.78);
+}
+
+.shelves-title::before,
+.shelves-title::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(198,139,89,.86)
+    );
+}
+
+.shelves-title::after{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(198,139,89,.86),
+      transparent
+    );
+}
+
+.shelves{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap:9px;
+}
+
+
+/* NUOVI RIQUADRI GENERI */
+
+.shelf{
+  position:relative;
+
+  min-height:118px;
+
+  overflow:hidden;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:7px;
+
+  padding:
+    15px 10px;
+
+  border:
+    1px solid
+    rgba(111,76,48,.26);
+
+  border-radius:18px;
+
+  color:#4E3524;
+
+  text-align:center;
+
+  text-decoration:none;
+
+  box-shadow:
+    0 8px 18px
+    rgba(83,60,40,.15),
+    inset 0 1px 0
+    rgba(255,255,255,.35);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease,
+    border-color .25s ease;
+}
+
+.shelf::before{
+  content:"";
+
+  position:absolute;
+
+  width:85px;
+
+  height:170px;
+
+  top:-40px;
+
+  left:-120px;
+
+  transform:
+    rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,250,225,.36),
+      transparent
+    );
+
+  transition:
+    left .65s ease;
+}
+
+.shelf:hover{
+  transform:
+    translateY(-5px);
+
+  border-color:
+    rgba(111,76,48,.38);
+
+  box-shadow:
+    0 14px 28px
+    rgba(83,60,40,.22),
+    inset 0 0 24px
+    rgba(255,246,218,.18);
+
+  filter:
+    brightness(1.035);
+}
+
+.shelf:hover::before{
+  left:135%;
+}
+
+.shelf-top{
+  position:relative;
+
+  z-index:2;
+
+  font-size:27px;
+
+  line-height:1;
+}
+
+.shelf-name{
+  position:relative;
+
+  z-index:2;
+
+  padding:
+    7px 9px;
+
+  border-radius:9px;
+
+  background:
+    rgba(255,248,239,.30);
+
+  color:#4E3524;
+
+  font-size:9px;
+
+  font-weight:bold;
+
+  letter-spacing:.8px;
+
+  line-height:1.25;
+
+  text-transform:uppercase;
+}
+
+.shelf-dark{
+  background:#D7C6B5;
+}
+
+.shelf-fantasy{
+  background:#DDD8B8;
+}
+
+.shelf-romance{
+  background:#E7C9C0;
+}
+
+.shelf-manga{
+  background:#E3D7CB;
+}
+
+
+/* =========================
+   CITAZIONE
+========================= */
+
+.quote-section{
+  position:relative;
+
+  margin-top:10px;
+
+  padding:
+    13px 42px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.34);
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.30);
+
+  text-align:center;
+
+  color:#4E3524;
+
+  box-shadow:
+    0 8px 21px
+    rgba(57,47,36,.09);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+.quote-section::before{
+  content:"🌿";
+
+  position:absolute;
+
+  left:13px;
+
+  top:50%;
+
+  transform:
+    translateY(-50%);
+}
+
+.quote-section::after{
+  content:"🌿";
+
+  position:absolute;
+
+  right:13px;
+
+  top:50%;
+
+  transform:
+    translateY(-50%)
+    scaleX(-1);
+}
+
+.quote-main{
+  margin:0;
+
+  color:#4E3524;
+
+  font-size:13px;
+
+  font-style:italic;
+
+  line-height:1.4;
+}
+
+.quote-small{
+  margin-top:4px;
+
+  color:#5A3E2B;
+
+  font-size:7px;
+
+  font-weight:600;
+}
+
+
+/* =========================
+   GESTISCI
+========================= */
+
+.manage-card{
+  min-height:43px;
+
+  margin-top:9px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:8px;
+
+  padding:
+    8px 10px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.32);
+
+  border-radius:13px;
+
+  background:
+    rgba(198,139,89,.44);
+
+  color:#4E3524;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:.5px;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+
+  backdrop-filter:
+    blur(9px);
+
+  -webkit-backdrop-filter:
+    blur(9px);
+}
+
+.manage-card:hover{
+  transform:
+    translateY(-3px);
+
+  background:
+    rgba(211,154,102,.57);
+
+  box-shadow:
+    0 11px 24px
+    rgba(91,64,43,.17);
+}
+
+
+/* =========================
+   COLONNA DESTRA
+========================= */
+
+.rightbar{
+  padding:
+    13px 10px;
+
+  border-left:
+    1px solid
+    rgba(255,255,255,.30);
+
+  background:
+    rgba(247,244,239,.28);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+}
+
+.widget{
+  position:relative;
+
+  margin-bottom:9px;
+
+  padding:
+    11px 9px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.34);
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.35);
+
+  text-align:center;
+
+  box-shadow:
+    0 8px 22px
+    rgba(62,51,39,.11);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.widget:hover{
+  transform:
+    translateY(-3px);
+
+  background:
+    rgba(255,255,255,.47);
+
+  box-shadow:
+    0 12px 27px
+    rgba(93,69,47,.16);
+}
+
+.widget h3{
+  margin:
+    0 0 7px;
+
+  color:#4E3524;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:.9px;
+}
+
+.widget-icon{
+  font-size:20px;
+}
+
+.small-text{
+  color:#5A3E2B;
+
+  font-size:8px;
+
+  font-weight:600;
+}
+
+.big-number{
+  margin:
+    4px 0;
+
+  color:#4E3524;
+
+  font-size:27px;
+
+  font-weight:bold;
+}
+
+.progress{
+  height:8px;
+
+  margin-top:8px;
+
+  overflow:hidden;
+
+  border-radius:20px;
+
+  background:
+    rgba(255,255,255,.34);
+}
+
+.progress-inner{
+  width:0%;
+
+  height:100%;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7A8267,
+      #9da489,
+      #C68B59
+    );
+}
+
+.progress-percent{
+  margin-top:4px;
+
+  color:#5A3E2B;
+
+  font-size:7px;
+
+  font-weight:bold;
+}
+
+.diary-text{
+  margin:
+    6px 0;
+
+  color:#5A3E2B;
+
+  font-size:8px;
+
+  font-weight:600;
+
+  font-style:italic;
+
+  line-height:1.5;
+}
+
+.mini-total{
+  color:#4E3524;
+
+  font-size:24px;
+
+  font-weight:bold;
+}
+
+.footer{
+  margin-top:8px;
+
+  text-align:center;
+
+  color:#4E3524;
+
+  font-size:13px;
+
+  font-style:italic;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.72);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+  .library-app{
+    grid-template-columns:
+      155px
+      1fr;
+  }
+
+  .rightbar{
+    grid-column:
+      1/-1;
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(
+        3,
+        1fr
+      );
+
+    gap:8px;
+
+    border-left:none;
+
+    border-top:
+      1px solid
+      rgba(255,255,255,.30);
+  }
+
+  .widget{
+    margin:0;
+  }
+
+}
+
+
+@media(max-width:720px){
+
+  body{
+    padding:6px;
+  }
+
+  .library-app{
+    width:100%;
+
+    display:block;
+  }
+
+  .sidebar{
+    border-right:none;
+  }
+
+  .nav{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:4px;
+  }
+
+  .nav a{
+    margin:0;
+  }
+
+  .coffee-table{
+    grid-template-columns:1fr;
+  }
+
+  .shelves{
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+
+  .rightbar{
+    display:block;
+  }
+
+  .widget{
+    margin-bottom:8px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="library-app">
+
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+☰ LA MIA LIBRERIA
+</div>
+
+<nav class="nav">
+
+<a href="index.html" class="active">
+<span class="nav-icon">⌂</span>
+Home
+</a>
+
+<a href="letti.html">
+<span class="nav-icon">📚</span>
+I miei libri
+</a>
+
+<a href="da-leggere.html">
+<span class="nav-icon">♡</span>
+Da leggere
+</a>
+
+<a href="#scaffali">
+<span class="nav-icon">▦</span>
+Grandi scaffali
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="dark-romance.html">
+<span class="nav-icon">🥀</span>
+Dark Romance
+</a>
+
+<a href="fantasy-romance.html">
+<span class="nav-icon">✦</span>
+Fantasy Romance
+</a>
+
+<a href="romance.html">
+<span class="nav-icon">🌷</span>
+Romance
+</a>
+
+<a href="manga.html">
+<span class="nav-icon">🌸</span>
+Manga
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="aggiungi-libro.html">
+<span class="nav-icon">✎</span>
+Gestisci libri
+</a>
+
+</nav>
+
+<div class="sidebar-decoration">
+❦ 🌿 ❦
+</div>
+
+</aside>
+
+
+<main class="main">
+
+<header class="header">
+
+<h1 class="script-title">
+Martina's
+</h1>
+
+<div class="virtual-title">
+VIRTUAL LIBRARY
+</div>
+
+<div class="header-line">
+♡
+</div>
+
+<p class="subtitle">
+Un piccolo rifugio fatto di storie.
+</p>
+
+</header>
+
+
+<section class="coffee-table">
+
+<div class="current-reading-main">
+
+<div class="section-label">
+☕ IL TAVOLINO · STO LEGGENDO
+</div>
+
+<div id="letturaAttualeBox">
+
+<div class="current-empty">
+<span class="current-empty-icon">📖</span>
+Nessuna lettura in corso.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="coffee-deco">
+
+<div class="plant">
+🌿
+</div>
+
+<span>
+Un libro,<br>
+una tazza,<br>
+un momento per me.
+</span>
+
+</div>
+
+</section>
+
+
+<div class="search">
+
+<input
+type="text"
+id="cercaLibro"
+placeholder="⌕ Cerca un libro nella tua libreria..."
+>
+
+<button id="bottoneCerca">
+⌕
+</button>
+
+</div>
+
+<div id="risultatoRicerca"></div>
+
+
+<section class="summary-row">
+
+<div class="summary-card">
+
+<div class="summary-icon">
+📚
+</div>
+
+<div class="summary-number" id="totaleLibri">
+0
+</div>
+
+<div class="summary-title">
+LA MIA LIBRERIA
+</div>
+
+</div>
+
+
+<div class="summary-card">
+
+<div class="summary-icon">
+✓
+</div>
+
+<div class="summary-number" id="totaleLetti">
+0
+</div>
+
+<div class="summary-title">
+LETTI
+</div>
+
+</div>
+
+
+<div class="summary-card">
+
+<div class="summary-icon">
+♡
+</div>
+
+<div class="summary-number" id="totaleDaLeggere">
+0
+</div>
+
+<div class="summary-title">
+DA LEGGERE
+</div>
+
+</div>
+
+</section>
+
+
+<div class="shelves-title" id="scaffali">
+GRANDI SCAFFALI
+</div>
+
+
+<section class="shelves">
+
+<a
+href="dark-romance.html"
+class="shelf shelf-dark"
+>
+
+<div class="shelf-top">
+🥀
+</div>
+
+<div class="shelf-name">
+DARK ROMANCE
+</div>
+
+</a>
+
+
+<a
+href="fantasy-romance.html"
+class="shelf shelf-fantasy"
+>
+
+<div class="shelf-top">
+✦
+</div>
+
+<div class="shelf-name">
+FANTASY ROMANCE
+</div>
+
+</a>
+
+
+<a
+href="romance.html"
+class="shelf shelf-romance"
+>
+
+<div class="shelf-top">
+🌷
+</div>
+
+<div class="shelf-name">
+ROMANCE
+</div>
+
+</a>
+
+
+<a
+href="manga.html"
+class="shelf shelf-manga"
+>
+
+<div class="shelf-top">
+🌸
+</div>
+
+<div class="shelf-name">
+MANGA
+</div>
+
+</a>
+
+</section>
+
+
+<section class="quote-section">
+
+<p class="quote-main">
+“Tra queste pagine posso essere ovunque.”
+</p>
+
+<div class="quote-small">
+Il mio angolo di lettura ♡
+</div>
+
+</section>
+
+
+<a
+class="manage-card"
+href="aggiungi-libro.html"
+>
+
+<span>
+📖
+</span>
+
+GESTISCI LA MIA LIBRERIA
+&nbsp; · &nbsp;
+Aggiungi
+&nbsp; · &nbsp;
+Modifica
+&nbsp; · &nbsp;
+Rimuovi
+
+</a>
+
+
+<div class="footer">
+❦ &nbsp; Leggi. Sogna. Vivi. &nbsp; ❦
+</div>
+
+</main>
+
+
+<aside class="rightbar">
+
+
+<div class="widget">
+
+<h3>
+I MIEI PROGRESSI
+</h3>
+
+<div class="small-text">
+Libri letti
+</div>
+
+<div class="big-number" id="numeroProgresso">
+0
+</div>
+
+<div class="small-text" id="testoProgresso">
+su 0
+</div>
+
+<div class="progress">
+
+<div
+class="progress-inner"
+id="barraProgresso"
+></div>
+
+</div>
+
+<div
+class="progress-percent"
+id="percentualeProgresso"
+>
+0%
+</div>
+
+</div>
+
+
+<div class="widget">
+
+<h3>
+🌿 ANGOLO RELAX
+</h3>
+
+<div class="widget-icon">
+☕
+</div>
+
+<p class="diary-text">
+Le storie più belle
+sono quelle in cui
+rimaniamo un po'
+anche dopo l'ultima pagina.
+</p>
+
+</div>
+
+
+<div class="widget">
+
+<h3>
+LA MIA COLLEZIONE
+</h3>
+
+<div class="mini-total" id="totalePiccolo">
+0
+</div>
+
+<div class="small-text">
+libri nella libreria
+</div>
+
+</div>
+
+</aside>
+
+</div>
+
+
+<script>
+
+const libri = [];
+
+
+function aggiungiLista(
+  lista,
+  categoria,
+  stato,
+  pagina
+){
+
+  lista.forEach(function(titolo){
+
+    libri.push({
+
+      titolo: titolo,
+      categoria: categoria,
+      stato: stato,
+      pagina: pagina
+
+    });
+
+  });
+
+}
+
+
+aggiungiLista(
+[
+  "Butcher & Blackbird",
+  "Deadly Sins: Sloth",
+  "God of Pain",
+  "Le bugie che rubiamo",
+  "Leather & Lark",
+  "Scythe & Sparrow",
+  "Taste Me. Fuoco e oscurità"
+],
+"🖤 Dark Romance",
+"📖 Da leggere",
+"dark-romance-da-leggere.html"
+);
+
+
+aggiungiLista(
+[
+  "Un amore di angelo",
+  "Un patto con il Re degli Elfi",
+  "Un'alba di onice",
+  "Una corte di rose e spine",
+  "Una corte di nebbia e furia",
+  "Una corte di ali e rovina",
+  "Una corte di gelo e stelle",
+  "Sangue e cenere",
+  "Regno di carne e fuoco",
+  "La corona di ossa",
+  "La guerra delle due regine",
+  "Anima di cenere e sangue",
+  "Shadowhunters — Città di ossa",
+  "Shadowhunters — Città di cenere",
+  "Shadowhunters — Città di vetro",
+  "Shadowhunters — Città degli angeli caduti",
+  "Shadowhunters — Città delle anime perdute",
+  "Il principe — Shadowhunters",
+  "Fourth Wing",
+  "Iron Flame",
+  "Onyx Storm",
+  "Il principe crudele",
+  "Il re malvagio",
+  "Le streghe in eterno",
+  "Il regno dei malvagi",
+  "Il regno dei dannati",
+  "Il regno delle fiere",
+  "C'era una volta un cuore spezzato",
+  "La maledizione del vero amore",
+  "Caraval — La trilogia",
+  "The Selection",
+  "The Selection Stories: The Prince & The Guard",
+  "The Elite",
+  "La principessa",
+  "La sfida del re",
+  "Fidanzati dell'inverno",
+  "La memoria di Babel",
+  "Gli scomparsi di Chiardiluna",
+  "The Book of Azrael",
+  "The Scarlet Veil",
+  "The High Mountain Court",
+  "The Bond That Burns",
+  "Re di spade e sangue",
+  "Fall of Ruin and Wrath",
+  "On Wings of Blood",
+  "Echi in tempesta",
+  "E non vissero per sempre felici e contenti",
+  "La figlia della dea della luna",
+  "A Shadow in the Ember",
+  "A Light in the Flame",
+  "A Fire in the Flesh",
+  "La guerra delle dieci regine",
+  "Il mio angelo segreto",
+  "Innamorata di un angelo",
+  "L'angelo",
+  "Apprendista cercasi",
+  "Assistente cercasi",
+  "Bride"
+],
+"✨ Fantasy Romance",
+"✅ Letto",
+"fantasy-romance-letti.html"
+);
+
+
+aggiungiLista(
+[
+  "All This Twisted Glory",
+  "Belladonna",
+  "Bitten. La regina dei lupi",
+  "Caldo come il fuoco",
+  "Dark Rise — Vol. 1",
+  "Dove bruciano gli oceani",
+  "Dragonfall",
+  "Half a Soul",
+  "I peccati degli dei",
+  "Il re degli elfi",
+  "Il re dei draghi",
+  "Il Trono di Ghiaccio — La lama dell'assassina",
+  "L'immortale",
+  "L'incanto della biblioteca d'agrifoglio",
+  "La casa di terra e sangue",
+  "La maschera di No",
+  "Little Thieves",
+  "Mate",
+  "Quicksilver",
+  "Rose in Chains",
+  "Sun of Blood and Ruin",
+  "These Infinite Threads",
+  "This Woven Kingdom",
+  "Thershing day",
+  "Una condanna di ombre e spine",
+  "Una danza con il Principe delle Fate",
+  "When the Moon Hatched"
+],
+"✨ Fantasy Romance",
+"📖 Da leggere",
+"fantasy-romance-da-leggere.html"
+);
+
+
+aggiungiLista(
+[
+  "31 giorni per innamorarsi",
+  "36 domande per farti innamorare di me",
+  "365 giorni senza di te",
+  "After Midnight",
+  "Ancora una volta con te",
+  "Anime elettriche",
+  "Ascolta il tuo cuore",
+  "Baci nell'ombra",
+  "Battitore e batticuore",
+  "Buongiorno amore",
+  "But Santa, I Love Him",
+  "Collide",
+  "Come dire ti amo ad alta voce",
+  "Come inciampare nel principe azzurro",
+  "Con te sarà diverso",
+  "Cruel. Tormento",
+  "Cuori magnetici",
+  "Dalla mia finestra",
+  "Dammi mille baci",
+  "Destiny. Un amore in gioco",
+  "Done and Dusted",
+  "Finalmente ci sei",
+  "Finalmente noi",
+  "First. La mia prima volta",
+  "Forget Me Not",
+  "Forse un giorno",
+  "Giura che sei mio",
+  "Giuro che ti amo",
+  "Ho voglia di innamorarmi",
+  "I cento colori del blu",
+  "I cento colori del blu — Sei il mio sole anche di notte — Infinito+1",
+  "I passi dell'amore",
+  "Il cattivo ragazzo che amo",
+  "Il contratto. The Deal",
+  "Il tradimento. The Score",
+  "Indimenticabile",
+  "Innamorarsi è la parte più facile",
+  "Irraggiungibile",
+  "Irresistibile",
+  "L'altra sposa",
+  "L'eredità. The Legacy",
+  "L'imprevisto. The Goal",
+  "La lettera d'amore",
+  "La storia d'amore più bella del mondo",
+  "La teoria imperfetta dell'amore",
+  "Le stelle non fanno rumore",
+  "Lo sbaglio. The Mistake",
+  "Love Me Love Me 3",
+  "Mal che vada ci innamoriamo",
+  "Meglio non parlarne",
+  "Mi sono innamorata del mio migliore amico",
+  "Mile High",
+  "Mille pezzi del mio cuore",
+  "Nei tuoi occhi",
+  "Non mi piaci ma ti amo",
+  "Oltre il destino",
+  "Once Upon a K-Prom",
+  "P.S. Ti amo ancora",
+  "Perfect Boy",
+  "Rebel Love",
+  "Se stiamo insieme ci sarà un perché",
+  "Senza limiti. Heartless",
+  "Senza paura. Reckless",
+  "Senza regole",
+  "Senza regole. Flawless",
+  "Senza rimorso. Powerless",
+  "Stai qui con me",
+  "That Boy",
+  "The Brightest Light of Sunshine",
+  "The C*ck Down the Block",
+  "The Love Hypothesis",
+  "The Love Map",
+  "The Right Move",
+  "Ti odierò fino ad amarti",
+  "Tienimi con te",
+  "Tutte le volte che ho scritto ti amo",
+  "Twisted Games",
+  "Twisted Hate",
+  "Twisted Lies",
+  "Twisted Love",
+  "Un giorno per volta",
+  "Un magnifico equivoco",
+  "Un maledetto lieto fine",
+  "Un'incredibile follia",
+  "Una ragione per restare",
+  "Una ragione per vivere",
+  "Vicino a te non ho paura",
+  "Vorrei che fossi ancora tu",
+  "Waylon University. La sfida",
+  "Wild Eyes. Sguardo selvaggio",
+  "Wild Love. Desiderio selvaggio",
+  "XOXO"
+],
+"💕 Romance",
+"✅ Letto",
+"romance-letti.html"
+);
+
+
+aggiungiLista(
+[
+  "Amori e segreti al Pumpkin Spice Café",
+  "Before Dawn",
+  "Caught Up. Incastro vincente",
+  "Cinder & Ella",
+  "Delay of Game",
+  "Due cuori in affitto",
+  "Facciamo finta che mi ami",
+  "Fireflies & Lullabies",
+  "Icebreaker",
+  "Innamorati pazzi",
+  "La bella e il campione",
+  "Le regole del gioco",
+  "Lessons in Faking",
+  "Mai seguire le regole",
+  "Prova a prendermi",
+  "The Bad Boy's Deal",
+  "The Fine Print. Un accordo per due",
+  "Wild Card. Cuore selvaggio",
+  "Wild Side. Spirito selvaggio"
+],
+"💕 Romance",
+"📖 Da leggere",
+"romance-da-leggere.html"
+);
+
+
+function aggiungiManga(nome,volumi){
+
+  for(
+    let i=1;
+    i<=volumi;
+    i++
+  ){
+
+    libri.push({
+
+      titolo:
+        nome +
+        " — Vol. " +
+        i,
+
+      categoria:
+        "🌸 Manga",
+
+      stato:
+        "✅ Letto",
+
+      pagina:
+        "manga-letti.html"
+
+    });
+
+  }
+
+}
+
+
+aggiungiManga(
+  "My Dress-Up Darling",
+  15
+);
+
+aggiungiManga(
+  "The Fragrant Flower Blooms with Dignity",
+  5
+);
+
+aggiungiManga(
+  "Inazuma & Romance",
+  6
+);
+
+aggiungiManga(
+  "Lei e il suo cane da guardia",
+  6
+);
+
+aggiungiManga(
+  "Ice Guy & Cool Girl",
+  11
+);
+
+aggiungiManga(
+  "I diari della speziale",
+  15
+);
+
+aggiungiManga(
+  "A Sign of Affection",
+  12
+);
+
+
+aggiungiLista(
+[
+  "Le 100 ragazze che ti amano tanto tanto tanto tanto tanto — Vol. 1",
+  "First Kiss",
+  "Gli agenti delle quattro stagioni — Vol. 1",
+  "Gli agenti delle quattro stagioni — Vol. 2"
+],
+"🌸 Manga",
+"✅ Letto",
+"manga-letti.html"
+);
+
+
+function normalizzaTitolo(testo){
+
+  return String(testo || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+
+}
+
+
+let libriSalvati=[];
+
+
+try{
+
+  libriSalvati=
+    JSON.parse(
+      localStorage.getItem(
+        "mieiLibriAggiunti"
+      )
+      ||
+      "[]"
+    );
+
+}
+
+catch{
+
+  libriSalvati=[];
+
+}
+
+
+const gestitiPerTitolo=
+  new Map();
+
+
+libriSalvati.forEach(
+  function(libro){
+
+    const nome=
+      normalizzaTitolo(
+        libro.titolo
+      );
+
+    if(nome){
+
+      gestitiPerTitolo.set(
+        nome,
+        libro
+      );
+
+    }
+
+  }
+);
+
+
+function datiCategoria(
+  categoria,
+  stato
+){
+
+  let pagina="";
+  let categoriaVisuale="";
+
+
+  if(categoria === "Dark Romance"){
+
+    categoriaVisuale=
+      "🖤 Dark Romance";
+
+    pagina=
+      stato === "Letto"
+      ?
+      "dark-romance-letti.html"
+      :
+      "dark-romance-da-leggere.html";
+
+  }
+
+
+  if(categoria === "Fantasy Romance"){
+
+    categoriaVisuale=
+      "✨ Fantasy Romance";
+
+    pagina=
+      stato === "Letto"
+      ?
+      "fantasy-romance-letti.html"
+      :
+      "fantasy-romance-da-leggere.html";
+
+  }
+
+
+  if(categoria === "Romance"){
+
+    categoriaVisuale=
+      "💕 Romance";
+
+    pagina=
+      stato === "Letto"
+      ?
+      "romance-letti.html"
+      :
+      "romance-da-leggere.html";
+
+  }
+
+
+  if(categoria === "Manga"){
+
+    categoriaVisuale=
+      "🌸 Manga";
+
+    pagina=
+      stato === "Letto"
+      ?
+      "manga-letti.html"
+      :
+      "manga-da-leggere.html";
+
+  }
+
+
+  return{
+
+    categoriaVisuale:
+      categoriaVisuale,
+
+    pagina:
+      pagina
+
+  };
+
+}
+
+
+const catalogoReale=
+  new Map();
+
+
+libri.forEach(
+  function(libroBase){
+
+    const nome=
+      normalizzaTitolo(
+        libroBase.titolo
+      );
+
+
+    const gestito=
+      gestitiPerTitolo.get(
+        nome
+      );
+
+
+    if(gestito){
+
+      const dati=
+        datiCategoria(
+          gestito.categoria,
+          gestito.stato
+        );
+
+
+      catalogoReale.set(
+        nome,
+        {
+
+          titolo:
+            gestito.titolo,
+
+          categoria:
+            dati.categoriaVisuale,
+
+          stato:
+            gestito.stato ===
+            "Letto"
+            ?
+            "✅ Letto"
+            :
+            "📖 Da leggere",
+
+          pagina:
+            dati.pagina
+
+        }
+      );
+
+    }
+
+    else{
+
+      catalogoReale.set(
+        nome,
+        libroBase
+      );
+
+    }
+
+  }
+);
+
+
+libriSalvati.forEach(
+  function(libro){
+
+    const nome=
+      normalizzaTitolo(
+        libro.titolo
+      );
+
+
+    if(
+      catalogoReale.has(
+        nome
+      )
+    ){
+
+      return;
+
+    }
+
+
+    const dati=
+      datiCategoria(
+        libro.categoria,
+        libro.stato
+      );
+
+
+    catalogoReale.set(
+      nome,
+      {
+
+        titolo:
+          libro.titolo,
+
+        categoria:
+          dati.categoriaVisuale,
+
+        stato:
+          libro.stato ===
+          "Letto"
+          ?
+          "✅ Letto"
+          :
+          "📖 Da leggere",
+
+        pagina:
+          dati.pagina
+
+      }
+    );
+
+  }
+);
+
+
+const libriFinali=
+  Array.from(
+    catalogoReale.values()
+  );
+
+
+function aggiornaContatori(){
+
+  const totale=
+    libriFinali.length;
+
+
+  const letti=
+    libriFinali.filter(
+      function(libro){
+
+        return (
+          libro.stato ===
+          "✅ Letto"
+        );
+
+      }
+    ).length;
+
+
+  const daLeggere=
+    libriFinali.filter(
+      function(libro){
+
+        return (
+          libro.stato ===
+          "📖 Da leggere"
+        );
+
+      }
+    ).length;
+
+
+  document.getElementById(
+    "totaleLibri"
+  ).textContent=
+    totale;
+
+
+  document.getElementById(
+    "totaleLetti"
+  ).textContent=
+    letti;
+
+
+  document.getElementById(
+    "totaleDaLeggere"
+  ).textContent=
+    daLeggere;
+
+
+  document.getElementById(
+    "numeroProgresso"
+  ).textContent=
+    letti;
+
+
+  document.getElementById(
+    "testoProgresso"
+  ).textContent=
+    "su " +
+    totale;
+
+
+  document.getElementById(
+    "totalePiccolo"
+  ).textContent=
+    totale;
+
+
+  let percentuale=0;
+
+
+  if(totale>0){
+
+    percentuale=
+      Math.round(
+        letti /
+        totale *
+        100
+      );
+
+  }
+
+
+  document.getElementById(
+    "barraProgresso"
+  ).style.width=
+    percentuale +
+    "%";
+
+
+  document.getElementById(
+    "percentualeProgresso"
+  ).textContent=
+    percentuale +
+    "%";
+
+}
+
+
+aggiornaContatori();
+
+
+function leggiLetturaAttuale(){
+
+  const dati=
+    localStorage.getItem(
+      "letturaAttuale"
+    );
+
+
+  if(!dati){
+
+    return null;
+
+  }
+
+
+  try{
+
+    return JSON.parse(
+      dati
+    );
+
+  }
+
+  catch{
+
+    return null;
+
+  }
+
+}
+
+
+function chiaveCopertina(titolo){
+
+  return (
+    "cover_" +
+    normalizzaTitolo(
+      titolo
+    )
+  );
+
+}
+
+
+function escapeHtml(testo){
+
+  return String(testo || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function mostraLetturaAttuale(){
+
+  const box=
+    document.getElementById(
+      "letturaAttualeBox"
+    );
+
+
+  const libro=
+    leggiLetturaAttuale();
+
+
+  if(
+    !libro ||
+    !libro.titolo
+  ){
+
+    box.innerHTML=
+      `
+      <div class="current-empty">
+        <span class="current-empty-icon">
+          📖
+        </span>
+        Nessuna lettura in corso.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  const copertina=
+    localStorage.getItem(
+      chiaveCopertina(
+        libro.titolo
+      )
+    )
+    ||
+    libro.copertina
+    ||
+    "";
+
+
+  let immagine=
+    `<div>📖</div>`;
+
+
+  if(copertina){
+
+    immagine=
+      `
+      <img
+        src="${copertina}"
+        alt=""
+        onerror="
+          this.parentElement.innerHTML='📖';
+        "
+      >
+      `;
+
+  }
+
+
+  box.innerHTML=
+    `
+    <div class="current-book-row">
+
+      <div class="current-cover">
+        ${immagine}
+      </div>
+
+      <div class="current-info">
+
+        <div class="current-label">
+          IN LETTURA
+        </div>
+
+        <div class="current-title">
+          ${escapeHtml(libro.titolo)}
+        </div>
+
+        <div class="current-category">
+          ${escapeHtml(libro.categoria || "")}
+        </div>
+
+        <button
+          class="finish-reading"
+          onclick="terminaLettura()"
+        >
+          ✓ Termina lettura
+        </button>
+
+      </div>
+
+    </div>
+    `;
+
+}
+
+
+function terminaLettura(){
+
+  const libro=
+    leggiLetturaAttuale();
+
+
+  if(
+    !libro ||
+    !libro.titolo
+  ){
+
+    return;
+
+  }
+
+
+  const conferma=
+    confirm(
+      'Hai terminato "' +
+      libro.titolo +
+      '"?'
+    );
+
+
+  if(!conferma){
+
+    return;
+
+  }
+
+
+  let salvati=[];
+
+
+  try{
+
+    salvati=
+      JSON.parse(
+        localStorage.getItem(
+          "mieiLibriAggiunti"
+        )
+        ||
+        "[]"
+      );
+
+  }
+
+  catch{
+
+    salvati=[];
+
+  }
+
+
+  const nome=
+    normalizzaTitolo(
+      libro.titolo
+    );
+
+
+  const indice=
+    salvati.findIndex(
+      function(item){
+
+        return (
+          normalizzaTitolo(
+            item.titolo
+          )
+          ===
+          nome
+        );
+
+      }
+    );
+
+
+  const copertina=
+    localStorage.getItem(
+      chiaveCopertina(
+        libro.titolo
+      )
+    )
+    ||
+    libro.copertina
+    ||
+    "";
+
+
+  if(indice !== -1){
+
+    salvati[indice].stato=
+      "Letto";
+
+
+    if(libro.categoria){
+
+      salvati[indice].categoria=
+        libro.categoria;
+
+    }
+
+
+    if(copertina){
+
+      salvati[indice].copertina=
+        copertina;
+
+    }
+
+  }
+
+  else{
+
+    salvati.push({
+
+      titolo:
+        libro.titolo,
+
+      categoria:
+        libro.categoria,
+
+      stato:
+        "Letto",
+
+      copertina:
+        copertina
+
+    });
+
+  }
+
+
+  localStorage.setItem(
+    "mieiLibriAggiunti",
+    JSON.stringify(
+      salvati
+    )
+  );
+
+
+  if(copertina){
+
+    localStorage.setItem(
+      chiaveCopertina(
+        libro.titolo
+      ),
+      copertina
+    );
+
+  }
+
+
+  localStorage.removeItem(
+    "letturaAttuale"
+  );
+
+
+  alert(
+    "📚 Libro terminato! Ora è nei libri letti."
+  );
+
+
+  location.reload();
+
+}
+
+
+mostraLetturaAttuale();
+
+
+const input=
+  document.getElementById(
+    "cercaLibro"
+  );
+
+
+const bottone=
+  document.getElementById(
+    "bottoneCerca"
+  );
+
+
+const risultato=
+  document.getElementById(
+    "risultatoRicerca"
+  );
+
+
+function normalizza(testo){
+
+  return String(testo || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    );
+
+}
+
+
+function cercaLibro(){
+
+  const testo=
+    normalizza(
+      input.value.trim()
+    );
+
+
+  risultato.innerHTML=
+    "";
+
+
+  if(testo === ""){
+
+    risultato.innerHTML=
+      '<div class="risultato">♡ Scrivi il titolo di un libro.</div>';
+
+    return;
+
+  }
+
+
+  const trovati=
+    libriFinali.filter(
+      function(libro){
+
+        return normalizza(
+          libro.titolo
+        ).includes(
+          testo
+        );
+
+      }
+    );
+
+
+  if(trovati.length === 0){
+
+    risultato.innerHTML=
+      '<div class="risultato">📚 Questo libro non è presente nella tua libreria.</div>';
+
+    return;
+
+  }
+
+
+  trovati.forEach(
+    function(libro){
+
+      const scheda=
+        document.createElement(
+          "div"
+        );
+
+
+      scheda.className=
+        "risultato";
+
+
+      const titolo=
+        document.createElement(
+          "strong"
+        );
+
+
+      titolo.textContent=
+        "📖 " +
+        libro.titolo;
+
+
+      const info=
+        document.createElement(
+          "p"
+        );
+
+
+      info.textContent=
+        libro.categoria +
+        " · " +
+        libro.stato;
+
+
+      const link=
+        document.createElement(
+          "a"
+        );
+
+
+      link.href=
+        libro.pagina;
+
+
+      link.textContent=
+        "Apri ♡";
+
+
+      scheda.appendChild(
+        titolo
+      );
+
+
+      scheda.appendChild(
+        info
+      );
+
+
+      scheda.appendChild(
+        link
+      );
+
+
+      risultato.appendChild(
+        scheda
+      );
+
+    }
+  );
+
+}
+
+
+bottone.addEventListener(
+  "click",
+  cercaLibro
+);
+
+
+input.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Enter"){
+
+      cercaLibro();
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>

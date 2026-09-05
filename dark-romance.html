@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dark Romance - Martina's Virtual Library</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  padding:12px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  color:#4A2F2D;
+
+  background:
+    linear-gradient(
+      rgba(38,27,26,.24),
+      rgba(38,27,26,.32)
+    ),
+    url("copertine/sfondo-home.jpg")
+    center/cover fixed no-repeat;
+}
+
+
+/* =========================
+   STRUTTURA
+========================= */
+
+.library-app{
+  width:min(
+    1180px,
+    calc(100vw - 24px)
+  );
+
+  min-height:
+    calc(100vh - 24px);
+
+  margin:0 auto;
+
+  display:grid;
+
+  grid-template-columns:
+    175px
+    minmax(0,1fr)
+    190px;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.24);
+
+  border-radius:28px;
+
+  background:
+    rgba(72,34,41,.08);
+
+  box-shadow:
+    0 22px 55px
+    rgba(34,20,21,.34);
+
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  padding:17px 12px;
+
+  border-right:
+    1px solid
+    rgba(255,255,255,.22);
+
+  background:
+    rgba(74,43,46,.46);
+
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.sidebar-title{
+  margin-bottom:13px;
+
+  text-align:center;
+
+  color:#F1E2DF;
+
+  font-size:10px;
+
+  font-weight:bold;
+
+  letter-spacing:1.4px;
+
+  text-shadow:
+    0 2px 4px
+    rgba(0,0,0,.28);
+}
+
+.sidebar-title::after{
+  content:"── 🥀 ──";
+
+  display:block;
+
+  margin-top:8px;
+
+  color:#D29AA2;
+
+  font-size:8px;
+}
+
+.nav a{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:5px;
+
+  padding:8px 9px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:12px;
+
+  color:#E8D6D4;
+
+  font-size:10px;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+.nav a:hover{
+  transform:
+    translateX(3px);
+
+  background:
+    rgba(255,255,255,.10);
+
+  border-color:
+    rgba(255,255,255,.18);
+
+  box-shadow:
+    0 5px 14px
+    rgba(39,20,23,.15);
+}
+
+.nav a.active{
+  color:#FFF8F7;
+
+  background:
+    rgba(122,47,61,.88);
+
+  border-color:
+    rgba(255,255,255,.22);
+
+  box-shadow:
+    0 6px 15px
+    rgba(42,18,23,.26);
+}
+
+.nav-icon{
+  width:18px;
+
+  text-align:center;
+}
+
+.sidebar-divider{
+  height:1px;
+
+  margin:11px 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(205,135,145,.72),
+      transparent
+    );
+}
+
+.sidebar-decoration{
+  margin-top:17px;
+
+  text-align:center;
+
+  color:#D7A0A8;
+
+  font-size:14px;
+
+  letter-spacing:5px;
+}
+
+
+/* =========================
+   CENTRO
+========================= */
+
+.main{
+  position:relative;
+
+  min-width:0;
+
+  padding:15px;
+
+  overflow:hidden;
+
+  background:
+    rgba(247,238,235,.20);
+
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+}
+
+.main::before{
+  content:"🥀";
+
+  position:absolute;
+
+  top:15px;
+  left:16px;
+
+  font-size:15px;
+
+  opacity:.72;
+}
+
+.main::after{
+  content:"✦";
+
+  position:absolute;
+
+  top:17px;
+  right:18px;
+
+  color:#8D4A58;
+
+  font-size:14px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  position:relative;
+
+  margin-bottom:14px;
+
+  padding:4px 10px 7px;
+
+  text-align:center;
+}
+
+.script-title{
+  margin:0;
+
+  color:#5A2D36;
+
+  font-size:
+    clamp(
+      34px,
+      4vw,
+      47px
+    );
+
+  line-height:1;
+
+  font-style:italic;
+
+  font-weight:normal;
+
+  letter-spacing:-1px;
+
+  text-shadow:
+    0 2px 5px
+    rgba(255,255,255,.68);
+}
+
+.virtual-title{
+  margin-top:4px;
+
+  color:#4A2F2D;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  letter-spacing:5px;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.62);
+}
+
+.header-decoration{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  width:min(
+    300px,
+    75%
+  );
+
+  margin:
+    7px auto 4px;
+
+  color:#7F3F4D;
+}
+
+.header-decoration::before,
+.header-decoration::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(120,65,75,.70)
+    );
+}
+
+.header-decoration::after{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(120,65,75,.70),
+      transparent
+    );
+}
+
+.subtitle{
+  margin:0;
+
+  color:#5E403B;
+
+  font-size:9px;
+
+  font-weight:600;
+
+  font-style:italic;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.72);
+}
+
+
+/* =========================
+   TOTALE
+========================= */
+
+.total-card{
+  position:relative;
+
+  width:min(
+    430px,
+    100%
+  );
+
+  margin:
+    0 auto 12px;
+
+  overflow:hidden;
+
+  padding:10px 8px;
+
+  border:
+    1px solid
+    rgba(113,61,70,.34);
+
+  border-radius:17px;
+
+  background:#D7C2BE;
+
+  text-align:center;
+
+  box-shadow:
+    0 9px 21px
+    rgba(57,35,33,.16);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
+}
+
+.total-card::before{
+  content:"";
+
+  position:absolute;
+
+  width:60px;
+  height:120px;
+
+  top:-35px;
+  left:-80px;
+
+  transform:rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,245,225,.38),
+      transparent
+    );
+
+  transition:left .65s ease;
+}
+
+.total-card:hover{
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 13px 27px
+    rgba(57,35,33,.22);
+
+  filter:
+    brightness(1.025);
+}
+
+.total-card:hover::before{
+  left:120%;
+}
+
+.total-small{
+  position:relative;
+
+  z-index:2;
+
+  color:#69464A;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:1px;
+}
+
+.total-number{
+  position:relative;
+
+  z-index:2;
+
+  margin:
+    1px 0;
+
+  color:#542D35;
+
+  font-size:29px;
+
+  font-weight:bold;
+}
+
+.total-text{
+  position:relative;
+
+  z-index:2;
+
+  color:#674A49;
+
+  font-size:8px;
+}
+
+
+/* =========================
+   SCHEDE
+========================= */
+
+.cards{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:11px;
+
+  max-width:620px;
+
+  margin:0 auto;
+}
+
+.card{
+  position:relative;
+
+  min-height:140px;
+
+  overflow:hidden;
+
+  padding:
+    17px 10px 43px;
+
+  border:
+    1px solid
+    rgba(105,57,66,.28);
+
+  border-radius:19px;
+
+  color:#4C3030;
+
+  text-align:center;
+
+  text-decoration:none;
+
+  box-shadow:
+    0 8px 20px
+    rgba(56,35,32,.16);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease,
+    border-color .25s ease;
+}
+
+.card::before{
+  content:"";
+
+  position:absolute;
+
+  width:75px;
+  height:155px;
+
+  top:-35px;
+  left:-115px;
+
+  transform:
+    rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,248,225,.36),
+      transparent
+    );
+
+  transition:
+    left .65s ease;
+}
+
+.card::after{
+  content:"🥀";
+
+  position:absolute;
+
+  top:7px;
+  right:9px;
+
+  font-size:11px;
+
+  opacity:.52;
+}
+
+.card:hover{
+  transform:
+    translateY(-5px);
+
+  border-color:
+    rgba(102,49,60,.42);
+
+  box-shadow:
+    0 14px 28px
+    rgba(56,35,32,.23);
+
+  filter:
+    brightness(1.035);
+}
+
+.card:hover::before{
+  left:135%;
+}
+
+.card-icon{
+  position:relative;
+
+  z-index:2;
+
+  margin-bottom:9px;
+
+  color:#6D3944;
+
+  font-size:28px;
+}
+
+.card h2{
+  position:relative;
+
+  z-index:2;
+
+  margin:0;
+
+  color:#4E2F34;
+
+  font-size:13px;
+
+  letter-spacing:1.4px;
+}
+
+.card p{
+  position:relative;
+
+  z-index:2;
+
+  margin:
+    6px 0 0;
+
+  color:#654A48;
+
+  font-size:8px;
+}
+
+.card-bottom{
+  position:absolute;
+
+  z-index:3;
+
+  left:9px;
+  right:9px;
+  bottom:9px;
+
+  padding:5px;
+
+  border:
+    1px solid
+    rgba(98,57,61,.20);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,248,243,.30);
+
+  color:#5E4140;
+
+  font-size:8px;
+
+  font-weight:bold;
+}
+
+
+/* =========================
+   COLORI SCHEDE
+========================= */
+
+.card-read{
+  background:#D9C7C0;
+}
+
+.card-tbr{
+  background:#CFAEB2;
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+.home-button{
+  display:block;
+
+  width:fit-content;
+
+  margin:
+    11px auto 4px;
+
+  padding:
+    7px 14px;
+
+  border:
+    1px solid
+    rgba(94,54,60,.25);
+
+  border-radius:13px;
+
+  background:
+    rgba(247,239,232,.62);
+
+  color:#4E3533;
+
+  text-decoration:none;
+
+  font-size:9px;
+
+  font-weight:bold;
+
+  box-shadow:
+    0 6px 16px
+    rgba(55,39,32,.10);
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.home-button:hover{
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(255,248,241,.78);
+
+  box-shadow:
+    0 10px 21px
+    rgba(55,39,32,.16);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  margin-top:9px;
+
+  text-align:center;
+
+  color:#5B3B3C;
+
+  font-size:12px;
+
+  font-style:italic;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.72);
+}
+
+
+/* =========================
+   DESTRA
+========================= */
+
+.rightbar{
+  padding:13px 10px;
+
+  border-left:
+    1px solid
+    rgba(255,255,255,.22);
+
+  background:
+    rgba(74,43,46,.40);
+
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.widget{
+  position:relative;
+
+  overflow:hidden;
+
+  margin-bottom:9px;
+
+  padding:
+    11px 9px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.18);
+
+  border-radius:16px;
+
+  background:
+    rgba(255,245,241,.11);
+
+  text-align:center;
+
+  box-shadow:
+    0 8px 20px
+    rgba(35,21,24,.18);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.widget:hover{
+  transform:
+    translateY(-3px);
+
+  background:
+    rgba(255,245,241,.16);
+
+  box-shadow:
+    0 12px 26px
+    rgba(35,21,24,.25);
+}
+
+.widget h3{
+  margin:
+    0 0 6px;
+
+  color:#F0DEDC;
+
+  font-size:8px;
+
+  letter-spacing:.9px;
+}
+
+.big-number{
+  margin:
+    3px 0;
+
+  color:#F2D6D7;
+
+  font-size:27px;
+
+  font-weight:bold;
+}
+
+.small-text{
+  color:#D7C1BF;
+
+  font-size:8px;
+
+  font-weight:600;
+}
+
+.progress{
+  height:8px;
+
+  margin-top:7px;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.14);
+
+  border-radius:20px;
+
+  background:
+    rgba(37,20,24,.48);
+}
+
+.progress-inner{
+  width:0%;
+
+  height:100%;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #8D4555,
+      #B56673,
+      #D38B94
+    );
+
+  transition:
+    width .35s ease;
+}
+
+.progress-percent{
+  margin-top:4px;
+
+  color:#D8C0BF;
+
+  font-size:8px;
+}
+
+.quote-symbol{
+  height:15px;
+
+  color:#D18B95;
+
+  font-size:19px;
+}
+
+.quote{
+  margin:
+    4px 0 6px;
+
+  color:#E0CFCC;
+
+  font-size:9px;
+
+  font-style:italic;
+
+  line-height:1.5;
+}
+
+.flower{
+  font-size:18px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+  .library-app{
+    grid-template-columns:
+      150px
+      1fr;
+  }
+
+  .rightbar{
+    grid-column:
+      1/-1;
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+
+    gap:8px;
+
+    border-left:none;
+
+    border-top:
+      1px solid
+      rgba(255,255,255,.20);
+  }
+
+  .widget{
+    margin:0;
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  body{
+    padding:6px;
+  }
+
+  .library-app{
+    width:100%;
+
+    display:block;
+  }
+
+  .sidebar{
+    border-right:none;
+
+    border-bottom:
+      1px solid
+      rgba(255,255,255,.20);
+  }
+
+  .nav{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:4px;
+  }
+
+  .nav a{
+    margin:0;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .rightbar{
+    display:block;
+  }
+
+  .widget{
+    margin-bottom:8px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="library-app">
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+☰ LA MIA LIBRERIA
+</div>
+
+<nav class="nav">
+
+<a href="index.html">
+<span class="nav-icon">⌂</span>
+Home
+</a>
+
+<a href="letti.html">
+<span class="nav-icon">📚</span>
+I miei libri
+</a>
+
+<a href="da-leggere.html">
+<span class="nav-icon">♡</span>
+Da leggere
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a
+href="dark-romance.html"
+class="active"
+>
+<span class="nav-icon">🥀</span>
+Dark Romance
+</a>
+
+<a href="fantasy-romance.html">
+<span class="nav-icon">✦</span>
+Fantasy Romance
+</a>
+
+<a href="romance.html">
+<span class="nav-icon">🌷</span>
+Romance
+</a>
+
+<a href="manga.html">
+<span class="nav-icon">🌸</span>
+Manga
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="aggiungi-libro.html">
+<span class="nav-icon">✎</span>
+Gestisci libri
+</a>
+
+</nav>
+
+<div class="sidebar-decoration">
+🥀 ♥ 🥀
+</div>
+
+</aside>
+
+
+<!-- =========================
+     CENTRO
+========================= -->
+
+<main class="main">
+
+
+<header class="header">
+
+<h1 class="script-title">
+Martina's
+</h1>
+
+<div class="virtual-title">
+DARK ROMANCE
+</div>
+
+<div class="header-decoration">
+🖤
+</div>
+
+<p class="subtitle">
+Le storie più intense, oscure e irresistibili.
+</p>
+
+</header>
+
+
+<div class="total-card">
+
+<div class="total-small">
+🥀 LA MIA COLLEZIONE DARK ROMANCE
+</div>
+
+<div
+class="total-number"
+id="totaleDark"
+>
+0
+</div>
+
+<div class="total-text">
+libri
+</div>
+
+</div>
+
+
+<section class="cards">
+
+
+<a
+class="card card-read"
+href="dark-romance-letti.html"
+>
+
+<div class="card-icon">
+✓
+</div>
+
+<h2>
+LETTI
+</h2>
+
+<p>
+Dark Romance già letti
+</p>
+
+<div
+class="card-bottom"
+id="testoLetti"
+>
+0 libri · Apri
+</div>
+
+</a>
+
+
+<a
+class="card card-tbr"
+href="dark-romance-da-leggere.html"
+>
+
+<div class="card-icon">
+♡
+</div>
+
+<h2>
+DA LEGGERE
+</h2>
+
+<p>
+Le prossime storie dark
+</p>
+
+<div
+class="card-bottom"
+id="testoDaLeggere"
+>
+0 libri · Apri
+</div>
+
+</a>
+
+
+</section>
+
+
+<a
+href="index.html"
+class="home-button"
+>
+⌂ Torna alla Home
+</a>
+
+
+<div class="footer">
+🥀 “Anche le storie più oscure possono lasciare luce.” 🖤
+</div>
+
+
+</main>
+
+
+<!-- =========================
+     DESTRA
+========================= -->
+
+<aside class="rightbar">
+
+
+<div class="widget">
+
+<h3>
+DARK ROMANCE 🖤
+</h3>
+
+<div class="small-text">
+Totale libri
+</div>
+
+<div
+class="big-number"
+id="numeroDark"
+>
+0
+</div>
+
+<div
+class="small-text"
+id="dettaglioDark"
+>
+0 letti · 0 da leggere
+</div>
+
+
+<div class="progress">
+
+<div
+class="progress-inner"
+id="barraDark"
+></div>
+
+</div>
+
+
+<div
+class="progress-percent"
+id="percentualeDark"
+>
+0%
+</div>
+
+
+</div>
+
+
+<div class="widget">
+
+<div class="quote-symbol">
+“
+</div>
+
+<p class="quote">
+Le storie più intense<br>
+sono quelle che restano.
+</p>
+
+<div class="flower">
+🥀 🖤
+</div>
+
+</div>
+
+
+</aside>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   RECUPERA LIBRI SALVATI
+========================= */
+
+let libriSalvati=[];
+
+
+try{
+
+  libriSalvati=
+    JSON.parse(
+      localStorage.getItem(
+        "mieiLibriAggiunti"
+      )
+      ||
+      "[]"
+    );
+
+}
+
+catch{
+
+  libriSalvati=[];
+
+}
+
+
+/* =========================
+   NORMALIZZA
+========================= */
+
+function normalizza(titolo){
+
+  return String(titolo || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+
+}
+
+
+/* =========================
+   DARK ROMANCE BASE
+   DA LEGGERE
+========================= */
+
+const libriBaseDaLeggere=[
+
+  "Butcher & Blackbird",
+  "Deadly Sins: Sloth",
+  "God of Pain",
+  "Le bugie che rubiamo",
+  "Leather & Lark",
+  "Scythe & Sparrow",
+  "Taste Me. Fuoco e oscurità"
+
+];
+
+
+/* =========================
+   VERSIONE GESTITA
+========================= */
+
+const gestitiPerTitolo=
+  new Map();
+
+
+libriSalvati.forEach(
+  function(libro){
+
+    const nome=
+      normalizza(
+        libro.titolo
+      );
+
+
+    if(nome){
+
+      gestitiPerTitolo.set(
+        nome,
+        libro
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   CONTATORI
+========================= */
+
+const lettiSet=
+  new Set();
+
+
+const daLeggereSet=
+  new Set();
+
+
+/* =========================
+   LIBRI BASE
+========================= */
+
+libriBaseDaLeggere.forEach(
+  function(titolo){
+
+    const nome=
+      normalizza(
+        titolo
+      );
+
+
+    const gestito=
+      gestitiPerTitolo.get(
+        nome
+      );
+
+
+    if(!gestito){
+
+      daLeggereSet.add(
+        nome
+      );
+
+      return;
+
+    }
+
+
+    if(
+      gestito.categoria
+      !==
+      "Dark Romance"
+    ){
+
+      return;
+
+    }
+
+
+    if(
+      gestito.stato
+      ===
+      "Letto"
+    ){
+
+      lettiSet.add(
+        nome
+      );
+
+    }
+
+
+    if(
+      gestito.stato
+      ===
+      "Da leggere"
+    ){
+
+      daLeggereSet.add(
+        nome
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   LIBRI SALVATI
+========================= */
+
+gestitiPerTitolo.forEach(
+  function(
+    libro,
+    nome
+  ){
+
+    if(
+      libro.categoria
+      !==
+      "Dark Romance"
+    ){
+
+      return;
+
+    }
+
+
+    if(
+      libro.stato
+      ===
+      "Letto"
+    ){
+
+      lettiSet.add(
+        nome
+      );
+
+    }
+
+
+    if(
+      libro.stato
+      ===
+      "Da leggere"
+    ){
+
+      daLeggereSet.add(
+        nome
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   TOTALI
+========================= */
+
+const darkLetti=
+  lettiSet.size;
+
+
+const darkDaLeggere=
+  daLeggereSet.size;
+
+
+const totaleDark=
+  darkLetti
+  +
+  darkDaLeggere;
+
+
+/* =========================
+   AGGIORNA PAGINA
+========================= */
+
+document.getElementById(
+  "totaleDark"
+).textContent=
+  totaleDark;
+
+
+document.getElementById(
+  "numeroDark"
+).textContent=
+  totaleDark;
+
+
+document.getElementById(
+  "dettaglioDark"
+).textContent=
+  darkLetti
+  +
+  " letti · "
+  +
+  darkDaLeggere
+  +
+  " da leggere";
+
+
+document.getElementById(
+  "testoLetti"
+).textContent=
+  darkLetti
+  +
+  " libri · Apri";
+
+
+document.getElementById(
+  "testoDaLeggere"
+).textContent=
+  darkDaLeggere
+  +
+  " libri · Apri";
+
+
+/* =========================
+   PROGRESSO
+========================= */
+
+let percentuale=0;
+
+
+if(
+  totaleDark > 0
+){
+
+  percentuale=
+    Math.round(
+      (
+        darkLetti
+        /
+        totaleDark
+      )
+      *
+      100
+    );
+
+}
+
+
+document.getElementById(
+  "barraDark"
+).style.width=
+  percentuale
+  +
+  "%";
+
+
+document.getElementById(
+  "percentualeDark"
+).textContent=
+  percentuale
+  +
+  "%";
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manga letti - Martina's Virtual Library</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  padding:12px;
+  font-family:Georgia,"Times New Roman",serif;
+  color:#4E3524;
+
+  background:
+    linear-gradient(
+      rgba(48,40,31,.12),
+      rgba(48,40,31,.18)
+    ),
+    url("copertine/sfondo-home.jpg")
+    center/cover fixed no-repeat;
+}
+
+
+/* STRUTTURA */
+
+.library-app{
+  width:min(1180px,calc(100vw - 24px));
+  min-height:calc(100vh - 24px);
+
+  margin:0 auto;
+
+  display:grid;
+  grid-template-columns:175px minmax(0,1fr) 190px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.26);
+  border-radius:28px;
+
+  background:rgba(255,255,255,.08);
+
+  box-shadow:0 22px 55px rgba(55,43,32,.28);
+
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+
+/* SIDEBAR */
+
+.sidebar{
+  padding:17px 12px;
+
+  border-right:1px solid rgba(255,255,255,.25);
+
+  background:rgba(247,244,239,.34);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.sidebar-title{
+  margin-bottom:13px;
+
+  text-align:center;
+
+  color:#4E3524;
+
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:1.4px;
+}
+
+.sidebar-title::after{
+  content:"── ♡ ──";
+
+  display:block;
+
+  margin-top:8px;
+
+  color:#A98970;
+
+  font-size:8px;
+}
+
+.nav a{
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:5px;
+
+  padding:8px 9px;
+
+  border:1px solid transparent;
+  border-radius:12px;
+
+  color:#5A3E2B;
+
+  font-size:10px;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+.nav a:hover{
+  transform:translateX(3px);
+
+  background:rgba(255,255,255,.30);
+
+  border-color:rgba(255,255,255,.38);
+}
+
+.nav a.active{
+  color:#4E3524;
+
+  background:#E8E1D8;
+
+  border-color:rgba(255,255,255,.45);
+
+  box-shadow:0 6px 15px rgba(84,64,46,.16);
+}
+
+.nav-icon{
+  width:18px;
+  text-align:center;
+}
+
+.sidebar-divider{
+  height:1px;
+
+  margin:11px 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(169,137,112,.65),
+      transparent
+    );
+}
+
+.sidebar-decoration{
+  margin-top:17px;
+
+  text-align:center;
+
+  color:#A98970;
+
+  font-size:14px;
+
+  letter-spacing:5px;
+}
+
+
+/* CENTRO */
+
+.main{
+  position:relative;
+
+  min-width:0;
+
+  padding:15px;
+
+  background:rgba(247,244,239,.16);
+
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+
+.main::before{
+  content:"🌸";
+
+  position:absolute;
+
+  top:15px;
+  left:16px;
+
+  font-size:14px;
+
+  opacity:.80;
+}
+
+.main::after{
+  content:"✧";
+
+  position:absolute;
+
+  top:15px;
+  right:17px;
+
+  color:#A98970;
+
+  font-size:14px;
+
+  opacity:.80;
+}
+
+
+/* HEADER */
+
+.header{
+  margin-bottom:11px;
+
+  text-align:center;
+}
+
+.script-title{
+  margin:0;
+
+  color:#7A5A43;
+
+  font-size:40px;
+
+  line-height:1;
+
+  font-style:italic;
+  font-weight:normal;
+
+  text-shadow:0 2px 5px rgba(255,255,255,.70);
+}
+
+.virtual-title{
+  margin-top:4px;
+
+  color:#4E3524;
+
+  font-size:13px;
+
+  font-weight:bold;
+
+  letter-spacing:4px;
+
+  text-shadow:0 1px 2px rgba(255,255,255,.65);
+}
+
+.header-decoration{
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+
+  width:min(270px,75%);
+
+  margin:7px auto 4px;
+
+  color:#A98970;
+}
+
+.header-decoration::before,
+.header-decoration::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:rgba(169,137,112,.72);
+}
+
+.subtitle{
+  margin:0;
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-weight:600;
+  font-style:italic;
+
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
+}
+
+
+/* BARRA SUPERIORE */
+
+.top-row{
+  width:min(720px,100%);
+
+  margin:0 auto 10px;
+
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+}
+
+.search-box{
+  flex:1;
+
+  display:flex;
+  align-items:center;
+
+  padding:7px 10px;
+
+  border:1px solid rgba(255,255,255,.38);
+  border-radius:15px;
+
+  background:rgba(247,244,239,.46);
+
+  box-shadow:0 7px 18px rgba(84,64,46,.10);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.search-box span{
+  margin-right:6px;
+
+  color:#7A5A43;
+
+  font-size:11px;
+}
+
+.search-box input{
+  width:100%;
+
+  border:none;
+  outline:none;
+
+  background:transparent;
+
+  color:#5A3E2B;
+
+  font-family:Georgia,"Times New Roman",serif;
+
+  font-size:9px;
+  font-weight:600;
+}
+
+.search-box input::placeholder{
+  color:#765F4E;
+  opacity:.80;
+}
+
+
+/* CONTATORE */
+
+.counter-box{
+  position:relative;
+
+  min-width:82px;
+
+  overflow:hidden;
+
+  padding:7px 10px;
+
+  border:1px solid rgba(169,137,112,.28);
+  border-radius:14px;
+
+  background:#E8E1D8;
+
+  color:#6B4D38;
+
+  text-align:center;
+
+  font-size:8px;
+
+  box-shadow:0 7px 17px rgba(84,64,46,.12);
+}
+
+.counter-box strong{
+  display:block;
+
+  color:#6B4D38;
+
+  font-size:18px;
+}
+
+
+/* GRIGLIA */
+
+.book-grid{
+  display:grid;
+
+  grid-template-columns:repeat(5,minmax(0,1fr));
+
+  gap:10px;
+}
+
+
+/* CARD LIBRO */
+
+.book-card{
+  position:relative;
+
+  overflow:hidden;
+
+  padding:6px;
+
+  border:1px solid rgba(255,255,255,.40);
+  border-radius:14px;
+
+  background:rgba(232,225,216,.62);
+
+  box-shadow:0 7px 18px rgba(84,64,46,.12);
+
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.book-card::before{
+  content:"";
+
+  position:absolute;
+
+  z-index:5;
+
+  width:55px;
+  height:120px;
+
+  top:-35px;
+  left:-85px;
+
+  transform:rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,250,236,.45),
+      transparent
+    );
+
+  pointer-events:none;
+
+  transition:left .60s ease;
+}
+
+.book-card::after{
+  content:"✧";
+
+  position:absolute;
+
+  z-index:6;
+
+  top:7px;
+  right:8px;
+
+  color:#A98970;
+
+  font-size:8px;
+
+  opacity:.80;
+}
+
+.book-card:hover{
+  transform:translateY(-5px);
+
+  background:rgba(239,232,223,.82);
+
+  border-color:rgba(255,255,255,.62);
+
+  box-shadow:
+    0 13px 27px rgba(84,64,46,.18),
+    inset 0 0 20px rgba(255,248,232,.18);
+}
+
+.book-card:hover::before{
+  left:130%;
+}
+
+
+/* COPERTINA */
+
+.book-cover{
+  width:100%;
+
+  aspect-ratio:2/3;
+
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:1px solid rgba(169,137,112,.18);
+  border-radius:9px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #E8E1D8,
+      #F2ECE5
+    );
+
+  color:#A98970;
+
+  font-size:22px;
+
+  box-shadow:0 4px 10px rgba(64,45,36,.12);
+}
+
+.book-cover img{
+  width:100%;
+  height:100%;
+
+  display:block;
+
+  object-fit:cover;
+
+  transition:transform .25s ease;
+}
+
+.book-card:hover .book-cover img{
+  transform:scale(1.025);
+}
+
+
+/* INFO */
+
+.book-info{
+  min-height:43px;
+
+  padding:6px 2px 2px;
+
+  text-align:center;
+}
+
+.book-title{
+  color:#5A3E2B;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  line-height:1.25;
+}
+
+.book-status{
+  display:inline-block;
+
+  margin-top:4px;
+
+  padding:2px 6px;
+
+  border-radius:20px;
+
+  background:rgba(169,137,112,.16);
+
+  color:#7A5A43;
+
+  font-size:7px;
+
+  font-weight:bold;
+}
+
+
+/* DESTRA */
+
+.rightbar{
+  padding:13px 10px;
+
+  border-left:1px solid rgba(255,255,255,.24);
+
+  background:rgba(232,225,216,.36);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.widget{
+  position:relative;
+
+  overflow:hidden;
+
+  margin-bottom:9px;
+
+  padding:11px 9px;
+
+  border:1px solid rgba(255,255,255,.30);
+  border-radius:16px;
+
+  background:rgba(247,244,239,.34);
+
+  text-align:center;
+
+  box-shadow:0 8px 20px rgba(84,64,46,.13);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.widget:hover{
+  transform:translateY(-3px);
+
+  background:rgba(247,244,239,.46);
+
+  box-shadow:0 12px 26px rgba(84,64,46,.18);
+}
+
+.widget h3{
+  margin:0 0 6px;
+
+  color:#5A3E2B;
+
+  font-size:8px;
+
+  letter-spacing:.9px;
+}
+
+.big-number{
+  margin:3px 0;
+
+  color:#6B4D38;
+
+  font-size:28px;
+
+  font-weight:bold;
+}
+
+.small-text{
+  color:#6B513F;
+
+  font-size:8px;
+
+  font-weight:600;
+}
+
+.quote-symbol{
+  height:15px;
+
+  color:#7A5A43;
+
+  font-size:19px;
+}
+
+.quote{
+  margin:4px 0 6px;
+
+  color:#5A493D;
+
+  font-size:9px;
+
+  font-style:italic;
+
+  line-height:1.5;
+}
+
+.flower{
+  font-size:18px;
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+  .book-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:900px){
+
+  .library-app{
+    grid-template-columns:150px 1fr;
+  }
+
+  .rightbar{
+    grid-column:1/-1;
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:8px;
+
+    border-left:none;
+
+    border-top:1px solid rgba(255,255,255,.24);
+  }
+
+  .widget{
+    margin:0;
+  }
+
+}
+
+@media(max-width:650px){
+
+  body{
+    padding:6px;
+  }
+
+  .library-app{
+    display:block;
+
+    width:100%;
+  }
+
+  .sidebar{
+    border-right:none;
+
+    border-bottom:1px solid rgba(255,255,255,.24);
+  }
+
+  .nav{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:4px;
+  }
+
+  .nav a{
+    margin:0;
+  }
+
+  .book-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+  .rightbar{
+    display:block;
+  }
+
+  .widget{
+    margin-bottom:8px;
+  }
+
+}
+
+@media(max-width:430px){
+
+  .book-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="library-app">
+
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+☰ &nbsp; LA MIA LIBRERIA ♡
+</div>
+
+<nav class="nav">
+
+<a href="index.html">
+<span class="nav-icon">⌂</span>
+Home
+</a>
+
+<a href="letti.html">
+<span class="nav-icon">📚</span>
+I miei libri
+</a>
+
+<a href="da-leggere.html">
+<span class="nav-icon">♡</span>
+Da leggere
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="dark-romance.html">
+<span class="nav-icon">🥀</span>
+Dark Romance
+</a>
+
+<a href="fantasy-romance.html">
+<span class="nav-icon">✦</span>
+Fantasy Romance
+</a>
+
+<a href="romance.html">
+<span class="nav-icon">🌷</span>
+Romance
+</a>
+
+<a
+href="manga.html"
+class="active"
+>
+<span class="nav-icon">🌸</span>
+Manga
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="aggiungi-libro.html">
+<span class="nav-icon">✎</span>
+Gestisci libri
+</a>
+
+</nav>
+
+<div class="sidebar-decoration">
+🌸 ♡ ✧
+</div>
+
+</aside>
+
+
+<main class="main">
+
+<header class="header">
+
+<h1 class="script-title">
+Martina's
+</h1>
+
+<div class="virtual-title">
+MANGA · LETTI
+</div>
+
+<div class="header-decoration">
+🌸
+</div>
+
+<p class="subtitle">
+I manga che ho già letto.
+</p>
+
+</header>
+
+
+<div class="top-row">
+
+<div class="search-box">
+
+<span>⌕</span>
+
+<input
+type="text"
+id="cercaManga"
+placeholder="Cerca un manga..."
+>
+
+</div>
+
+
+<div class="counter-box">
+
+<strong id="numeroLibri">
+0
+</strong>
+
+letti
+
+</div>
+
+</div>
+
+
+<section
+class="book-grid"
+id="listaLibri"
+></section>
+
+</main>
+
+
+<aside class="rightbar">
+
+<div class="widget">
+
+<h3>
+MANGA 🌸
+</h3>
+
+<div class="small-text">
+Manga letti
+</div>
+
+<div
+class="big-number"
+id="numeroManga"
+>
+0
+</div>
+
+</div>
+
+
+<div class="widget">
+
+<div class="quote-symbol">
+“
+</div>
+
+<p class="quote">
+Ogni volume<br>
+è una nuova avventura.
+</p>
+
+<div class="flower">
+🌸
+</div>
+
+</div>
+
+</aside>
+
+</div>
+
+
+<script>
+
+
+function normalizza(titolo){
+
+  return String(titolo || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+
+}
+
+
+function chiaveCopertina(titolo){
+
+  return "cover_" +
+    normalizza(titolo);
+
+}
+
+
+function trovaCopertina(titolo){
+
+  return localStorage.getItem(
+    chiaveCopertina(titolo)
+  ) || "";
+
+}
+
+
+/* LISTA BASE */
+
+const libriBase=[];
+
+
+function aggiungiSerie(
+  nome,
+  volumi
+){
+
+  for(
+    let i=1;
+    i<=volumi;
+    i++
+  ){
+
+    libriBase.push(
+      nome +
+      " — Vol. " +
+      i
+    );
+
+  }
+
+}
+
+
+aggiungiSerie(
+  "My Dress-Up Darling",
+  15
+);
+
+
+aggiungiSerie(
+  "The Fragrant Flower Blooms with Dignity",
+  5
+);
+
+
+aggiungiSerie(
+  "Inazuma & Romance",
+  6
+);
+
+
+aggiungiSerie(
+  "Lei e il suo cane da guardia",
+  6
+);
+
+
+aggiungiSerie(
+  "Ice Guy & Cool Girl",
+  11
+);
+
+
+aggiungiSerie(
+  "I diari della speziale",
+  15
+);
+
+
+aggiungiSerie(
+  "A Sign of Affection",
+  12
+);
+
+
+libriBase.push(
+  "Le 100 ragazze che ti amano tanto tanto tanto tanto tanto — Vol. 1"
+);
+
+
+libriBase.push(
+  "First Kiss"
+);
+
+
+libriBase.push(
+  "Gli agenti delle quattro stagioni — Vol. 1"
+);
+
+
+libriBase.push(
+  "Gli agenti delle quattro stagioni — Vol. 2"
+);
+
+
+/* LIBRI SALVATI */
+
+let libriSalvati=[];
+
+
+try{
+
+  libriSalvati=
+    JSON.parse(
+      localStorage.getItem(
+        "mieiLibriAggiunti"
+      )
+      ||
+      "[]"
+    );
+
+}
+
+catch(errore){
+
+  libriSalvati=[];
+
+}
+
+
+/* CONTENITORE */
+
+const lista=
+  document.getElementById(
+    "listaLibri"
+  );
+
+
+let totaleMostrato=0;
+
+
+const titoliMostrati=
+  new Set();
+
+
+/* CREA CARD */
+
+function creaScheda(
+  titolo,
+  copertina
+){
+
+  const nomeNormalizzato=
+    normalizza(titolo);
+
+
+  if(
+    titoliMostrati.has(
+      nomeNormalizzato
+    )
+  ){
+
+    return;
+
+  }
+
+
+  titoliMostrati.add(
+    nomeNormalizzato
+  );
+
+
+  const scheda=
+    document.createElement(
+      "div"
+    );
+
+
+  scheda.className=
+    "book-card";
+
+
+  scheda.dataset.titolo=
+    nomeNormalizzato;
+
+
+  const cover=
+    document.createElement(
+      "div"
+    );
+
+
+  cover.className=
+    "book-cover";
+
+
+  if(copertina){
+
+    const img=
+      document.createElement(
+        "img"
+      );
+
+
+    img.src=
+      copertina;
+
+
+    img.alt=
+      titolo;
+
+
+    img.loading=
+      "lazy";
+
+
+    img.addEventListener(
+      "error",
+      function(){
+
+        cover.innerHTML=
+          "🌸";
+
+      }
+    );
+
+
+    cover.appendChild(
+      img
+    );
+
+  }
+
+  else{
+
+    cover.textContent=
+      "🌸";
+
+  }
+
+
+  const info=
+    document.createElement(
+      "div"
+    );
+
+
+  info.className=
+    "book-info";
+
+
+  const nome=
+    document.createElement(
+      "div"
+    );
+
+
+  nome.className=
+    "book-title";
+
+
+  nome.textContent=
+    titolo;
+
+
+  const stato=
+    document.createElement(
+      "div"
+    );
+
+
+  stato.className=
+    "book-status";
+
+
+  stato.textContent=
+    "✓ Letto";
+
+
+  info.appendChild(
+    nome
+  );
+
+
+  info.appendChild(
+    stato
+  );
+
+
+  scheda.appendChild(
+    cover
+  );
+
+
+  scheda.appendChild(
+    info
+  );
+
+
+  lista.appendChild(
+    scheda
+  );
+
+
+  totaleMostrato++;
+
+}
+
+
+/* LIBRI BASE */
+
+libriBase.forEach(
+  function(titolo){
+
+    const nome=
+      normalizza(
+        titolo
+      );
+
+
+    const versioneGestita=
+      libriSalvati.find(
+        function(libro){
+
+          return (
+            normalizza(
+              libro.titolo
+            )
+            ===
+            nome
+          );
+
+        }
+      );
+
+
+    if(
+      versioneGestita
+      &&
+      (
+        versioneGestita.categoria
+        !==
+        "Manga"
+        ||
+        versioneGestita.stato
+        !==
+        "Letto"
+      )
+    ){
+
+      return;
+
+    }
+
+
+    let copertina=
+      trovaCopertina(
+        titolo
+      );
+
+
+    if(
+      !copertina
+      &&
+      versioneGestita
+      &&
+      versioneGestita.copertina
+    ){
+
+      copertina=
+        versioneGestita.copertina;
+
+    }
+
+
+    creaScheda(
+      titolo,
+      copertina
+    );
+
+  }
+);
+
+
+/* NUOVI MANGA LETTI */
+
+libriSalvati.forEach(
+  function(libro){
+
+    if(
+      libro.categoria
+      !==
+      "Manga"
+      ||
+      libro.stato
+      !==
+      "Letto"
+    ){
+
+      return;
+
+    }
+
+
+    const nome=
+      normalizza(
+        libro.titolo
+      );
+
+
+    if(
+      titoliMostrati.has(
+        nome
+      )
+    ){
+
+      return;
+
+    }
+
+
+    let copertina=
+      trovaCopertina(
+        libro.titolo
+      );
+
+
+    if(
+      !copertina
+      &&
+      libro.copertina
+    ){
+
+      copertina=
+        libro.copertina;
+
+    }
+
+
+    creaScheda(
+      libro.titolo,
+      copertina
+    );
+
+  }
+);
+
+
+/* CONTATORI */
+
+document.getElementById(
+  "numeroLibri"
+).textContent=
+  totaleMostrato;
+
+
+document.getElementById(
+  "numeroManga"
+).textContent=
+  totaleMostrato;
+
+
+/* RICERCA */
+
+const input=
+  document.getElementById(
+    "cercaManga"
+  );
+
+
+input.addEventListener(
+  "input",
+  function(){
+
+    const testo=
+      normalizza(
+        input.value
+      );
+
+
+    document.querySelectorAll(
+      ".book-card"
+    ).forEach(
+      function(scheda){
+
+        scheda.style.display=
+          scheda.dataset.titolo.includes(
+            testo
+          )
+          ?
+          ""
+          :
+          "none";
+
+      }
+    );
+
+  }
+);
+
+
+</script>
+
+</body>
+
+</html>

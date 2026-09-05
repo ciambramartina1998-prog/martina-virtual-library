@@ -1,0 +1,3034 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gestisci libri - Martina's Virtual Library</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  padding:12px;
+  font-family:Georgia,"Times New Roman",serif;
+  color:#4E3524;
+
+  background:
+    linear-gradient(
+      rgba(48,40,31,.15),
+      rgba(48,40,31,.20)
+    ),
+    url("copertine/sfondo-home.jpg")
+    center/cover fixed no-repeat;
+}
+
+
+/* =========================
+   STRUTTURA
+========================= */
+
+.library-app{
+  width:min(1180px,calc(100vw - 24px));
+  min-height:calc(100vh - 24px);
+  margin:0 auto;
+
+  display:grid;
+  grid-template-columns:
+    175px
+    minmax(0,1fr)
+    190px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.30);
+  border-radius:28px;
+
+  background:rgba(255,255,255,.08);
+
+  box-shadow:
+    0 22px 55px
+    rgba(42,34,25,.27);
+
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.sidebar{
+  padding:17px 12px;
+
+  border-right:
+    1px solid
+    rgba(255,255,255,.30);
+
+  background:
+    rgba(247,244,239,.36);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.logo{
+  text-align:center;
+  margin-bottom:14px;
+
+  color:#4E3524;
+
+  font-size:12px;
+  font-weight:bold;
+
+  line-height:1.4;
+
+  letter-spacing:.8px;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.75);
+}
+
+.logo::after{
+  content:"── ❦ ──";
+  display:block;
+
+  margin-top:8px;
+
+  color:#5A3E2B;
+  font-size:8px;
+}
+
+.menu a{
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:5px;
+
+  padding:8px 9px;
+
+  border:1px solid transparent;
+  border-radius:12px;
+
+  color:#4E3524;
+
+  font-size:10px;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.menu a:hover{
+  transform:translateX(3px);
+
+  background:
+    rgba(255,255,255,.42);
+
+  border-color:
+    rgba(255,255,255,.50);
+
+  box-shadow:
+    0 5px 14px
+    rgba(92,65,42,.10);
+}
+
+.menu .active{
+  color:white;
+
+  background:
+    rgba(122,130,103,.90);
+
+  border-color:
+    rgba(255,255,255,.35);
+}
+
+
+/* =========================
+   CENTRO
+========================= */
+
+.main{
+  min-width:0;
+
+  padding:15px;
+
+  background:
+    rgba(247,244,239,.16);
+
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+
+
+/* =========================
+   TITOLO
+========================= */
+
+h1{
+  margin:0;
+
+  text-align:center;
+
+  color:#4E3524;
+
+  font-size:36px;
+  font-weight:normal;
+  font-style:italic;
+
+  text-shadow:
+    0 2px 4px
+    rgba(255,255,255,.75);
+}
+
+.subtitle{
+  width:min(430px,90%);
+
+  margin:
+    5px auto 15px;
+
+  padding-bottom:8px;
+
+  text-align:center;
+
+  border-bottom:
+    1px solid
+    rgba(198,139,89,.70);
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-weight:600;
+  font-style:italic;
+}
+
+
+/* =========================
+   SEZIONI
+========================= */
+
+.section{
+  margin-bottom:12px;
+
+  padding:13px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.38);
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.38);
+
+  box-shadow:
+    0 8px 20px
+    rgba(60,46,35,.10);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  transition:
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.section:hover{
+  background:
+    rgba(255,255,255,.43);
+
+  box-shadow:
+    0 11px 25px
+    rgba(60,46,35,.13);
+}
+
+.section h2{
+  margin:0 0 12px;
+
+  color:#4E3524;
+
+  font-size:15px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:9px;
+}
+
+.full{
+  grid-column:
+    1/-1;
+}
+
+label{
+  display:block;
+
+  margin-bottom:4px;
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-weight:bold;
+}
+
+input,
+select{
+  width:100%;
+
+  padding:8px 9px;
+
+  border:
+    1px solid
+    rgba(111,76,48,.25);
+
+  border-radius:11px;
+
+  outline:none;
+
+  background:
+    rgba(255,255,255,.62);
+
+  color:#4E3524;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:10px;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+input:focus,
+select:focus{
+  background:
+    rgba(255,255,255,.78);
+
+  border-color:
+    rgba(198,139,89,.75);
+
+  box-shadow:
+    0 0 0 2px
+    rgba(198,139,89,.12);
+}
+
+input::placeholder{
+  color:#7B6758;
+}
+
+
+/* =========================
+   PULSANTI
+========================= */
+
+button{
+  border:none;
+
+  border-radius:11px;
+
+  padding:8px 11px;
+
+  cursor:pointer;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:10px;
+
+  font-weight:bold;
+
+  transition:
+    transform .20s ease,
+    filter .20s ease,
+    box-shadow .20s ease;
+}
+
+button:hover{
+  transform:
+    translateY(-2px);
+
+  filter:
+    brightness(1.04);
+}
+
+.primary{
+  background:#7A8267;
+  color:white;
+
+  box-shadow:
+    0 5px 12px
+    rgba(72,78,59,.20);
+}
+
+.secondary{
+  background:#E7D6C6;
+  color:#4E3524;
+}
+
+.gold{
+  background:#C68B59;
+  color:white;
+}
+
+.danger{
+  background:#9A5149;
+  color:white;
+}
+
+.actions{
+  display:flex;
+
+  gap:8px;
+
+  flex-wrap:wrap;
+
+  margin-top:10px;
+}
+
+
+/* =========================
+   ANTEPRIMA
+========================= */
+
+.preview{
+  margin-top:11px;
+
+  text-align:center;
+}
+
+.preview img{
+  width:100px;
+
+  aspect-ratio:2/3;
+
+  object-fit:cover;
+
+  border-radius:9px;
+
+  box-shadow:
+    0 7px 18px
+    rgba(50,40,30,.17);
+}
+
+
+/* =========================
+   RISULTATI COPERTINE
+========================= */
+
+.results{
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:8px;
+
+  margin-top:12px;
+}
+
+.result{
+  padding:5px;
+
+  cursor:pointer;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.42);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,255,255,.45);
+
+  text-align:center;
+
+  box-shadow:
+    0 5px 12px
+    rgba(65,49,36,.08);
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    background .22s ease;
+}
+
+.result:hover{
+  transform:translateY(-4px);
+
+  background:
+    rgba(255,255,255,.66);
+
+  box-shadow:
+    0 10px 20px
+    rgba(65,49,36,.16);
+}
+
+.result img{
+  width:100%;
+
+  aspect-ratio:2/3;
+
+  display:block;
+
+  object-fit:cover;
+
+  border-radius:7px;
+}
+
+.result-title{
+  margin-top:5px;
+
+  color:#4E3524;
+
+  font-size:8px;
+
+  line-height:1.2;
+
+  font-weight:bold;
+}
+
+.result-author{
+  margin-top:2px;
+
+  color:#5A3E2B;
+
+  font-size:7px;
+}
+
+
+/* =========================
+   MESSAGGI
+========================= */
+
+.message{
+  margin-top:10px;
+
+  padding:8px 10px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.38);
+
+  border-radius:11px;
+
+  background:
+    rgba(244,235,225,.70);
+
+  color:#4E3524;
+
+  font-size:9px;
+
+  font-weight:600;
+}
+
+.small{
+  margin:
+    3px 0 11px;
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  line-height:1.5;
+}
+
+
+/* =========================
+   SEZIONI APRI / CHIUDI
+========================= */
+
+.toggle-button{
+  width:100%;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+  padding:10px 12px;
+
+  border:
+    1px solid
+    rgba(111,76,48,.20);
+
+  border-radius:13px;
+
+  background:#E8D6C2;
+
+  color:#4E3524;
+
+  box-shadow:
+    0 5px 12px
+    rgba(73,53,39,.09);
+}
+
+.toggle-button:hover{
+  background:#EFDFCE;
+}
+
+.toggle-left{
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+}
+
+.toggle-right{
+  color:#5A3E2B;
+
+  font-size:8px;
+}
+
+.collapsible{
+  display:none;
+
+  margin-top:12px;
+}
+
+.collapsible.open{
+  display:block;
+}
+
+
+/* =========================
+   LISTA LIBRI SALVATI
+========================= */
+
+.book-list{
+  display:flex;
+
+  flex-direction:column;
+
+  gap:7px;
+}
+
+.book-row{
+  display:grid;
+
+  grid-template-columns:
+    42px
+    1fr
+    auto;
+
+  align-items:center;
+
+  gap:9px;
+
+  padding:7px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.40);
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,.45);
+
+  box-shadow:
+    0 4px 10px
+    rgba(68,51,37,.07);
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.book-row:hover{
+  transform:
+    translateY(-1px);
+
+  background:
+    rgba(255,255,255,.62);
+}
+
+.book-row img{
+  width:42px;
+
+  height:62px;
+
+  object-fit:cover;
+
+  border-radius:6px;
+
+  box-shadow:
+    0 3px 8px
+    rgba(50,40,30,.14);
+}
+
+.book-placeholder{
+  width:42px;
+
+  height:62px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:6px;
+
+  background:#E8D6C2;
+
+  font-size:18px;
+}
+
+.book-name{
+  color:#4E3524;
+
+  font-size:9px;
+
+  font-weight:bold;
+}
+
+.book-meta{
+  margin-top:3px;
+
+  color:#5A3E2B;
+
+  font-size:8px;
+}
+
+.row-buttons{
+  display:flex;
+
+  gap:5px;
+}
+
+.row-buttons button{
+  padding:6px 7px;
+
+  font-size:9px;
+}
+
+.reading-button{
+  background:#C68B59;
+
+  color:white;
+}
+
+.reading-button.active-reading{
+  background:#7A8267;
+
+  color:white;
+}
+
+
+/* =========================
+   DESTRA
+========================= */
+
+.rightbar{
+  padding:13px 10px;
+
+  border-left:
+    1px solid
+    rgba(255,255,255,.30);
+
+  background:
+    rgba(247,244,239,.30);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.right-card{
+  margin-bottom:9px;
+
+  padding:11px 8px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.38);
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.39);
+
+  color:#5A3E2B;
+
+  text-align:center;
+
+  font-size:9px;
+
+  box-shadow:
+    0 8px 20px
+    rgba(62,50,38,.10);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.right-card strong{
+  display:block;
+
+  margin-top:5px;
+
+  color:#4E3524;
+
+  font-size:25px;
+}
+
+.right-icon{
+  margin-bottom:5px;
+
+  font-size:21px;
+}
+
+.right-title{
+  margin-bottom:5px;
+
+  color:#4E3524;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:.8px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+  .library-app{
+    grid-template-columns:
+      150px
+      1fr;
+  }
+
+  .rightbar{
+    display:none;
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  body{
+    padding:6px;
+  }
+
+  .library-app{
+    display:block;
+
+    width:100%;
+  }
+
+  .sidebar{
+    border-right:none;
+
+    border-bottom:
+      1px solid
+      rgba(255,255,255,.30);
+  }
+
+  .menu{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:4px;
+
+    justify-content:center;
+  }
+
+  .menu a{
+    margin:0;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+
+  .results{
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+
+}
+
+
+@media(max-width:430px){
+
+  .results{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .book-row{
+    grid-template-columns:
+      40px
+      1fr;
+  }
+
+  .row-buttons{
+    grid-column:
+      1/-1;
+
+    justify-content:flex-end;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="library-app">
+
+
+<!-- =========================
+     MENU SINISTRO
+========================= -->
+
+<aside class="sidebar">
+
+<div class="logo">
+📚 Martina's<br>
+VIRTUAL LIBRARY
+</div>
+
+<div class="menu">
+
+<a href="index.html">
+⌂ Home
+</a>
+
+<a href="letti.html">
+📚 I miei libri
+</a>
+
+<a href="da-leggere.html">
+♡ Da leggere
+</a>
+
+<a href="dark-romance.html">
+🥀 Dark Romance
+</a>
+
+<a href="fantasy-romance.html">
+✦ Fantasy Romance
+</a>
+
+<a href="romance.html">
+🌷 Romance
+</a>
+
+<a href="manga.html">
+🌸 Manga
+</a>
+
+<a
+href="aggiungi-libro.html"
+class="active"
+>
+⚙ Gestisci libri
+</a>
+
+</div>
+
+</aside>
+
+
+<!-- =========================
+     CENTRO
+========================= -->
+
+<main class="main">
+
+<h1>
+Gestisci libri
+</h1>
+
+<div class="subtitle">
+Aggiungi, modifica e organizza la tua libreria ♡
+</div>
+
+
+<!-- =========================
+     AGGIUNGI LIBRO
+========================= -->
+
+<section class="section">
+
+<h2>
+➕ Aggiungi libro
+</h2>
+
+
+<div class="form-grid">
+
+
+<div class="full">
+
+<label>
+Titolo
+</label>
+
+<input
+id="titolo"
+type="text"
+placeholder="Es. The Love Hypothesis"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Categoria
+</label>
+
+<select id="categoria">
+
+<option>
+Romance
+</option>
+
+<option>
+Dark Romance
+</option>
+
+<option>
+Fantasy Romance
+</option>
+
+<option>
+Manga
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Stato
+</label>
+
+<select id="stato">
+
+<option>
+Letto
+</option>
+
+<option>
+Da leggere
+</option>
+
+</select>
+
+</div>
+
+
+<div class="full">
+
+<label>
+Link copertina
+(facoltativo)
+</label>
+
+<input
+id="copertinaManuale"
+type="url"
+placeholder="https://..."
+>
+
+</div>
+
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="secondary"
+onclick="cercaCopertinaAggiunta()"
+>
+🔎 Cerca copertina
+</button>
+
+<button
+class="primary"
+id="pulsanteSalvaLibro"
+onclick="salvaLibro()"
+>
+➕ Aggiungi libro
+</button>
+
+</div>
+
+
+<div
+id="anteprimaAggiunta"
+class="preview"
+></div>
+
+
+<div
+id="risultatiAggiunta"
+class="results"
+></div>
+
+
+<div
+id="messaggioAggiunta"
+></div>
+
+
+</section>
+
+
+<!-- =========================
+     SISTEMA COPERTINE
+========================= -->
+
+<section class="section">
+
+<button
+type="button"
+class="toggle-button"
+onclick="toggleCopertine()"
+>
+
+<span class="toggle-left">
+🖼️ Sistema le copertine
+</span>
+
+<span
+class="toggle-right"
+id="testoCopertine"
+>
+Apri ▾
+</span>
+
+</button>
+
+
+<div
+id="contenitoreCopertine"
+class="collapsible"
+>
+
+<p class="small">
+Cerca online la copertina corretta oppure incolla direttamente il link dell'immagine.
+</p>
+
+
+<div class="form-grid">
+
+
+<div class="full">
+
+<label>
+Titolo del libro
+</label>
+
+<input
+id="coverTitle"
+type="text"
+placeholder="Es. 36 domande per farti innamorare di me"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Autore
+</label>
+
+<input
+id="coverAuthor"
+type="text"
+placeholder="Facoltativo"
+>
+
+</div>
+
+
+<div>
+
+<label>
+ISBN
+</label>
+
+<input
+id="coverISBN"
+type="text"
+placeholder="Facoltativo"
+>
+
+</div>
+
+
+<div class="full">
+
+<label>
+Oppure incolla il link della copertina
+</label>
+
+<input
+id="coverManualUrl"
+type="url"
+placeholder="https://..."
+>
+
+</div>
+
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="secondary"
+onclick="cercaCopertineCorrezione()"
+>
+🔎 Cerca copertine
+</button>
+
+<button
+class="gold"
+onclick="salvaCopertinaManuale()"
+>
+🔗 Salva link copertina
+</button>
+
+</div>
+
+
+<div
+id="anteprimaCorrezione"
+class="preview"
+></div>
+
+
+<div
+id="risultatiCorrezione"
+class="results"
+></div>
+
+
+<div
+id="messaggioCorrezione"
+></div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     LIBRI SALVATI
+========================= -->
+
+<section class="section">
+
+<button
+type="button"
+class="toggle-button"
+onclick="toggleLibriSalvati()"
+>
+
+<span class="toggle-left">
+📚 Gestisci i libri salvati
+</span>
+
+<span
+class="toggle-right"
+id="testoLibri"
+>
+Apri ▾
+</span>
+
+</button>
+
+
+<div
+id="contenitoreLibriSalvati"
+class="collapsible"
+>
+
+<div
+id="listaLibri"
+class="book-list"
+></div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- =========================
+     DESTRA
+========================= -->
+
+<aside class="rightbar">
+
+
+<div class="right-card">
+
+<div class="right-title">
+LIBRI GESTITI
+</div>
+
+<strong id="numeroLibri">
+0
+</strong>
+
+<div>
+nella tua libreria
+</div>
+
+</div>
+
+
+<div class="right-card">
+
+<div class="right-icon">
+📖
+</div>
+
+<div class="right-title">
+IL TUO ANGOLO
+</div>
+
+La tua libreria,<br>
+un libro alla volta.
+
+</div>
+
+
+<div class="right-card">
+
+<div class="right-icon">
+🌿
+</div>
+
+Ogni storia merita<br>
+il suo posto.
+
+</div>
+
+
+</aside>
+
+</div>
+
+
+<script>
+
+
+const CHIAVE_LIBRI =
+"mieiLibriAggiunti";
+
+
+let copertinaScelta = "";
+
+let indiceModifica = null;
+
+
+/* =========================
+   NORMALIZZA
+========================= */
+
+function normalizza(testo){
+
+  return String(testo || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+
+}
+
+
+function chiaveCopertina(titolo){
+
+  return (
+    "cover_" +
+    normalizza(titolo)
+  );
+
+}
+
+
+/* =========================
+   LOCAL STORAGE
+========================= */
+
+function leggiLibri(){
+
+  const dati =
+    localStorage.getItem(
+      CHIAVE_LIBRI
+    );
+
+
+  if(!dati){
+
+    return [];
+
+  }
+
+
+  try{
+
+    return JSON.parse(dati);
+
+  }
+
+  catch{
+
+    return [];
+
+  }
+
+}
+
+
+function salvaLibri(libri){
+
+  localStorage.setItem(
+    CHIAVE_LIBRI,
+    JSON.stringify(libri)
+  );
+
+}
+
+
+/* =========================
+   GOOGLE BOOKS
+========================= */
+
+async function cercaOnline(
+  titolo,
+  autore,
+  isbn
+){
+
+  const params =
+    new URLSearchParams();
+
+
+  if(titolo){
+
+    params.append(
+      "titolo",
+      titolo
+    );
+
+  }
+
+
+  if(autore){
+
+    params.append(
+      "autore",
+      autore
+    );
+
+  }
+
+
+  if(isbn){
+
+    params.append(
+      "isbn",
+      isbn
+    );
+
+  }
+
+
+  const risposta =
+    await fetch(
+      "/api/copertine?"
+      +
+      params.toString()
+    );
+
+
+  const dati =
+    await risposta.json();
+
+
+  if(!risposta.ok){
+
+    throw new Error(
+      dati.errore
+      ||
+      "Errore nella ricerca"
+    );
+
+  }
+
+
+  return dati.risultati || [];
+
+}
+
+
+/* =========================
+   MESSAGGI
+========================= */
+
+function mostraMessaggio(
+  contenitore,
+  testo
+){
+
+  contenitore.innerHTML =
+    '<div class="message">'
+    +
+    testo
+    +
+    '</div>';
+
+}
+
+
+/* =========================
+   ANTEPRIMA
+========================= */
+
+function mostraAnteprima(
+  contenitore,
+  url
+){
+
+  contenitore.innerHTML = "";
+
+
+  if(!url){
+
+    return;
+
+  }
+
+
+  const img =
+    document.createElement(
+      "img"
+    );
+
+
+  img.src = url;
+
+
+  img.onerror =
+    function(){
+
+      contenitore.innerHTML =
+        '<div class="message">'
+        +
+        '⚠️ Impossibile caricare questa immagine.'
+        +
+        '</div>';
+
+    };
+
+
+  contenitore.appendChild(img);
+
+}
+
+
+/* =========================
+   RISULTATI COPERTINE
+========================= */
+
+function mostraRisultati(
+  contenitore,
+  risultati,
+  callback
+){
+
+  contenitore.innerHTML = "";
+
+
+  if(!risultati.length){
+
+    contenitore.innerHTML =
+      '<div class="message full">'
+      +
+      'Nessuna copertina trovata.'
+      +
+      '</div>';
+
+    return;
+
+  }
+
+
+  risultati.forEach(
+    function(r){
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "result";
+
+
+      const img =
+        document.createElement(
+          "img"
+        );
+
+
+      img.src =
+        r.copertina;
+
+
+      const titolo =
+        document.createElement(
+          "div"
+        );
+
+
+      titolo.className =
+        "result-title";
+
+
+      titolo.textContent =
+        r.titolo || "";
+
+
+      const autore =
+        document.createElement(
+          "div"
+        );
+
+
+      autore.className =
+        "result-author";
+
+
+      autore.textContent =
+        Array.isArray(r.autori)
+        ?
+        r.autori.join(", ")
+        :
+        "";
+
+
+      card.appendChild(img);
+
+      card.appendChild(titolo);
+
+      card.appendChild(autore);
+
+
+      card.onclick =
+        function(){
+
+          callback(
+            r.copertina
+          );
+
+        };
+
+
+      contenitore.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   CERCA COPERTINA
+   NUOVO LIBRO
+========================= */
+
+async function cercaCopertinaAggiunta(){
+
+  const titolo =
+    document.getElementById(
+      "titolo"
+    ).value.trim();
+
+
+  const risultatiBox =
+    document.getElementById(
+      "risultatiAggiunta"
+    );
+
+
+  const messaggio =
+    document.getElementById(
+      "messaggioAggiunta"
+    );
+
+
+  risultatiBox.innerHTML = "";
+
+  messaggio.innerHTML = "";
+
+
+  if(!titolo){
+
+    mostraMessaggio(
+      messaggio,
+      "Scrivi prima il titolo del libro."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    mostraMessaggio(
+      messaggio,
+      "🔎 Ricerca in corso..."
+    );
+
+
+    const risultati =
+      await cercaOnline(
+        titolo,
+        "",
+        ""
+      );
+
+
+    messaggio.innerHTML = "";
+
+
+    mostraRisultati(
+      risultatiBox,
+      risultati,
+      function(url){
+
+        copertinaScelta =
+          url;
+
+
+        document.getElementById(
+          "copertinaManuale"
+        ).value =
+          url;
+
+
+        mostraAnteprima(
+          document.getElementById(
+            "anteprimaAggiunta"
+          ),
+          url
+        );
+
+      }
+    );
+
+  }
+
+  catch{
+
+    mostraMessaggio(
+      messaggio,
+      "Errore nella ricerca."
+    );
+
+  }
+
+}
+
+
+/* =========================
+   SALVA LIBRO
+========================= */
+
+function salvaLibro(){
+
+  const titolo =
+    document.getElementById(
+      "titolo"
+    ).value.trim();
+
+
+  const categoria =
+    document.getElementById(
+      "categoria"
+    ).value;
+
+
+  const stato =
+    document.getElementById(
+      "stato"
+    ).value;
+
+
+  const linkManuale =
+    document.getElementById(
+      "copertinaManuale"
+    ).value.trim();
+
+
+  const messaggio =
+    document.getElementById(
+      "messaggioAggiunta"
+    );
+
+
+  if(!titolo){
+
+    mostraMessaggio(
+      messaggio,
+      "Scrivi il titolo del libro."
+    );
+
+    return;
+
+  }
+
+
+  let libri =
+    leggiLibri();
+
+
+  const libro = {
+
+    titolo:
+      titolo,
+
+    categoria:
+      categoria,
+
+    stato:
+      stato,
+
+    copertina:
+      linkManuale
+      ||
+      copertinaScelta
+      ||
+      ""
+
+  };
+
+
+  if(
+    indiceModifica !== null
+  ){
+
+    libri[indiceModifica] =
+      libro;
+
+
+    indiceModifica =
+      null;
+
+
+    mostraMessaggio(
+      messaggio,
+      "✅ Libro modificato."
+    );
+
+  }
+
+  else{
+
+
+    const indiceEsistente =
+      libri.findIndex(
+        function(item){
+
+          return (
+            normalizza(
+              item.titolo
+            )
+            ===
+            normalizza(
+              titolo
+            )
+          );
+
+        }
+      );
+
+
+    if(
+      indiceEsistente !== -1
+    ){
+
+      libri[indiceEsistente] =
+        libro;
+
+
+      mostraMessaggio(
+        messaggio,
+        "✅ Libro aggiornato."
+      );
+
+    }
+
+    else{
+
+      libri.push(
+        libro
+      );
+
+
+      mostraMessaggio(
+        messaggio,
+        "✅ Libro aggiunto."
+      );
+
+    }
+
+  }
+
+
+  salvaLibri(
+    libri
+  );
+
+
+  if(
+    libro.copertina
+  ){
+
+    localStorage.setItem(
+      chiaveCopertina(
+        libro.titolo
+      ),
+      libro.copertina
+    );
+
+  }
+
+
+  pulisciForm();
+
+  mostraListaLibri();
+
+}
+
+
+/* =========================
+   PULISCI FORM
+========================= */
+
+function pulisciForm(){
+
+  document.getElementById(
+    "titolo"
+  ).value = "";
+
+
+  document.getElementById(
+    "copertinaManuale"
+  ).value = "";
+
+
+  document.getElementById(
+    "anteprimaAggiunta"
+  ).innerHTML = "";
+
+
+  document.getElementById(
+    "risultatiAggiunta"
+  ).innerHTML = "";
+
+
+  copertinaScelta = "";
+
+
+  document.getElementById(
+    "pulsanteSalvaLibro"
+  ).textContent =
+    "➕ Aggiungi libro";
+
+}
+
+
+/* =========================
+   CERCA COPERTINA
+   CORREZIONE
+========================= */
+
+async function cercaCopertineCorrezione(){
+
+  const titolo =
+    document.getElementById(
+      "coverTitle"
+    ).value.trim();
+
+
+  const autore =
+    document.getElementById(
+      "coverAuthor"
+    ).value.trim();
+
+
+  const isbn =
+    document.getElementById(
+      "coverISBN"
+    ).value.trim();
+
+
+  const risultatiBox =
+    document.getElementById(
+      "risultatiCorrezione"
+    );
+
+
+  const messaggio =
+    document.getElementById(
+      "messaggioCorrezione"
+    );
+
+
+  risultatiBox.innerHTML = "";
+
+  messaggio.innerHTML = "";
+
+
+  if(
+    !titolo &&
+    !isbn
+  ){
+
+    mostraMessaggio(
+      messaggio,
+      "Scrivi almeno il titolo oppure l'ISBN."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    mostraMessaggio(
+      messaggio,
+      "🔎 Ricerca in corso..."
+    );
+
+
+    const risultati =
+      await cercaOnline(
+        titolo,
+        autore,
+        isbn
+      );
+
+
+    messaggio.innerHTML = "";
+
+
+    mostraRisultati(
+      risultatiBox,
+      risultati,
+      function(url){
+
+        if(!titolo){
+
+          mostraMessaggio(
+            messaggio,
+            "Scrivi anche il titolo del libro prima di salvare."
+          );
+
+          return;
+
+        }
+
+
+        localStorage.setItem(
+          chiaveCopertina(
+            titolo
+          ),
+          url
+        );
+
+
+        document.getElementById(
+          "coverManualUrl"
+        ).value =
+          url;
+
+
+        mostraAnteprima(
+          document.getElementById(
+            "anteprimaCorrezione"
+          ),
+          url
+        );
+
+
+        aggiornaCopertinaLibro(
+          titolo,
+          url
+        );
+
+
+        mostraMessaggio(
+          messaggio,
+          "✅ Copertina salvata!"
+        );
+
+      }
+    );
+
+  }
+
+  catch{
+
+    mostraMessaggio(
+      messaggio,
+      "Errore nella ricerca."
+    );
+
+  }
+
+}
+
+
+/* =========================
+   COPERTINA MANUALE
+========================= */
+
+function salvaCopertinaManuale(){
+
+  const titolo =
+    document.getElementById(
+      "coverTitle"
+    ).value.trim();
+
+
+  const url =
+    document.getElementById(
+      "coverManualUrl"
+    ).value.trim();
+
+
+  const messaggio =
+    document.getElementById(
+      "messaggioCorrezione"
+    );
+
+
+  if(!titolo){
+
+    mostraMessaggio(
+      messaggio,
+      "Scrivi prima il titolo del libro."
+    );
+
+    return;
+
+  }
+
+
+  if(!url){
+
+    mostraMessaggio(
+      messaggio,
+      "Incolla il link della copertina."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !url.startsWith("http://")
+    &&
+    !url.startsWith("https://")
+  ){
+
+    mostraMessaggio(
+      messaggio,
+      "Il link deve iniziare con http:// oppure https://"
+    );
+
+    return;
+
+  }
+
+
+  mostraAnteprima(
+    document.getElementById(
+      "anteprimaCorrezione"
+    ),
+    url
+  );
+
+
+  localStorage.setItem(
+    chiaveCopertina(
+      titolo
+    ),
+    url
+  );
+
+
+  aggiornaCopertinaLibro(
+    titolo,
+    url
+  );
+
+
+  mostraMessaggio(
+    messaggio,
+    "✅ Copertina salvata!"
+  );
+
+}
+
+
+/* =========================
+   AGGIORNA COPERTINA
+========================= */
+
+function aggiornaCopertinaLibro(
+  titolo,
+  url
+){
+
+  const libri =
+    leggiLibri();
+
+
+  let cambiato =
+    false;
+
+
+  libri.forEach(
+    function(libro){
+
+      if(
+        normalizza(
+          libro.titolo
+        )
+        ===
+        normalizza(
+          titolo
+        )
+      ){
+
+        libro.copertina =
+          url;
+
+        cambiato =
+          true;
+
+      }
+
+    }
+  );
+
+
+  if(cambiato){
+
+    salvaLibri(
+      libri
+    );
+
+    mostraListaLibri();
+
+  }
+
+}
+
+
+/* =========================
+   APRI / CHIUDI
+========================= */
+
+function toggleCopertine(){
+
+  const contenitore =
+    document.getElementById(
+      "contenitoreCopertine"
+    );
+
+
+  const testo =
+    document.getElementById(
+      "testoCopertine"
+    );
+
+
+  const aperto =
+    contenitore.classList.toggle(
+      "open"
+    );
+
+
+  testo.textContent =
+    aperto
+    ?
+    "Chiudi ▴"
+    :
+    "Apri ▾";
+
+}
+
+
+function toggleLibriSalvati(){
+
+  const contenitore =
+    document.getElementById(
+      "contenitoreLibriSalvati"
+    );
+
+
+  const testo =
+    document.getElementById(
+      "testoLibri"
+    );
+
+
+  const aperto =
+    contenitore.classList.toggle(
+      "open"
+    );
+
+
+  testo.textContent =
+    aperto
+    ?
+    "Chiudi ▴"
+    :
+    "Apri ▾";
+
+}
+
+
+/* =========================
+   LETTURA ATTUALE
+========================= */
+
+function leggiLetturaAttuale(){
+
+  const dati =
+    localStorage.getItem(
+      "letturaAttuale"
+    );
+
+
+  if(!dati){
+
+    return null;
+
+  }
+
+
+  try{
+
+    return JSON.parse(dati);
+
+  }
+
+  catch{
+
+    return null;
+
+  }
+
+}
+
+
+function impostaLettura(indice){
+
+  const libri =
+    leggiLibri();
+
+
+  const libro =
+    libri[indice];
+
+
+  if(!libro){
+
+    return;
+
+  }
+
+
+  const conferma =
+    confirm(
+      'Vuoi impostare "'
+      +
+      libro.titolo
+      +
+      '" come lettura attuale?'
+    );
+
+
+  if(!conferma){
+
+    return;
+
+  }
+
+
+  libro.stato =
+    "Da leggere";
+
+
+  salvaLibri(
+    libri
+  );
+
+
+  const copertina =
+    localStorage.getItem(
+      chiaveCopertina(
+        libro.titolo
+      )
+    )
+    ||
+    libro.copertina
+    ||
+    "";
+
+
+  localStorage.setItem(
+    "letturaAttuale",
+    JSON.stringify({
+
+      titolo:
+        libro.titolo,
+
+      categoria:
+        libro.categoria,
+
+      copertina:
+        copertina
+
+    })
+  );
+
+
+  alert(
+    '📖 Ora stai leggendo "'
+    +
+    libro.titolo
+    +
+    '".'
+  );
+
+
+  mostraListaLibri();
+
+}
+
+
+/* =========================
+   MOSTRA LIBRI SALVATI
+========================= */
+
+function mostraListaLibri(){
+
+  const libri =
+    leggiLibri();
+
+
+  const lista =
+    document.getElementById(
+      "listaLibri"
+    );
+
+
+  const numero =
+    document.getElementById(
+      "numeroLibri"
+    );
+
+
+  numero.textContent =
+    libri.length;
+
+
+  lista.innerHTML = "";
+
+
+  const letturaAttuale =
+    leggiLetturaAttuale();
+
+
+  const titoloInLettura =
+    letturaAttuale
+    ?
+    normalizza(
+      letturaAttuale.titolo
+    )
+    :
+    "";
+
+
+  if(!libri.length){
+
+    lista.innerHTML =
+      '<div class="message">'
+      +
+      'Non hai ancora libri salvati.'
+      +
+      '</div>';
+
+    return;
+
+  }
+
+
+  libri.forEach(
+    function(
+      libro,
+      indice
+    ){
+
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+
+      row.className =
+        "book-row";
+
+
+      let immagine;
+
+
+      const override =
+        localStorage.getItem(
+          chiaveCopertina(
+            libro.titolo
+          )
+        );
+
+
+      const copertina =
+        override
+        ||
+        libro.copertina
+        ||
+        "";
+
+
+      if(copertina){
+
+        immagine =
+          document.createElement(
+            "img"
+          );
+
+
+        immagine.src =
+          copertina;
+
+
+        immagine.onerror =
+          function(){
+
+            const placeholder =
+              document.createElement(
+                "div"
+              );
+
+
+            placeholder.className =
+              "book-placeholder";
+
+
+            placeholder.textContent =
+              "📚";
+
+
+            immagine.replaceWith(
+              placeholder
+            );
+
+          };
+
+      }
+
+      else{
+
+        immagine =
+          document.createElement(
+            "div"
+          );
+
+
+        immagine.className =
+          "book-placeholder";
+
+
+        immagine.textContent =
+          "📚";
+
+      }
+
+
+      const info =
+        document.createElement(
+          "div"
+        );
+
+
+      const nome =
+        document.createElement(
+          "div"
+        );
+
+
+      nome.className =
+        "book-name";
+
+
+      nome.textContent =
+        libro.titolo;
+
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+
+      meta.className =
+        "book-meta";
+
+
+      const questoTitolo =
+        normalizza(
+          libro.titolo
+        );
+
+
+      const inLettura =
+        titoloInLettura
+        &&
+        questoTitolo ===
+        titoloInLettura;
+
+
+      meta.textContent =
+        libro.categoria
+        +
+        " • "
+        +
+        (
+          inLettura
+          ?
+          "📖 In lettura"
+          :
+          libro.stato
+        );
+
+
+      info.appendChild(
+        nome
+      );
+
+
+      info.appendChild(
+        meta
+      );
+
+
+      const pulsanti =
+        document.createElement(
+          "div"
+        );
+
+
+      pulsanti.className =
+        "row-buttons";
+
+
+      /* STO LEGGENDO */
+
+      const lettura =
+        document.createElement(
+          "button"
+        );
+
+
+      lettura.className =
+        inLettura
+        ?
+        "reading-button active-reading"
+        :
+        "reading-button";
+
+
+      lettura.textContent =
+        inLettura
+        ?
+        "📖 ✓"
+        :
+        "📖";
+
+
+      lettura.title =
+        inLettura
+        ?
+        "In lettura"
+        :
+        "Sto leggendo";
+
+
+      lettura.onclick =
+        function(){
+
+          impostaLettura(
+            indice
+          );
+
+        };
+
+
+      /* MODIFICA */
+
+      const modifica =
+        document.createElement(
+          "button"
+        );
+
+
+      modifica.className =
+        "secondary";
+
+
+      modifica.textContent =
+        "✏️";
+
+
+      modifica.title =
+        "Modifica";
+
+
+      modifica.onclick =
+        function(){
+
+          modificaLibro(
+            indice
+          );
+
+        };
+
+
+      /* ELIMINA */
+
+      const elimina =
+        document.createElement(
+          "button"
+        );
+
+
+      elimina.className =
+        "danger";
+
+
+      elimina.textContent =
+        "🗑️";
+
+
+      elimina.title =
+        "Elimina";
+
+
+      elimina.onclick =
+        function(){
+
+          eliminaLibro(
+            indice
+          );
+
+        };
+
+
+      pulsanti.appendChild(
+        lettura
+      );
+
+
+      pulsanti.appendChild(
+        modifica
+      );
+
+
+      pulsanti.appendChild(
+        elimina
+      );
+
+
+      row.appendChild(
+        immagine
+      );
+
+
+      row.appendChild(
+        info
+      );
+
+
+      row.appendChild(
+        pulsanti
+      );
+
+
+      lista.appendChild(
+        row
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   MODIFICA
+========================= */
+
+function modificaLibro(indice){
+
+  const libri =
+    leggiLibri();
+
+
+  const libro =
+    libri[indice];
+
+
+  if(!libro){
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "titolo"
+  ).value =
+    libro.titolo;
+
+
+  document.getElementById(
+    "categoria"
+  ).value =
+    libro.categoria;
+
+
+  document.getElementById(
+    "stato"
+  ).value =
+    libro.stato;
+
+
+  const copertina =
+    localStorage.getItem(
+      chiaveCopertina(
+        libro.titolo
+      )
+    )
+    ||
+    libro.copertina
+    ||
+    "";
+
+
+  document.getElementById(
+    "copertinaManuale"
+  ).value =
+    copertina;
+
+
+  copertinaScelta =
+    copertina;
+
+
+  mostraAnteprima(
+    document.getElementById(
+      "anteprimaAggiunta"
+    ),
+    copertina
+  );
+
+
+  indiceModifica =
+    indice;
+
+
+  document.getElementById(
+    "pulsanteSalvaLibro"
+  ).textContent =
+    "💾 Salva modifica";
+
+
+  window.scrollTo({
+
+    top:0,
+
+    behavior:"smooth"
+
+  });
+
+}
+
+
+/* =========================
+   ELIMINA
+========================= */
+
+function eliminaLibro(indice){
+
+  const libri =
+    leggiLibri();
+
+
+  const libro =
+    libri[indice];
+
+
+  if(!libro){
+
+    return;
+
+  }
+
+
+  const conferma =
+    confirm(
+      'Vuoi eliminare "'
+      +
+      libro.titolo
+      +
+      '"?'
+    );
+
+
+  if(!conferma){
+
+    return;
+
+  }
+
+
+  const letturaAttuale =
+    leggiLetturaAttuale();
+
+
+  if(
+    letturaAttuale
+    &&
+    normalizza(
+      letturaAttuale.titolo
+    )
+    ===
+    normalizza(
+      libro.titolo
+    )
+  ){
+
+    localStorage.removeItem(
+      "letturaAttuale"
+    );
+
+  }
+
+
+  libri.splice(
+    indice,
+    1
+  );
+
+
+  salvaLibri(
+    libri
+  );
+
+
+  mostraListaLibri();
+
+}
+
+
+/* AVVIO */
+
+mostraListaLibri();
+
+
+</script>
+
+</body>
+</html>

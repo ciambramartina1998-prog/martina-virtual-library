@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fantasy Romance - Martina's Virtual Library</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  padding:12px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  color:#4E3524;
+
+  background:
+    linear-gradient(
+      rgba(48,40,31,.15),
+      rgba(48,40,31,.20)
+    ),
+    url("copertine/sfondo-home.jpg")
+    center/cover fixed no-repeat;
+}
+
+
+/* =========================
+   STRUTTURA
+========================= */
+
+.library-app{
+  width:min(
+    1180px,
+    calc(100vw - 24px)
+  );
+
+  min-height:
+    calc(100vh - 24px);
+
+  margin:0 auto;
+
+  display:grid;
+
+  grid-template-columns:
+    175px
+    minmax(0,1fr)
+    190px;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.26);
+
+  border-radius:28px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  box-shadow:
+    0 22px 55px
+    rgba(55,43,32,.28);
+
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  padding:17px 12px;
+
+  border-right:
+    1px solid
+    rgba(255,255,255,.25);
+
+  background:
+    rgba(247,244,239,.36);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.sidebar-title{
+  margin-bottom:13px;
+
+  text-align:center;
+
+  color:#4E3524;
+
+  font-size:10px;
+
+  font-weight:bold;
+
+  letter-spacing:1.4px;
+}
+
+.sidebar-title::after{
+  content:"── ✦ ──";
+
+  display:block;
+
+  margin-top:8px;
+
+  color:#7A8267;
+
+  font-size:8px;
+}
+
+.nav a{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:5px;
+
+  padding:8px 9px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:12px;
+
+  color:#5A3E2B;
+
+  font-size:10px;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+.nav a:hover{
+  transform:
+    translateX(3px);
+
+  background:
+    rgba(255,255,255,.30);
+
+  border-color:
+    rgba(255,255,255,.38);
+}
+
+.nav a.active{
+  color:#FFFDF8;
+
+  background:
+    rgba(122,130,103,.92);
+
+  border-color:
+    rgba(255,255,255,.30);
+
+  box-shadow:
+    0 6px 15px
+    rgba(65,73,52,.20);
+}
+
+.nav-icon{
+  width:18px;
+
+  text-align:center;
+}
+
+.sidebar-divider{
+  height:1px;
+
+  margin:11px 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(122,130,103,.65),
+      transparent
+    );
+}
+
+.sidebar-decoration{
+  margin-top:17px;
+
+  text-align:center;
+
+  color:#7A8267;
+
+  font-size:14px;
+
+  letter-spacing:5px;
+}
+
+
+/* =========================
+   CENTRO
+========================= */
+
+.main{
+  position:relative;
+
+  min-width:0;
+
+  padding:15px;
+
+  overflow:hidden;
+
+  background:
+    rgba(247,244,239,.16);
+
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+
+.main::before{
+  content:"✦";
+
+  position:absolute;
+
+  top:15px;
+  left:16px;
+
+  color:#7A8267;
+
+  font-size:14px;
+
+  opacity:.75;
+}
+
+.main::after{
+  content:"✦";
+
+  position:absolute;
+
+  top:15px;
+  right:17px;
+
+  color:#7A8267;
+
+  font-size:14px;
+
+  opacity:.75;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  position:relative;
+
+  margin-bottom:14px;
+
+  padding:4px 10px 7px;
+
+  text-align:center;
+}
+
+.script-title{
+  margin:0;
+
+  color:#536047;
+
+  font-size:
+    clamp(
+      34px,
+      4vw,
+      47px
+    );
+
+  line-height:1;
+
+  font-style:italic;
+
+  font-weight:normal;
+
+  letter-spacing:-1px;
+
+  text-shadow:
+    0 2px 5px
+    rgba(255,255,255,.70);
+}
+
+.virtual-title{
+  margin-top:4px;
+
+  color:#4E3524;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  letter-spacing:5px;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.65);
+}
+
+.header-decoration{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  width:min(
+    300px,
+    75%
+  );
+
+  margin:
+    7px auto 4px;
+
+  color:#7A8267;
+}
+
+.header-decoration::before,
+.header-decoration::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(122,130,103,.75)
+    );
+}
+
+.header-decoration::after{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(122,130,103,.75),
+      transparent
+    );
+}
+
+.subtitle{
+  margin:0;
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-weight:600;
+
+  font-style:italic;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.75);
+}
+
+
+/* =========================
+   TOTALE
+========================= */
+
+.total-card{
+  position:relative;
+
+  width:min(
+    430px,
+    100%
+  );
+
+  margin:
+    0 auto 12px;
+
+  overflow:hidden;
+
+  padding:10px 8px;
+
+  border:
+    1px solid
+    rgba(91,101,75,.28);
+
+  border-radius:17px;
+
+  background:#D9DCCB;
+
+  text-align:center;
+
+  box-shadow:
+    0 9px 21px
+    rgba(69,66,47,.15);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
+}
+
+.total-card::before{
+  content:"";
+
+  position:absolute;
+
+  width:65px;
+  height:130px;
+
+  top:-40px;
+  left:-90px;
+
+  transform:rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,250,225,.48),
+      transparent
+    );
+
+  transition:left .65s ease;
+}
+
+.total-card:hover{
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 13px 27px
+    rgba(69,66,47,.21);
+
+  filter:
+    brightness(1.025);
+}
+
+.total-card:hover::before{
+  left:120%;
+}
+
+.total-small{
+  position:relative;
+
+  z-index:2;
+
+  color:#59604C;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:1px;
+}
+
+.total-number{
+  position:relative;
+
+  z-index:2;
+
+  margin:1px 0;
+
+  color:#4E5A43;
+
+  font-size:29px;
+
+  font-weight:bold;
+}
+
+.total-text{
+  position:relative;
+
+  z-index:2;
+
+  color:#5A634F;
+
+  font-size:8px;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.cards{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:11px;
+
+  max-width:620px;
+
+  margin:0 auto;
+}
+
+.card{
+  position:relative;
+
+  min-height:140px;
+
+  overflow:hidden;
+
+  padding:
+    17px 10px 43px;
+
+  border:
+    1px solid
+    rgba(93,102,77,.28);
+
+  border-radius:19px;
+
+  color:#4E3524;
+
+  text-align:center;
+
+  text-decoration:none;
+
+  box-shadow:
+    0 8px 20px
+    rgba(67,61,45,.14);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease,
+    border-color .25s ease;
+}
+
+.card::before{
+  content:"";
+
+  position:absolute;
+
+  width:75px;
+  height:155px;
+
+  top:-35px;
+  left:-115px;
+
+  transform:
+    rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,250,225,.44),
+      transparent
+    );
+
+  transition:
+    left .65s ease;
+}
+
+.card::after{
+  content:"✦";
+
+  position:absolute;
+
+  top:8px;
+  right:10px;
+
+  color:#687258;
+
+  font-size:10px;
+
+  opacity:.65;
+}
+
+.card:hover{
+  transform:
+    translateY(-5px);
+
+  border-color:
+    rgba(91,101,75,.42);
+
+  box-shadow:
+    0 14px 28px
+    rgba(67,61,45,.21),
+    inset 0 0 24px
+    rgba(255,248,220,.16);
+
+  filter:
+    brightness(1.035);
+}
+
+.card:hover::before{
+  left:135%;
+}
+
+.card-icon{
+  position:relative;
+
+  z-index:2;
+
+  margin-bottom:9px;
+
+  color:#626D53;
+
+  font-size:28px;
+}
+
+.card h2{
+  position:relative;
+
+  z-index:2;
+
+  margin:0;
+
+  color:#4F583F;
+
+  font-size:13px;
+
+  letter-spacing:1.4px;
+}
+
+.card p{
+  position:relative;
+
+  z-index:2;
+
+  margin:
+    6px 0 0;
+
+  color:#5A4938;
+
+  font-size:8px;
+}
+
+.card-bottom{
+  position:absolute;
+
+  z-index:3;
+
+  left:9px;
+  right:9px;
+  bottom:9px;
+
+  padding:5px;
+
+  border:
+    1px solid
+    rgba(100,108,84,.20);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,250,241,.34);
+
+  color:#505A43;
+
+  font-size:8px;
+
+  font-weight:bold;
+}
+
+
+/* =========================
+   COLORI CARDS
+========================= */
+
+.card-read{
+  background:#D3D8C4;
+}
+
+.card-tbr{
+  background:#C4CCB4;
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+.home-button{
+  display:block;
+
+  width:fit-content;
+
+  margin:
+    11px auto 4px;
+
+  padding:
+    7px 14px;
+
+  border:
+    1px solid
+    rgba(93,102,77,.25);
+
+  border-radius:13px;
+
+  background:
+    rgba(247,244,239,.62);
+
+  color:#4E3524;
+
+  text-decoration:none;
+
+  font-size:9px;
+
+  font-weight:bold;
+
+  box-shadow:
+    0 6px 16px
+    rgba(55,39,32,.10);
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.home-button:hover{
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(255,250,242,.80);
+
+  box-shadow:
+    0 10px 21px
+    rgba(55,39,32,.16);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  margin-top:9px;
+
+  text-align:center;
+
+  color:#536047;
+
+  font-size:12px;
+
+  font-style:italic;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.75);
+}
+
+
+/* =========================
+   DESTRA
+========================= */
+
+.rightbar{
+  padding:13px 10px;
+
+  border-left:
+    1px solid
+    rgba(255,255,255,.24);
+
+  background:
+    rgba(122,130,103,.36);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.widget{
+  position:relative;
+
+  overflow:hidden;
+
+  margin-bottom:9px;
+
+  padding:11px 9px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.28);
+
+  border-radius:16px;
+
+  background:
+    rgba(247,244,239,.28);
+
+  text-align:center;
+
+  box-shadow:
+    0 8px 20px
+    rgba(55,55,39,.13);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.widget:hover{
+  transform:
+    translateY(-3px);
+
+  background:
+    rgba(247,244,239,.40);
+
+  box-shadow:
+    0 12px 26px
+    rgba(55,55,39,.19);
+}
+
+.widget h3{
+  position:relative;
+
+  z-index:2;
+
+  margin:
+    0 0 6px;
+
+  color:#46503C;
+
+  font-size:8px;
+
+  letter-spacing:.9px;
+}
+
+.big-number{
+  position:relative;
+
+  z-index:2;
+
+  margin:
+    3px 0;
+
+  color:#45513B;
+
+  font-size:27px;
+
+  font-weight:bold;
+}
+
+.small-text{
+  position:relative;
+
+  z-index:2;
+
+  color:#4F493C;
+
+  font-size:8px;
+
+  font-weight:600;
+}
+
+.progress{
+  position:relative;
+
+  z-index:2;
+
+  height:8px;
+
+  margin-top:7px;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(84,94,70,.28);
+
+  border-radius:20px;
+
+  background:
+    rgba(245,240,228,.55);
+}
+
+.progress-inner{
+  width:0%;
+
+  height:100%;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #687258,
+      #7A8267,
+      #9AA487
+    );
+
+  transition:
+    width .35s ease;
+}
+
+.progress-percent{
+  position:relative;
+
+  z-index:2;
+
+  margin-top:4px;
+
+  color:#4F493C;
+
+  font-size:8px;
+
+  font-weight:bold;
+}
+
+.quote-symbol{
+  position:relative;
+
+  z-index:2;
+
+  height:15px;
+
+  color:#59644C;
+
+  font-size:19px;
+}
+
+.quote{
+  position:relative;
+
+  z-index:2;
+
+  margin:
+    4px 0 6px;
+
+  color:#4E4437;
+
+  font-size:9px;
+
+  font-style:italic;
+
+  line-height:1.5;
+}
+
+.flower{
+  position:relative;
+
+  z-index:2;
+
+  font-size:18px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+  .library-app{
+    grid-template-columns:
+      150px
+      1fr;
+  }
+
+  .rightbar{
+    grid-column:
+      1/-1;
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+
+    gap:8px;
+
+    border-left:none;
+
+    border-top:
+      1px solid
+      rgba(255,255,255,.24);
+  }
+
+  .widget{
+    margin:0;
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  body{
+    padding:6px;
+  }
+
+  .library-app{
+    display:block;
+
+    width:100%;
+  }
+
+  .sidebar{
+    border-right:none;
+
+    border-bottom:
+      1px solid
+      rgba(255,255,255,.24);
+  }
+
+  .nav{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:4px;
+  }
+
+  .nav a{
+    margin:0;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .rightbar{
+    display:block;
+  }
+
+  .widget{
+    margin-bottom:8px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="library-app">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+☰ LA MIA LIBRERIA
+</div>
+
+<nav class="nav">
+
+<a href="index.html">
+<span class="nav-icon">⌂</span>
+Home
+</a>
+
+<a href="letti.html">
+<span class="nav-icon">📚</span>
+I miei libri
+</a>
+
+<a href="da-leggere.html">
+<span class="nav-icon">♡</span>
+Da leggere
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="dark-romance.html">
+<span class="nav-icon">🥀</span>
+Dark Romance
+</a>
+
+<a
+href="fantasy-romance.html"
+class="active"
+>
+<span class="nav-icon">✦</span>
+Fantasy Romance
+</a>
+
+<a href="romance.html">
+<span class="nav-icon">🌷</span>
+Romance
+</a>
+
+<a href="manga.html">
+<span class="nav-icon">🌸</span>
+Manga
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="aggiungi-libro.html">
+<span class="nav-icon">✎</span>
+Gestisci libri
+</a>
+
+</nav>
+
+<div class="sidebar-decoration">
+✦ 🌿 ✦
+</div>
+
+</aside>
+
+
+<!-- CENTRO -->
+
+<main class="main">
+
+
+<header class="header">
+
+<h1 class="script-title">
+Martina's
+</h1>
+
+<div class="virtual-title">
+FANTASY ROMANCE
+</div>
+
+<div class="header-decoration">
+✦
+</div>
+
+<p class="subtitle">
+Magia, regni incantati e amori impossibili.
+</p>
+
+</header>
+
+
+<div class="total-card">
+
+<div class="total-small">
+✦ LA MIA COLLEZIONE FANTASY ROMANCE
+</div>
+
+<div
+class="total-number"
+id="totaleFantasy"
+>
+0
+</div>
+
+<div class="total-text">
+libri
+</div>
+
+</div>
+
+
+<section class="cards">
+
+
+<a
+class="card card-read"
+href="fantasy-romance-letti.html"
+>
+
+<div class="card-icon">
+✓
+</div>
+
+<h2>
+LETTI
+</h2>
+
+<p>
+Fantasy Romance già letti
+</p>
+
+<div
+class="card-bottom"
+id="testoLetti"
+>
+0 libri · Apri
+</div>
+
+</a>
+
+
+<a
+class="card card-tbr"
+href="fantasy-romance-da-leggere.html"
+>
+
+<div class="card-icon">
+♡
+</div>
+
+<h2>
+DA LEGGERE
+</h2>
+
+<p>
+Le prossime avventure magiche
+</p>
+
+<div
+class="card-bottom"
+id="testoDaLeggere"
+>
+0 libri · Apri
+</div>
+
+</a>
+
+
+</section>
+
+
+<a
+href="index.html"
+class="home-button"
+>
+⌂ Torna alla Home
+</a>
+
+
+<div class="footer">
+✦ “Tra magia e pagine, tutto può accadere.” ✦
+</div>
+
+
+</main>
+
+
+<!-- DESTRA -->
+
+<aside class="rightbar">
+
+
+<div class="widget">
+
+<h3>
+FANTASY ROMANCE ✦
+</h3>
+
+<div class="small-text">
+Totale libri
+</div>
+
+<div
+class="big-number"
+id="numeroFantasy"
+>
+0
+</div>
+
+<div
+class="small-text"
+id="dettaglioFantasy"
+>
+0 letti · 0 da leggere
+</div>
+
+<div class="progress">
+
+<div
+class="progress-inner"
+id="barraFantasy"
+></div>
+
+</div>
+
+<div
+class="progress-percent"
+id="percentualeFantasy"
+>
+0%
+</div>
+
+</div>
+
+
+<div class="widget">
+
+<div class="quote-symbol">
+“
+</div>
+
+<p class="quote">
+Ogni regno nasconde<br>
+una nuova storia.
+</p>
+
+<div class="flower">
+🌿 ✦
+</div>
+
+</div>
+
+
+</aside>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   LIBRI SALVATI
+========================= */
+
+let libriSalvati=[];
+
+try{
+
+  libriSalvati=
+    JSON.parse(
+      localStorage.getItem(
+        "mieiLibriAggiunti"
+      )
+      ||
+      "[]"
+    );
+
+}
+catch{
+
+  libriSalvati=[];
+
+}
+
+
+/* =========================
+   NORMALIZZA
+========================= */
+
+function normalizza(titolo){
+
+  return String(titolo || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+
+}
+
+
+/* =========================
+   LIBRI BASE
+========================= */
+
+/*
+   La tua libreria Fantasy Romance
+   contiene:
+
+   58 libri letti
+   27 libri da leggere
+
+   I titoli gestiti manualmente
+   possono cambiare stato o categoria
+   senza creare doppioni.
+*/
+
+
+const fantasyBaseLetti=58;
+
+const libriBaseDaLeggere=[
+
+  "All This Twisted Glory",
+  "Belladonna",
+  "Bitten. La regina dei lupi",
+  "Caldo come il fuoco",
+  "Dark Rise — Vol. 1",
+  "Dove bruciano gli oceani",
+  "Dragonfall",
+  "Half a Soul",
+  "I peccati degli dei",
+  "Il re degli elfi",
+  "Il re dei draghi",
+  "Il Trono di Ghiaccio — La lama dell'assassina",
+  "L'immortale",
+  "L'incanto della biblioteca d'agrifoglio",
+  "La casa di terra e sangue",
+  "La maschera di No",
+  "Little Thieves",
+  "Mate",
+  "Quicksilver",
+  "Rose in Chains",
+  "Sun of Blood and Ruin",
+  "These Infinite Threads",
+  "This Woven Kingdom",
+  "Thershing day",
+  "Una condanna di ombre e spine",
+  "Una danza con il Principe delle Fate",
+  "When the Moon Hatched"
+
+];
+
+
+/* =========================
+   MAPPA GESTITI
+========================= */
+
+const gestitiPerTitolo=
+  new Map();
+
+
+libriSalvati.forEach(
+  function(libro){
+
+    const nome=
+      normalizza(
+        libro.titolo
+      );
+
+    if(nome){
+
+      gestitiPerTitolo.set(
+        nome,
+        libro
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   DA LEGGERE
+========================= */
+
+const daLeggereSet=
+  new Set();
+
+
+libriBaseDaLeggere.forEach(
+  function(titolo){
+
+    const nome=
+      normalizza(
+        titolo
+      );
+
+
+    const gestito=
+      gestitiPerTitolo.get(
+        nome
+      );
+
+
+    if(!gestito){
+
+      daLeggereSet.add(
+        nome
+      );
+
+      return;
+
+    }
+
+
+    if(
+      gestito.categoria ===
+      "Fantasy Romance"
+      &&
+      gestito.stato ===
+      "Da leggere"
+    ){
+
+      daLeggereSet.add(
+        nome
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   LIBRI AGGIUNTI / GESTITI
+========================= */
+
+let nuoviFantasyLetti=0;
+
+
+gestitiPerTitolo.forEach(
+  function(libro,nome){
+
+    const eraBaseDaLeggere=
+      libriBaseDaLeggere.some(
+        function(titolo){
+
+          return (
+            normalizza(titolo)
+            ===
+            nome
+          );
+
+        }
+      );
+
+
+    if(
+      libro.categoria ===
+      "Fantasy Romance"
+      &&
+      libro.stato ===
+      "Da leggere"
+    ){
+
+      daLeggereSet.add(
+        nome
+      );
+
+    }
+
+
+    /*
+       Se non appartiene ai 27
+       titoli base da leggere ed è
+       segnato come letto, viene
+       considerato un libro Fantasy
+       gestito/aggiunto.
+    */
+
+    if(
+      libro.categoria ===
+      "Fantasy Romance"
+      &&
+      libro.stato ===
+      "Letto"
+      &&
+      !eraBaseDaLeggere
+    ){
+
+      nuoviFantasyLetti++;
+
+    }
+
+  }
+);
+
+
+/* =========================
+   BASE SPOSTATI A LETTO
+========================= */
+
+let baseSpostatiALetto=0;
+
+
+libriBaseDaLeggere.forEach(
+  function(titolo){
+
+    const gestito=
+      gestitiPerTitolo.get(
+        normalizza(titolo)
+      );
+
+
+    if(
+      gestito
+      &&
+      gestito.categoria ===
+      "Fantasy Romance"
+      &&
+      gestito.stato ===
+      "Letto"
+    ){
+
+      baseSpostatiALetto++;
+
+    }
+
+  }
+);
+
+
+/* =========================
+   TOTALI
+========================= */
+
+const fantasyLetti=
+  fantasyBaseLetti
+  +
+  nuoviFantasyLetti
+  +
+  baseSpostatiALetto;
+
+
+const fantasyDaLeggere=
+  daLeggereSet.size;
+
+
+const totaleFantasy=
+  fantasyLetti
+  +
+  fantasyDaLeggere;
+
+
+/* =========================
+   AGGIORNA PAGINA
+========================= */
+
+document.getElementById(
+  "totaleFantasy"
+).textContent=
+  totaleFantasy;
+
+
+document.getElementById(
+  "numeroFantasy"
+).textContent=
+  totaleFantasy;
+
+
+document.getElementById(
+  "dettaglioFantasy"
+).textContent=
+  fantasyLetti
+  +
+  " letti · "
+  +
+  fantasyDaLeggere
+  +
+  " da leggere";
+
+
+document.getElementById(
+  "testoLetti"
+).textContent=
+  fantasyLetti
+  +
+  " libri · Apri";
+
+
+document.getElementById(
+  "testoDaLeggere"
+).textContent=
+  fantasyDaLeggere
+  +
+  " libri · Apri";
+
+
+/* =========================
+   PROGRESSO
+========================= */
+
+let percentuale=0;
+
+
+if(
+  totaleFantasy > 0
+){
+
+  percentuale=
+    Math.round(
+      (
+        fantasyLetti
+        /
+        totaleFantasy
+      )
+      *
+      100
+    );
+
+}
+
+
+document.getElementById(
+  "barraFantasy"
+).style.width=
+  percentuale
+  +
+  "%";
+
+
+document.getElementById(
+  "percentualeFantasy"
+).textContent=
+  percentuale
+  +
+  "%";
+
+
+</script>
+
+</body>
+</html>

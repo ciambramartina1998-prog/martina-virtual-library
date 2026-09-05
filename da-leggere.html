@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Da leggere - Martina's Virtual Library</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  padding:12px;
+  font-family:Georgia,"Times New Roman",serif;
+  color:#4E3524;
+
+  background:
+    linear-gradient(
+      rgba(48,40,31,.15),
+      rgba(48,40,31,.20)
+    ),
+    url("copertine/sfondo-home.jpg")
+    center/cover fixed no-repeat;
+}
+
+
+/* =========================
+   STRUTTURA
+========================= */
+
+.library-app{
+  width:min(1180px,calc(100vw - 24px));
+  min-height:calc(100vh - 24px);
+
+  margin:0 auto;
+
+  display:grid;
+  grid-template-columns:
+    175px
+    minmax(0,1fr)
+    190px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.30);
+  border-radius:28px;
+
+  background:rgba(255,255,255,.08);
+
+  box-shadow:
+    0 22px 55px
+    rgba(42,34,25,.27);
+
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+
+/* =========================
+   MENU SINISTRO
+========================= */
+
+.sidebar{
+  padding:17px 12px;
+
+  border-right:
+    1px solid
+    rgba(255,255,255,.30);
+
+  background:
+    rgba(247,244,239,.36);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.sidebar-title{
+  text-align:center;
+  margin-bottom:13px;
+
+  color:#4E3524;
+
+  font-size:10px;
+  font-weight:bold;
+
+  letter-spacing:1.4px;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.70);
+}
+
+.sidebar-title::after{
+  content:"── ❦ ──";
+
+  display:block;
+
+  margin-top:8px;
+
+  color:#5A3E2B;
+
+  font-size:8px;
+}
+
+.nav a{
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:5px;
+
+  padding:8px 9px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:12px;
+
+  color:#4E3524;
+
+  font-size:10px;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+.nav a:hover{
+  transform:translateX(3px);
+
+  background:
+    rgba(255,255,255,.42);
+
+  border-color:
+    rgba(255,255,255,.50);
+
+  box-shadow:
+    0 5px 14px
+    rgba(92,65,42,.10);
+}
+
+.nav a.active{
+  color:white;
+
+  background:
+    rgba(198,139,89,.90);
+
+  border-color:
+    rgba(255,255,255,.35);
+
+  box-shadow:
+    0 5px 12px
+    rgba(90,62,39,.18);
+}
+
+.nav-icon{
+  width:18px;
+  text-align:center;
+}
+
+.sidebar-divider{
+  height:1px;
+
+  margin:11px 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(198,139,89,.86),
+      transparent
+    );
+}
+
+.sidebar-decoration{
+  margin-top:17px;
+
+  text-align:center;
+
+  color:#5A3E2B;
+
+  font-size:14px;
+
+  letter-spacing:5px;
+}
+
+
+/* =========================
+   CENTRO
+========================= */
+
+.main{
+  position:relative;
+
+  min-width:0;
+
+  padding:
+    14px 15px 15px;
+
+  background:
+    rgba(247,244,239,.16);
+
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+  position:relative;
+
+  text-align:center;
+
+  margin-bottom:12px;
+}
+
+.header::before,
+.header::after{
+  content:"❦";
+
+  position:absolute;
+
+  top:8px;
+
+  color:#5A3E2B;
+
+  opacity:.78;
+}
+
+.header::before{
+  left:3px;
+}
+
+.header::after{
+  right:3px;
+  transform:scaleX(-1);
+}
+
+.script-title{
+  margin:0;
+
+  color:#4E3524;
+
+  font-size:
+    clamp(
+      32px,
+      4vw,
+      46px
+    );
+
+  line-height:1;
+
+  font-weight:normal;
+  font-style:italic;
+
+  letter-spacing:-1px;
+
+  text-shadow:
+    0 2px 4px
+    rgba(255,255,255,.76);
+}
+
+.virtual-title{
+  margin-top:4px;
+
+  color:#4E3524;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  letter-spacing:4px;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.74);
+}
+
+.header-decoration{
+  display:flex;
+  align-items:center;
+
+  width:min(300px,75%);
+
+  margin:
+    7px auto 4px;
+
+  gap:8px;
+
+  color:#5A3E2B;
+}
+
+.header-decoration::before,
+.header-decoration::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:
+    rgba(198,139,89,.82);
+}
+
+.subtitle{
+  margin:0;
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-weight:600;
+  font-style:italic;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.80);
+}
+
+
+/* =========================
+   RICERCA + CONTATORE
+========================= */
+
+.top-row{
+  width:min(720px,100%);
+
+  margin:
+    0 auto 12px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+}
+
+.search-box{
+  flex:1;
+
+  display:flex;
+
+  align-items:center;
+
+  padding:
+    5px 10px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.38);
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.38);
+
+  box-shadow:
+    0 7px 18px
+    rgba(68,52,39,.10);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  transition:
+    background .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.search-box:focus-within{
+  background:
+    rgba(255,255,255,.52);
+
+  border-color:
+    rgba(255,255,255,.64);
+
+  box-shadow:
+    0 10px 24px
+    rgba(96,70,46,.16),
+    inset 0 0 18px
+    rgba(255,243,211,.10);
+}
+
+.search-box span{
+  margin-right:6px;
+
+  color:#5A3E2B;
+
+  font-size:12px;
+}
+
+.search-box input{
+  width:100%;
+
+  padding:
+    5px 2px;
+
+  border:none;
+  outline:none;
+
+  background:transparent;
+
+  color:#4E3524;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:9px;
+
+  font-weight:600;
+}
+
+.search-box input::placeholder{
+  color:#5A3E2B;
+
+  opacity:.78;
+}
+
+.counter-box{
+  position:relative;
+
+  min-width:94px;
+
+  overflow:hidden;
+
+  padding:
+    7px 10px;
+
+  border:
+    1px solid
+    rgba(116,83,54,.26);
+
+  border-radius:16px;
+
+  background:#E8D6C2;
+
+  color:#4E3524;
+
+  text-align:center;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  box-shadow:
+    0 7px 18px
+    rgba(83,60,40,.13);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
+}
+
+.counter-box::before{
+  content:"";
+
+  position:absolute;
+
+  width:50px;
+  height:100px;
+
+  top:-25px;
+  left:-70px;
+
+  transform:rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,250,225,.38),
+      transparent
+    );
+
+  transition:left .55s ease;
+}
+
+.counter-box:hover{
+  transform:translateY(-3px);
+
+  box-shadow:
+    0 11px 24px
+    rgba(83,60,40,.20);
+
+  filter:brightness(1.035);
+}
+
+.counter-box:hover::before{
+  left:120%;
+}
+
+.counter-box strong{
+  position:relative;
+
+  z-index:2;
+
+  display:block;
+
+  color:#4E3524;
+
+  font-size:18px;
+}
+
+
+/* =========================
+   GRIGLIA LIBRI
+========================= */
+
+.book-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      5,
+      minmax(0,1fr)
+    );
+
+  gap:10px;
+}
+
+.book-card{
+  position:relative;
+
+  overflow:hidden;
+
+  padding:6px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.38);
+
+  border-radius:14px;
+
+  background:
+    rgba(255,255,255,.36);
+
+  box-shadow:
+    0 7px 18px
+    rgba(60,46,35,.10);
+
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.book-card:hover{
+  transform:
+    translateY(-5px);
+
+  background:
+    rgba(255,255,255,.50);
+
+  border-color:
+    rgba(255,255,255,.64);
+
+  box-shadow:
+    0 13px 27px
+    rgba(75,54,38,.18),
+    inset 0 0 20px
+    rgba(255,244,215,.10);
+}
+
+.book-cover{
+  width:100%;
+
+  aspect-ratio:
+    2 / 3;
+
+  overflow:hidden;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border:
+    1px solid
+    rgba(102,74,53,.15);
+
+  border-radius:9px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #E8D6C2,
+      #F2E7DC
+    );
+
+  color:#7A5A43;
+
+  font-size:23px;
+
+  box-shadow:
+    0 4px 10px
+    rgba(54,40,30,.12);
+}
+
+.book-cover img{
+  width:100%;
+  height:100%;
+
+  display:block;
+
+  object-fit:cover;
+}
+
+.book-info{
+  min-height:45px;
+
+  padding:
+    6px 2px 2px;
+
+  text-align:center;
+}
+
+.book-title{
+  color:#4E3524;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  line-height:1.28;
+}
+
+.book-status{
+  display:inline-block;
+
+  margin-top:4px;
+
+  padding:
+    2px 6px;
+
+  border-radius:20px;
+
+  background:
+    rgba(198,139,89,.20);
+
+  color:#7A5033;
+
+  font-size:7px;
+
+  font-weight:bold;
+}
+
+
+/* =========================
+   NESSUN LIBRO
+========================= */
+
+.empty-message{
+  display:none;
+
+  max-width:420px;
+
+  margin:
+    30px auto;
+
+  padding:20px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.42);
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.43);
+
+  color:#4E3524;
+
+  text-align:center;
+
+  font-size:10px;
+
+  font-weight:600;
+
+  box-shadow:
+    0 8px 20px
+    rgba(61,48,37,.10);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+
+/* =========================
+   COLONNA DESTRA
+========================= */
+
+.rightbar{
+  padding:
+    13px 10px;
+
+  border-left:
+    1px solid
+    rgba(255,255,255,.30);
+
+  background:
+    rgba(247,244,239,.30);
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.widget{
+  position:relative;
+
+  overflow:hidden;
+
+  margin-bottom:9px;
+
+  padding:
+    11px 9px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.36);
+
+  border-radius:16px;
+
+  background:
+    rgba(255,255,255,.37);
+
+  color:#4E3524;
+
+  text-align:center;
+
+  box-shadow:
+    0 8px 20px
+    rgba(62,50,38,.11);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.widget:hover{
+  transform:
+    translateY(-3px);
+
+  background:
+    rgba(255,255,255,.49);
+
+  box-shadow:
+    0 12px 26px
+    rgba(89,64,44,.16);
+}
+
+.widget h3{
+  margin:
+    0 0 6px;
+
+  color:#4E3524;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:.9px;
+}
+
+.big-number{
+  margin:
+    3px 0;
+
+  color:#4E3524;
+
+  font-size:27px;
+
+  font-weight:bold;
+}
+
+.small-text{
+  color:#5A3E2B;
+
+  font-size:8px;
+
+  font-weight:600;
+}
+
+.quote-symbol{
+  height:16px;
+
+  color:#C68B59;
+
+  font-size:20px;
+}
+
+.quote{
+  margin:
+    4px 0 6px;
+
+  color:#5A3E2B;
+
+  font-size:9px;
+
+  font-weight:600;
+
+  font-style:italic;
+
+  line-height:1.5;
+}
+
+.flower{
+  font-size:18px;
+}
+
+.footer-note{
+  margin-top:11px;
+
+  text-align:center;
+
+  color:#5A3E2B;
+
+  font-size:7px;
+
+  font-style:italic;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+  .book-grid{
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(0,1fr)
+      );
+  }
+
+}
+
+
+@media(max-width:900px){
+
+  .library-app{
+    grid-template-columns:
+      150px
+      1fr;
+  }
+
+  .rightbar{
+    grid-column:
+      1/-1;
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+
+    gap:8px;
+
+    border-left:none;
+
+    border-top:
+      1px solid
+      rgba(255,255,255,.30);
+  }
+
+  .widget{
+    margin:0;
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  body{
+    padding:6px;
+  }
+
+  .library-app{
+    width:100%;
+    display:block;
+  }
+
+  .sidebar{
+    border-right:none;
+
+    border-bottom:
+      1px solid
+      rgba(255,255,255,.30);
+  }
+
+  .nav{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:4px;
+  }
+
+  .nav a{
+    margin:0;
+  }
+
+  .book-grid{
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0,1fr)
+      );
+  }
+
+  .rightbar{
+    display:block;
+  }
+
+  .widget{
+    margin-bottom:8px;
+  }
+
+}
+
+
+@media(max-width:430px){
+
+  .book-grid{
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="library-app">
+
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+☰ LA MIA LIBRERIA
+</div>
+
+<nav class="nav">
+
+<a href="index.html">
+<span class="nav-icon">⌂</span>
+Home
+</a>
+
+<a href="letti.html">
+<span class="nav-icon">📚</span>
+I miei libri
+</a>
+
+<a
+href="da-leggere.html"
+class="active"
+>
+<span class="nav-icon">♡</span>
+Da leggere
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="dark-romance.html">
+<span class="nav-icon">🥀</span>
+Dark Romance
+</a>
+
+<a href="fantasy-romance.html">
+<span class="nav-icon">✦</span>
+Fantasy Romance
+</a>
+
+<a href="romance.html">
+<span class="nav-icon">🌷</span>
+Romance
+</a>
+
+<a href="manga.html">
+<span class="nav-icon">🌸</span>
+Manga
+</a>
+
+<div class="sidebar-divider"></div>
+
+<a href="aggiungi-libro.html">
+<span class="nav-icon">✎</span>
+Gestisci libri
+</a>
+
+</nav>
+
+<div class="sidebar-decoration">
+❦ 🌿 ❦
+</div>
+
+</aside>
+
+
+<main class="main">
+
+
+<header class="header">
+
+<h1 class="script-title">
+Martina's
+</h1>
+
+<div class="virtual-title">
+DA LEGGERE
+</div>
+
+<div class="header-decoration">
+♡
+</div>
+
+<p class="subtitle">
+Tutte le prossime storie che mi aspettano.
+</p>
+
+</header>
+
+
+<div class="top-row">
+
+<div class="search-box">
+
+<span>
+⌕
+</span>
+
+<input
+type="text"
+id="cercaLibro"
+placeholder="Cerca tra i libri da leggere..."
+>
+
+</div>
+
+
+<div class="counter-box">
+
+<strong id="totaleDaLeggere">
+0
+</strong>
+
+DA LEGGERE
+
+</div>
+
+</div>
+
+
+<div
+class="empty-message"
+id="messaggioVuoto"
+>
+📖 Nessun libro da leggere trovato.
+</div>
+
+
+<section
+class="book-grid"
+id="listaLibri"
+></section>
+
+
+</main>
+
+
+<aside class="rightbar">
+
+
+<div class="widget">
+
+<h3>
+♡ DA LEGGERE
+</h3>
+
+<div class="small-text">
+Libri in attesa
+</div>
+
+<div
+class="big-number"
+id="numeroDaLeggere"
+>
+0
+</div>
+
+<div class="small-text">
+prossime avventure
+</div>
+
+</div>
+
+
+<div class="widget">
+
+<div class="quote-symbol">
+“
+</div>
+
+<p class="quote">
+La prossima storia<br>
+mi sta già aspettando.
+</p>
+
+<div class="flower">
+🌿
+</div>
+
+</div>
+
+
+<div class="widget">
+
+<h3>
+PROSSIMA LETTURA
+</h3>
+
+<div class="flower">
+☕
+</div>
+
+<p class="quote">
+Ogni libro in attesa<br>
+è una porta ancora da aprire.
+</p>
+
+</div>
+
+
+<div class="footer-note">
+❦ Martina's Virtual Library ❦
+</div>
+
+
+</aside>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   NORMALIZZA
+========================= */
+
+function normalizza(titolo){
+
+  return String(titolo || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+
+}
+
+
+function chiaveCopertina(titolo){
+
+  return (
+    "cover_" +
+    normalizza(titolo)
+  );
+
+}
+
+
+function trovaCopertina(titolo){
+
+  return (
+    localStorage.getItem(
+      chiaveCopertina(titolo)
+    )
+    ||
+    ""
+  );
+
+}
+
+
+/* =========================
+   LIBRI BASE
+========================= */
+
+const libriBase=[];
+
+
+/* DARK ROMANCE */
+
+[
+"Butcher & Blackbird",
+"Deadly Sins: Sloth",
+"God of Pain",
+"Le bugie che rubiamo",
+"Leather & Lark",
+"Scythe & Sparrow",
+"Taste Me. Fuoco e oscurità"
+].forEach(
+  function(titolo){
+
+    libriBase.push(titolo);
+
+  }
+);
+
+
+/* FANTASY ROMANCE */
+
+[
+"All This Twisted Glory",
+"Belladonna",
+"Bitten. La regina dei lupi",
+"Caldo come il fuoco",
+"Dark Rise — Vol. 1",
+"Dove bruciano gli oceani",
+"Dragonfall",
+"Half a Soul",
+"I peccati degli dei",
+"Il re degli elfi",
+"Il re dei draghi",
+"Il Trono di Ghiaccio — La lama dell'assassina",
+"L'immortale",
+"L'incanto della biblioteca d'agrifoglio",
+"La casa di terra e sangue",
+"La maschera di No",
+"Little Thieves",
+"Mate",
+"Quicksilver",
+"Rose in Chains",
+"Sun of Blood and Ruin",
+"These Infinite Threads",
+"This Woven Kingdom",
+"Thershing day",
+"Una condanna di ombre e spine",
+"Una danza con il Principe delle Fate",
+"When the Moon Hatched"
+].forEach(
+  function(titolo){
+
+    libriBase.push(titolo);
+
+  }
+);
+
+
+/* ROMANCE */
+
+[
+"Amori e segreti al Pumpkin Spice Café",
+"Before Dawn",
+"Caught Up. Incastro vincente",
+"Cinder & Ella",
+"Delay of Game",
+"Due cuori in affitto",
+"Facciamo finta che mi ami",
+"Fireflies & Lullabies",
+"Icebreaker",
+"Innamorati pazzi",
+"La bella e il campione",
+"Le regole del gioco",
+"Lessons in Faking",
+"Mai seguire le regole",
+"Prova a prendermi",
+"The Bad Boy's Deal",
+"The Fine Print. Un accordo per due",
+"Wild Card. Cuore selvaggio",
+"Wild Side. Spirito selvaggio"
+].forEach(
+  function(titolo){
+
+    libriBase.push(titolo);
+
+  }
+);
+
+
+/* =========================
+   LIBRI SALVATI
+========================= */
+
+let libriSalvati=[];
+
+
+try{
+
+  libriSalvati=
+    JSON.parse(
+      localStorage.getItem(
+        "mieiLibriAggiunti"
+      )
+      ||
+      "[]"
+    );
+
+}
+
+catch{
+
+  libriSalvati=[];
+
+}
+
+
+/* =========================
+   VERSIONI GESTITE
+========================= */
+
+const gestitiPerTitolo=
+  new Map();
+
+
+libriSalvati.forEach(
+  function(libro){
+
+    const nome=
+      normalizza(
+        libro.titolo
+      );
+
+
+    if(nome){
+
+      gestitiPerTitolo.set(
+        nome,
+        libro
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   LISTA FINALE
+========================= */
+
+const libriFinali=
+  new Map();
+
+
+libriBase.forEach(
+  function(titolo){
+
+    const nome=
+      normalizza(
+        titolo
+      );
+
+
+    const versioneGestita=
+      gestitiPerTitolo.get(
+        nome
+      );
+
+
+    if(
+      !versioneGestita
+    ){
+
+      libriFinali.set(
+        nome,
+        {
+          titolo: titolo,
+          copertina: ""
+        }
+      );
+
+      return;
+
+    }
+
+
+    if(
+      versioneGestita.stato
+      ===
+      "Da leggere"
+    ){
+
+      libriFinali.set(
+        nome,
+        {
+          titolo:
+            versioneGestita.titolo,
+
+          copertina:
+            versioneGestita.copertina
+            ||
+            ""
+        }
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   NUOVI LIBRI DA LEGGERE
+========================= */
+
+libriSalvati.forEach(
+  function(libro){
+
+    if(
+      libro.stato
+      !==
+      "Da leggere"
+    ){
+
+      return;
+
+    }
+
+
+    const nome=
+      normalizza(
+        libro.titolo
+      );
+
+
+    if(!nome){
+
+      return;
+
+    }
+
+
+    libriFinali.set(
+      nome,
+      {
+        titolo:
+          libro.titolo,
+
+        copertina:
+          libro.copertina
+          ||
+          ""
+      }
+    );
+
+  }
+);
+
+
+/* =========================
+   CREA CARD
+========================= */
+
+const lista=
+  document.getElementById(
+    "listaLibri"
+  );
+
+
+const messaggioVuoto=
+  document.getElementById(
+    "messaggioVuoto"
+  );
+
+
+function creaScheda(libro){
+
+  const scheda=
+    document.createElement(
+      "div"
+    );
+
+
+  scheda.className=
+    "book-card";
+
+
+  const cover=
+    document.createElement(
+      "div"
+    );
+
+
+  cover.className=
+    "book-cover";
+
+
+  let copertina=
+    trovaCopertina(
+      libro.titolo
+    );
+
+
+  if(
+    !copertina
+    &&
+    libro.copertina
+  ){
+
+    copertina=
+      libro.copertina;
+
+  }
+
+
+  if(copertina){
+
+    const img=
+      document.createElement(
+        "img"
+      );
+
+
+    img.src=
+      copertina;
+
+
+    img.alt=
+      libro.titolo;
+
+
+    img.loading=
+      "lazy";
+
+
+    img.addEventListener(
+      "error",
+      function(){
+
+        cover.innerHTML=
+          "♡";
+
+      }
+    );
+
+
+    cover.appendChild(img);
+
+  }
+
+  else{
+
+    cover.textContent=
+      "♡";
+
+  }
+
+
+  const info=
+    document.createElement(
+      "div"
+    );
+
+
+  info.className=
+    "book-info";
+
+
+  const titolo=
+    document.createElement(
+      "div"
+    );
+
+
+  titolo.className=
+    "book-title";
+
+
+  titolo.textContent=
+    libro.titolo;
+
+
+  const stato=
+    document.createElement(
+      "div"
+    );
+
+
+  stato.className=
+    "book-status";
+
+
+  stato.textContent=
+    "♡ Da leggere";
+
+
+  info.appendChild(titolo);
+
+  info.appendChild(stato);
+
+  scheda.appendChild(cover);
+
+  scheda.appendChild(info);
+
+  lista.appendChild(scheda);
+
+}
+
+
+/* =========================
+   MOSTRA LIBRI
+========================= */
+
+const elencoFinale=
+  Array.from(
+    libriFinali.values()
+  );
+
+
+elencoFinale.forEach(
+  function(libro){
+
+    creaScheda(libro);
+
+  }
+);
+
+
+/* =========================
+   CONTATORI
+========================= */
+
+const totale=
+  elencoFinale.length;
+
+
+document.getElementById(
+  "totaleDaLeggere"
+).textContent=
+  totale;
+
+
+document.getElementById(
+  "numeroDaLeggere"
+).textContent=
+  totale;
+
+
+/* =========================
+   LISTA VUOTA
+========================= */
+
+if(
+  totale === 0
+){
+
+  messaggioVuoto.style.display=
+    "block";
+
+}
+
+else{
+
+  messaggioVuoto.style.display=
+    "none";
+
+}
+
+
+/* =========================
+   RICERCA
+========================= */
+
+const input=
+  document.getElementById(
+    "cercaLibro"
+  );
+
+
+input.addEventListener(
+  "input",
+  function(){
+
+    const testo=
+      normalizza(
+        input.value
+      );
+
+
+    const schede=
+      document.querySelectorAll(
+        ".book-card"
+      );
+
+
+    let visibili=0;
+
+
+    schede.forEach(
+      function(scheda){
+
+        const titolo=
+          normalizza(
+            scheda.querySelector(
+              ".book-title"
+            ).textContent
+          );
+
+
+        if(
+          titolo.includes(
+            testo
+          )
+        ){
+
+          scheda.style.display=
+            "";
+
+          visibili++;
+
+        }
+
+        else{
+
+          scheda.style.display=
+            "none";
+
+        }
+
+      }
+    );
+
+
+    if(
+      visibili === 0
+    ){
+
+      messaggioVuoto.style.display=
+        "block";
+
+    }
+
+    else{
+
+      messaggioVuoto.style.display=
+        "none";
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>
