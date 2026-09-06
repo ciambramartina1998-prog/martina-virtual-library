@@ -1034,10 +1034,6 @@ body{
 <div class="library-app">
 
 
-<!-- =========================
-     SIDEBAR
-========================= -->
-
 <aside class="sidebar">
 
 <div class="sidebar-title">
@@ -1101,10 +1097,6 @@ Gestisci libri
 
 </aside>
 
-
-<!-- =========================
-     CENTRO
-========================= -->
 
 <main class="main">
 
@@ -1226,10 +1218,6 @@ class="home-button"
 </main>
 
 
-<!-- =========================
-     DESTRA
-========================= -->
-
 <aside class="rightbar">
 
 
@@ -1306,33 +1294,6 @@ sono quelle che restano.
 
 
 /* =========================
-   RECUPERA LIBRI SALVATI
-========================= */
-
-let libriSalvati=[];
-
-
-try{
-
-  libriSalvati=
-    JSON.parse(
-      localStorage.getItem(
-        "mieiLibriAggiunti"
-      )
-      ||
-      "[]"
-    );
-
-}
-
-catch{
-
-  libriSalvati=[];
-
-}
-
-
-/* =========================
    NORMALIZZA
 ========================= */
 
@@ -1351,7 +1312,7 @@ function normalizza(titolo){
    DA LEGGERE
 ========================= */
 
-const libriBaseDaLeggere=[
+const darkBaseDaLeggere=[
 
   "Butcher & Blackbird",
   "Deadly Sins: Sloth",
@@ -1365,268 +1326,385 @@ const libriBaseDaLeggere=[
 
 
 /* =========================
-   VERSIONE GESTITA
+   CREA LIBRI BASE
 ========================= */
 
-const gestitiPerTitolo=
-  new Map();
+const darkBase=
+  darkBaseDaLeggere.map(
+    function(titolo){
+
+      return{
+        titolo:titolo,
+        categoria:"Dark Romance",
+        stato:"Da leggere"
+      };
+
+    }
+  );
 
 
-libriSalvati.forEach(
-  function(libro){
+/* =========================
+   CALCOLA CONTEGGI CLOUD
+========================= */
 
-    const nome=
-      normalizza(
-        libro.titolo
+function calcolaConteggi(libriCloud){
+
+  const cloudPerTitolo=
+    new Map();
+
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+      ){
+
+        return;
+
+      }
+
+
+      cloudPerTitolo.set(
+        normalizza(
+          libro.titolo
+        ),
+        libro
       );
 
+    }
+  );
 
-    if(nome){
 
-      gestitiPerTitolo.set(
+  const finali=
+    new Map();
+
+
+  /*
+    Inseriamo prima i 7 Dark
+    Romance base da leggere.
+
+    Se uno di questi esiste
+    nel cloud, il cloud decide
+    stato e categoria.
+  */
+
+  darkBase.forEach(
+    function(libroBase){
+
+      const nome=
+        normalizza(
+          libroBase.titolo
+        );
+
+
+      const versioneCloud=
+        cloudPerTitolo.get(
+          nome
+        );
+
+
+      if(versioneCloud){
+
+        finali.set(
+          nome,
+          versioneCloud
+        );
+
+      }
+
+      else{
+
+        finali.set(
+          nome,
+          libroBase
+        );
+
+      }
+
+    }
+  );
+
+
+  /*
+    Aggiungiamo tutti i libri
+    presenti nel cloud.
+
+    I libri aggiunti dal telefono
+    o computer compaiono subito.
+
+    Se il titolo esiste già,
+    viene sostituito e non
+    duplicato.
+  */
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+      ){
+
+        return;
+
+      }
+
+
+      const nome=
+        normalizza(
+          libro.titolo
+        );
+
+
+      if(!nome){
+
+        return;
+
+      }
+
+
+      finali.set(
         nome,
         libro
       );
 
     }
-
-  }
-);
+  );
 
 
-/* =========================
-   CONTATORI
-========================= */
-
-const lettiSet=
-  new Set();
+  let letti=0;
+  let daLeggere=0;
 
 
-const daLeggereSet=
-  new Set();
+  finali.forEach(
+    function(libro){
+
+      if(
+        libro.categoria
+        !==
+        "Dark Romance"
+      ){
+
+        return;
+
+      }
 
 
-/* =========================
-   LIBRI BASE
-========================= */
+      if(
+        libro.stato
+        ===
+        "Letto"
+      ){
 
-libriBaseDaLeggere.forEach(
-  function(titolo){
+        letti++;
 
-    const nome=
-      normalizza(
-        titolo
-      );
+      }
 
 
-    const gestito=
-      gestitiPerTitolo.get(
-        nome
-      );
+      if(
+        libro.stato
+        ===
+        "Da leggere"
+      ){
 
+        daLeggere++;
 
-    if(!gestito){
-
-      daLeggereSet.add(
-        nome
-      );
-
-      return;
+      }
 
     }
+  );
 
 
-    if(
-      gestito.categoria
-      !==
-      "Dark Romance"
-    ){
-
-      return;
-
-    }
-
-
-    if(
-      gestito.stato
-      ===
-      "Letto"
-    ){
-
-      lettiSet.add(
-        nome
-      );
-
-    }
-
-
-    if(
-      gestito.stato
-      ===
-      "Da leggere"
-    ){
-
-      daLeggereSet.add(
-        nome
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================
-   LIBRI SALVATI
-========================= */
-
-gestitiPerTitolo.forEach(
-  function(
-    libro,
-    nome
-  ){
-
-    if(
-      libro.categoria
-      !==
-      "Dark Romance"
-    ){
-
-      return;
-
-    }
-
-
-    if(
-      libro.stato
-      ===
-      "Letto"
-    ){
-
-      lettiSet.add(
-        nome
-      );
-
-    }
-
-
-    if(
-      libro.stato
-      ===
-      "Da leggere"
-    ){
-
-      daLeggereSet.add(
-        nome
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================
-   TOTALI
-========================= */
-
-const darkLetti=
-  lettiSet.size;
-
-
-const darkDaLeggere=
-  daLeggereSet.size;
-
-
-const totaleDark=
-  darkLetti
-  +
-  darkDaLeggere;
-
-
-/* =========================
-   AGGIORNA PAGINA
-========================= */
-
-document.getElementById(
-  "totaleDark"
-).textContent=
-  totaleDark;
-
-
-document.getElementById(
-  "numeroDark"
-).textContent=
-  totaleDark;
-
-
-document.getElementById(
-  "dettaglioDark"
-).textContent=
-  darkLetti
-  +
-  " letti · "
-  +
-  darkDaLeggere
-  +
-  " da leggere";
-
-
-document.getElementById(
-  "testoLetti"
-).textContent=
-  darkLetti
-  +
-  " libri · Apri";
-
-
-document.getElementById(
-  "testoDaLeggere"
-).textContent=
-  darkDaLeggere
-  +
-  " libri · Apri";
-
-
-/* =========================
-   PROGRESSO
-========================= */
-
-let percentuale=0;
-
-
-if(
-  totaleDark > 0
-){
-
-  percentuale=
-    Math.round(
-      (
-        darkLetti
-        /
-        totaleDark
-      )
-      *
-      100
-    );
+  return{
+    letti:letti,
+    daLeggere:daLeggere
+  };
 
 }
 
 
-document.getElementById(
-  "barraDark"
-).style.width=
-  percentuale
-  +
-  "%";
+/* =========================
+   MOSTRA CONTEGGI
+========================= */
+
+function mostraConteggi(
+  darkLetti,
+  darkDaLeggere
+){
+
+  const totaleDark=
+    darkLetti
+    +
+    darkDaLeggere;
 
 
-document.getElementById(
-  "percentualeDark"
-).textContent=
-  percentuale
-  +
-  "%";
+  document.getElementById(
+    "totaleDark"
+  ).textContent=
+    totaleDark;
+
+
+  document.getElementById(
+    "numeroDark"
+  ).textContent=
+    totaleDark;
+
+
+  document.getElementById(
+    "dettaglioDark"
+  ).textContent=
+    darkLetti
+    +
+    " letti · "
+    +
+    darkDaLeggere
+    +
+    " da leggere";
+
+
+  document.getElementById(
+    "testoLetti"
+  ).textContent=
+    darkLetti
+    +
+    " libri · Apri";
+
+
+  document.getElementById(
+    "testoDaLeggere"
+  ).textContent=
+    darkDaLeggere
+    +
+    " libri · Apri";
+
+
+  let percentuale=0;
+
+
+  if(
+    totaleDark>0
+  ){
+
+    percentuale=
+      Math.round(
+        (
+          darkLetti
+          /
+          totaleDark
+        )
+        *
+        100
+      );
+
+  }
+
+
+  document.getElementById(
+    "barraDark"
+  ).style.width=
+    percentuale
+    +
+    "%";
+
+
+  document.getElementById(
+    "percentualeDark"
+  ).textContent=
+    percentuale
+    +
+    "%";
+
+}
+
+
+/* =========================
+   CARICA DAL CLOUD
+========================= */
+
+async function caricaDarkRomance(){
+
+  try{
+
+    const risposta=
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    if(
+      !risposta.ok
+    ){
+
+      throw new Error(
+        "Errore nel caricamento."
+      );
+
+    }
+
+
+    const dati=
+      await risposta.json();
+
+
+    const libriCloud=
+      Array.isArray(
+        dati.libri
+      )
+      ?
+      dati.libri
+      :
+      [];
+
+
+    const conteggi=
+      calcolaConteggi(
+        libriCloud
+      );
+
+
+    mostraConteggi(
+      conteggi.letti,
+      conteggi.daLeggere
+    );
+
+  }
+
+  catch(errore){
+
+    console.error(
+      "Cloud non disponibile:",
+      errore
+    );
+
+
+    /*
+      Se il cloud non risponde,
+      rimangono visibili almeno
+      i 7 Dark Romance base.
+    */
+
+    mostraConteggi(
+      0,
+      darkBaseDaLeggere.length
+    );
+
+  }
+
+}
+
+
+/* =========================
+   AVVIO
+========================= */
+
+caricaDarkRomance();
 
 
 </script>
