@@ -1147,6 +1147,11 @@ un nuovo mondo.
 
 <script>
 
+
+/* =========================
+   NORMALIZZA
+========================= */
+
 function normalizza(titolo){
 
   return String(titolo || "")
@@ -1156,6 +1161,10 @@ function normalizza(titolo){
 
 }
 
+
+/* =========================
+   MANGA BASE LETTI
+========================= */
 
 const mangaBaseLetti=[];
 
@@ -1244,273 +1253,398 @@ mangaBaseLetti.push(
 );
 
 
-let libriSalvati=[];
+/* =========================
+   CREA CONTEGGI CLOUD
+========================= */
+
+function calcolaConteggi(
+  libriCloud
+){
+
+  const cloudPerTitolo=
+    new Map();
 
 
-try{
+  libriCloud.forEach(
+    function(libro){
 
-  libriSalvati=
-    JSON.parse(
-      localStorage.getItem(
-        "mieiLibriAggiunti"
-      )
-      ||
-      "[]"
-    );
+      if(
+        !libro
+        ||
+        !libro.titolo
+      ){
 
-}
+        return;
 
-catch(errore){
-
-  libriSalvati=[];
-
-}
+      }
 
 
-const gestitiPerTitolo=
-  new Map();
-
-
-libriSalvati.forEach(
-  function(libro){
-
-    const nome=
-      normalizza(
-        libro.titolo
-      );
-
-
-    if(nome){
-
-      gestitiPerTitolo.set(
-        nome,
+      cloudPerTitolo.set(
+        normalizza(
+          libro.titolo
+        ),
         libro
       );
 
     }
-
-  }
-);
+  );
 
 
-const mangaLettiSet=
-  new Set();
+  const mangaLettiSet=
+    new Set();
 
 
-const mangaDaLeggereSet=
-  new Set();
+  const mangaDaLeggereSet=
+    new Set();
 
 
-mangaBaseLetti.forEach(
-  function(titolo){
+  /*
+    Partiamo dai Manga base.
 
-    const nome=
-      normalizza(
-        titolo
-      );
+    Se un Manga base non è
+    presente nel cloud rimane
+    Letto.
 
+    Se invece esiste nel cloud,
+    la versione cloud decide
+    categoria e stato.
+  */
 
-    const versioneGestita=
-      gestitiPerTitolo.get(
-        nome
-      );
+  mangaBaseLetti.forEach(
+    function(titolo){
 
-
-    if(!versioneGestita){
-
-      mangaLettiSet.add(
-        nome
-      );
-
-      return;
-
-    }
+      const nome=
+        normalizza(
+          titolo
+        );
 
 
-    if(
-      versioneGestita.categoria
-      !==
-      "Manga"
-    ){
-
-      return;
-
-    }
+      const versioneCloud=
+        cloudPerTitolo.get(
+          nome
+        );
 
 
-    if(
-      versioneGestita.stato
-      ===
-      "Letto"
-    ){
+      if(!versioneCloud){
 
-      mangaLettiSet.add(
-        nome
-      );
+        mangaLettiSet.add(
+          nome
+        );
 
-    }
+        return;
+
+      }
 
 
-    if(
-      versioneGestita.stato
-      ===
-      "Da leggere"
-    ){
+      if(
+        versioneCloud.categoria
+        !==
+        "Manga"
+      ){
 
-      mangaDaLeggereSet.add(
-        nome
-      );
+        return;
 
-    }
-
-  }
-);
+      }
 
 
-libriSalvati.forEach(
-  function(libro){
+      if(
+        versioneCloud.stato
+        ===
+        "Letto"
+      ){
 
-    if(
-      libro.categoria
-      !==
-      "Manga"
-    ){
+        mangaLettiSet.add(
+          nome
+        );
 
-      return;
+      }
+
+
+      if(
+        versioneCloud.stato
+        ===
+        "Da leggere"
+      ){
+
+        mangaDaLeggereSet.add(
+          nome
+        );
+
+      }
 
     }
+  );
 
 
-    const nome=
-      normalizza(
-        libro.titolo
-      );
+  /*
+    Aggiungiamo tutti i Manga
+    presenti nel cloud.
+
+    Questo comprende anche
+    nuovi Manga aggiunti dal
+    telefono o dal computer.
+  */
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+        ||
+        libro.categoria
+        !==
+        "Manga"
+      ){
+
+        return;
+
+      }
 
 
-    if(!nome){
+      const nome=
+        normalizza(
+          libro.titolo
+        );
 
-      return;
+
+      if(!nome){
+
+        return;
+
+      }
+
+
+      if(
+        libro.stato
+        ===
+        "Letto"
+      ){
+
+        mangaDaLeggereSet.delete(
+          nome
+        );
+
+
+        mangaLettiSet.add(
+          nome
+        );
+
+      }
+
+
+      if(
+        libro.stato
+        ===
+        "Da leggere"
+      ){
+
+        mangaLettiSet.delete(
+          nome
+        );
+
+
+        mangaDaLeggereSet.add(
+          nome
+        );
+
+      }
 
     }
+  );
 
 
-    if(
-      libro.stato
-      ===
-      "Letto"
-    ){
+  return {
 
-      mangaDaLeggereSet.delete(
-        nome
-      );
+    letti:
+      mangaLettiSet.size,
 
-      mangaLettiSet.add(
-        nome
-      );
+    daLeggere:
+      mangaDaLeggereSet.size
 
-    }
-
-
-    if(
-      libro.stato
-      ===
-      "Da leggere"
-    ){
-
-      mangaLettiSet.delete(
-        nome
-      );
-
-      mangaDaLeggereSet.add(
-        nome
-      );
-
-    }
-
-  }
-);
-
-
-const mangaLetti=
-  mangaLettiSet.size;
-
-
-const mangaDaLeggere=
-  mangaDaLeggereSet.size;
-
-
-const totaleManga=
-  mangaLetti +
-  mangaDaLeggere;
-
-
-document.getElementById(
-  "totaleManga"
-).textContent=
-  totaleManga;
-
-
-document.getElementById(
-  "numeroManga"
-).textContent=
-  totaleManga;
-
-
-document.getElementById(
-  "dettaglioManga"
-).textContent=
-  mangaLetti +
-  " letti · " +
-  mangaDaLeggere +
-  " da leggere";
-
-
-document.getElementById(
-  "testoLetti"
-).textContent=
-  mangaLetti +
-  " manga · Apri";
-
-
-document.getElementById(
-  "testoDaLeggere"
-).textContent=
-  mangaDaLeggere +
-  " manga · Apri";
-
-
-let percentuale=0;
-
-
-if(
-  totaleManga>0
-){
-
-  percentuale=
-    Math.round(
-      (
-        mangaLetti /
-        totaleManga
-      )
-      *
-      100
-    );
+  };
 
 }
 
 
-document.getElementById(
-  "barraManga"
-).style.width=
-  percentuale +
-  "%";
+/* =========================
+   MOSTRA CONTEGGI
+========================= */
+
+function mostraConteggi(
+  mangaLetti,
+  mangaDaLeggere
+){
+
+  const totaleManga=
+    mangaLetti
+    +
+    mangaDaLeggere;
 
 
-document.getElementById(
-  "percentualeManga"
-).textContent=
-  percentuale +
-  "%";
+  document.getElementById(
+    "totaleManga"
+  ).textContent=
+    totaleManga;
+
+
+  document.getElementById(
+    "numeroManga"
+  ).textContent=
+    totaleManga;
+
+
+  document.getElementById(
+    "dettaglioManga"
+  ).textContent=
+    mangaLetti
+    +
+    " letti · "
+    +
+    mangaDaLeggere
+    +
+    " da leggere";
+
+
+  document.getElementById(
+    "testoLetti"
+  ).textContent=
+    mangaLetti
+    +
+    " manga · Apri";
+
+
+  document.getElementById(
+    "testoDaLeggere"
+  ).textContent=
+    mangaDaLeggere
+    +
+    " manga · Apri";
+
+
+  let percentuale=0;
+
+
+  if(
+    totaleManga>0
+  ){
+
+    percentuale=
+      Math.round(
+        (
+          mangaLetti
+          /
+          totaleManga
+        )
+        *
+        100
+      );
+
+  }
+
+
+  document.getElementById(
+    "barraManga"
+  ).style.width=
+    percentuale
+    +
+    "%";
+
+
+  document.getElementById(
+    "percentualeManga"
+  ).textContent=
+    percentuale
+    +
+    "%";
+
+}
+
+
+/* =========================
+   CARICA DAL CLOUD
+========================= */
+
+async function caricaManga(){
+
+  try{
+
+    const risposta=
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    if(
+      !risposta.ok
+    ){
+
+      throw new Error(
+        "Errore nel caricamento."
+      );
+
+    }
+
+
+    const dati=
+      await risposta.json();
+
+
+    const libriCloud=
+      Array.isArray(
+        dati
+      )
+      ?
+      dati
+      :
+      [];
+
+
+    const conteggi=
+      calcolaConteggi(
+        libriCloud
+      );
+
+
+    mostraConteggi(
+      conteggi.letti,
+      conteggi.daLeggere
+    );
+
+  }
+
+  catch(errore){
+
+    console.error(
+      "Cloud non disponibile:",
+      errore
+    );
+
+
+    /*
+      Se il cloud non risponde,
+      mostriamo comunque
+      i Manga base.
+    */
+
+    mostraConteggi(
+      mangaBaseLetti.length,
+      0
+    );
+
+  }
+
+}
+
+
+/* AVVIO */
+
+caricaManga();
+
 
 </script>
 
