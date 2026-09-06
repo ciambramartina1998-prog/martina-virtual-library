@@ -572,6 +572,31 @@ body{
 }
 
 
+/* VUOTO */
+
+.empty{
+  grid-column:1/-1;
+
+  margin:20px auto;
+
+  padding:20px;
+
+  border:1px solid rgba(255,255,255,.38);
+  border-radius:18px;
+
+  background:rgba(247,244,239,.44);
+
+  color:#6B513F;
+
+  text-align:center;
+
+  font-size:10px;
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+
 /* DESTRA */
 
 .rightbar{
@@ -943,6 +968,8 @@ Ogni volume<br>
 <script>
 
 
+/* NORMALIZZA */
+
 function normalizza(titolo){
 
   return String(titolo || "")
@@ -953,6 +980,8 @@ function normalizza(titolo){
 }
 
 
+/* COPERTINA LOCALE DI RISERVA */
+
 function chiaveCopertina(titolo){
 
   return "cover_" +
@@ -961,7 +990,7 @@ function chiaveCopertina(titolo){
 }
 
 
-function trovaCopertina(titolo){
+function trovaCopertinaLocale(titolo){
 
   return localStorage.getItem(
     chiaveCopertina(titolo)
@@ -970,7 +999,9 @@ function trovaCopertina(titolo){
 }
 
 
-/* LISTA BASE */
+/* =========================
+   74 MANGA BASE
+========================= */
 
 const libriBase=[];
 
@@ -1059,71 +1090,32 @@ libriBase.push(
 );
 
 
-/* LIBRI SALVATI */
+/* =========================
+   CREA CARD
+========================= */
 
-let libriSalvati=[];
+function creaScheda(libro){
 
-
-try{
-
-  libriSalvati=
-    JSON.parse(
-      localStorage.getItem(
-        "mieiLibriAggiunti"
-      )
-      ||
-      "[]"
-    );
-
-}
-
-catch(errore){
-
-  libriSalvati=[];
-
-}
+  const titolo=
+    libro.titolo;
 
 
-/* CONTENITORE */
+  /*
+    Prima usa la copertina
+    sincronizzata nel CLOUD.
 
-const lista=
-  document.getElementById(
-    "listaLibri"
-  );
+    Se non c'è, prova quella
+    locale del dispositivo.
+  */
 
-
-let totaleMostrato=0;
-
-
-const titoliMostrati=
-  new Set();
-
-
-/* CREA CARD */
-
-function creaScheda(
-  titolo,
-  copertina
-){
-
-  const nomeNormalizzato=
-    normalizza(titolo);
-
-
-  if(
-    titoliMostrati.has(
-      nomeNormalizzato
+  const copertina=
+    libro.copertina
+    ||
+    trovaCopertinaLocale(
+      titolo
     )
-  ){
-
-    return;
-
-  }
-
-
-  titoliMostrati.add(
-    nomeNormalizzato
-  );
+    ||
+    "";
 
 
   const scheda=
@@ -1137,7 +1129,9 @@ function creaScheda(
 
 
   scheda.dataset.titolo=
-    nomeNormalizzato;
+    normalizza(
+      titolo
+    );
 
 
   const cover=
@@ -1253,170 +1247,383 @@ function creaScheda(
   );
 
 
-  lista.appendChild(
-    scheda
-  );
-
-
-  totaleMostrato++;
+  return scheda;
 
 }
 
 
-/* LIBRI BASE */
+/* =========================
+   UNISCE BASE + CLOUD
+========================= */
 
-libriBase.forEach(
-  function(titolo){
+function creaListaFinale(libriCloud){
 
-    const nome=
-      normalizza(
-        titolo
+  const mappaCloud=
+    new Map();
+
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+      ){
+
+        return;
+
+      }
+
+
+      mappaCloud.set(
+        normalizza(
+          libro.titolo
+        ),
+        libro
+      );
+
+    }
+  );
+
+
+  const risultato=[];
+
+  const titoliUsati=
+    new Set();
+
+
+  /*
+    MANGA BASE
+
+    Se lo stesso titolo esiste
+    nel cloud, è la versione
+    cloud a decidere categoria,
+    stato e copertina.
+
+    Quindi se un manga viene
+    spostato in "Da leggere"
+    non rimane duplicato qui.
+  */
+
+  libriBase.forEach(
+    function(titoloBase){
+
+      const chiave=
+        normalizza(
+          titoloBase
+        );
+
+
+      const versioneCloud=
+        mappaCloud.get(
+          chiave
+        );
+
+
+      if(versioneCloud){
+
+        if(
+          versioneCloud.categoria
+            === "Manga"
+          &&
+          versioneCloud.stato
+            === "Letto"
+        ){
+
+          risultato.push({
+
+            ...versioneCloud,
+
+            titolo:
+              versioneCloud.titolo
+              ||
+              titoloBase
+
+          });
+
+
+          titoliUsati.add(
+            chiave
+          );
+
+        }
+
+
+        return;
+
+      }
+
+
+      risultato.push({
+
+        id:null,
+
+        titolo:
+          titoloBase,
+
+        categoria:
+          "Manga",
+
+        stato:
+          "Letto",
+
+        copertina:
+          "",
+
+        lettura_attuale:
+          false
+
+      });
+
+
+      titoliUsati.add(
+        chiave
+      );
+
+    }
+  );
+
+
+  /*
+    NUOVI MANGA LETTI
+    PRESENTI SOLO NEL CLOUD
+  */
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+        ||
+        libro.categoria
+          !== "Manga"
+        ||
+        libro.stato
+          !== "Letto"
+      ){
+
+        return;
+
+      }
+
+
+      const chiave=
+        normalizza(
+          libro.titolo
+        );
+
+
+      if(
+        titoliUsati.has(
+          chiave
+        )
+      ){
+
+        return;
+
+      }
+
+
+      risultato.push(
+        libro
       );
 
 
-    const versioneGestita=
-      libriSalvati.find(
-        function(libro){
+      titoliUsati.add(
+        chiave
+      );
 
-          return (
-            normalizza(
-              libro.titolo
-            )
-            ===
-            nome
-          );
+    }
+  );
 
+
+  return risultato;
+
+}
+
+
+/* =========================
+   MOSTRA LIBRI
+========================= */
+
+function mostraLibri(libri){
+
+  const lista=
+    document.getElementById(
+      "listaLibri"
+    );
+
+
+  lista.innerHTML=
+    "";
+
+
+  libri.forEach(
+    function(libro){
+
+      lista.appendChild(
+        creaScheda(
+          libro
+        )
+      );
+
+    }
+  );
+
+
+  const totale=
+    libri.length;
+
+
+  document.getElementById(
+    "numeroLibri"
+  ).textContent=
+    totale;
+
+
+  document.getElementById(
+    "numeroManga"
+  ).textContent=
+    totale;
+
+
+  if(totale===0){
+
+    const vuoto=
+      document.createElement(
+        "div"
+      );
+
+
+    vuoto.className=
+      "empty";
+
+
+    vuoto.textContent=
+      "🌸 Nessun manga letto.";
+
+
+    lista.appendChild(
+      vuoto
+    );
+
+  }
+
+}
+
+
+/* =========================
+   CARICA DAL CLOUD
+========================= */
+
+async function caricaLibri(){
+
+  try{
+
+    const risposta=
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
         }
       );
 
 
     if(
-      versioneGestita
-      &&
-      (
-        versioneGestita.categoria
-        !==
-        "Manga"
-        ||
-        versioneGestita.stato
-        !==
-        "Letto"
-      )
+      !risposta.ok
     ){
 
-      return;
+      throw new Error(
+        "Errore nel caricamento dei manga."
+      );
 
     }
 
 
-    let copertina=
-      trovaCopertina(
-        titolo
+    const dati=
+      await risposta.json();
+
+
+    const libriCloud=
+      Array.isArray(
+        dati
+      )
+      ?
+      dati
+      :
+      [];
+
+
+    const listaFinale=
+      creaListaFinale(
+        libriCloud
       );
 
 
-    if(
-      !copertina
-      &&
-      versioneGestita
-      &&
-      versioneGestita.copertina
-    ){
-
-      copertina=
-        versioneGestita.copertina;
-
-    }
-
-
-    creaScheda(
-      titolo,
-      copertina
+    mostraLibri(
+      listaFinale
     );
 
   }
-);
+
+  catch(errore){
+
+    console.error(
+      "Cloud non disponibile:",
+      errore
+    );
 
 
-/* NUOVI MANGA LETTI */
+    /*
+      Se il cloud non risponde,
+      mostra comunque i
+      74 manga base.
+    */
 
-libriSalvati.forEach(
-  function(libro){
+    const libriEmergenza=
+      libriBase.map(
+        function(titolo){
 
-    if(
-      libro.categoria
-      !==
-      "Manga"
-      ||
-      libro.stato
-      !==
-      "Letto"
-    ){
+          return {
 
-      return;
+            id:null,
 
-    }
+            titolo:
+              titolo,
 
+            categoria:
+              "Manga",
 
-    const nome=
-      normalizza(
-        libro.titolo
+            stato:
+              "Letto",
+
+            copertina:
+              "",
+
+            lettura_attuale:
+              false
+
+          };
+
+        }
       );
 
 
-    if(
-      titoliMostrati.has(
-        nome
-      )
-    ){
-
-      return;
-
-    }
-
-
-    let copertina=
-      trovaCopertina(
-        libro.titolo
-      );
-
-
-    if(
-      !copertina
-      &&
-      libro.copertina
-    ){
-
-      copertina=
-        libro.copertina;
-
-    }
-
-
-    creaScheda(
-      libro.titolo,
-      copertina
+    mostraLibri(
+      libriEmergenza
     );
 
   }
-);
+
+}
 
 
-/* CONTATORI */
-
-document.getElementById(
-  "numeroLibri"
-).textContent=
-  totaleMostrato;
-
-
-document.getElementById(
-  "numeroManga"
-).textContent=
-  totaleMostrato;
-
-
-/* RICERCA */
+/* =========================
+   RICERCA
+========================= */
 
 const input=
   document.getElementById(
@@ -1453,6 +1660,11 @@ input.addEventListener(
 
   }
 );
+
+
+/* AVVIO */
+
+caricaLibri();
 
 
 </script>
