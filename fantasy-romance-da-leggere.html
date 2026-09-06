@@ -2,7 +2,6 @@
 <html lang="it">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -74,11 +73,8 @@ body{
 
 .sidebar-title{
   margin-bottom:13px;
-
   text-align:center;
-
   color:#4E3524;
-
   font-size:10px;
   font-weight:bold;
   letter-spacing:1.4px;
@@ -86,33 +82,22 @@ body{
 
 .sidebar-title::after{
   content:"── ✦ ──";
-
   display:block;
-
   margin-top:8px;
-
   color:#7A8267;
-
   font-size:8px;
 }
 
 .nav a{
   display:flex;
   align-items:center;
-
   gap:8px;
-
   margin-bottom:5px;
-
   padding:8px 9px;
-
   border:1px solid transparent;
   border-radius:12px;
-
   color:#5A3E2B;
-
   font-size:10px;
-
   text-decoration:none;
 
   transition:
@@ -124,19 +109,14 @@ body{
 
 .nav a:hover{
   transform:translateX(3px);
-
   background:rgba(255,255,255,.30);
-
   border-color:rgba(255,255,255,.38);
 }
 
 .nav a.active{
   color:#FFFDF8;
-
   background:rgba(122,130,103,.92);
-
   border-color:rgba(255,255,255,.30);
-
   box-shadow:0 6px 15px rgba(65,73,52,.20);
 }
 
@@ -147,7 +127,6 @@ body{
 
 .sidebar-divider{
   height:1px;
-
   margin:11px 5px;
 
   background:
@@ -161,13 +140,9 @@ body{
 
 .sidebar-decoration{
   margin-top:17px;
-
   text-align:center;
-
   color:#7A8267;
-
   font-size:14px;
-
   letter-spacing:5px;
 }
 
@@ -176,11 +151,8 @@ body{
 
 .main{
   position:relative;
-
   min-width:0;
-
   padding:15px;
-
   background:rgba(247,244,239,.16);
 
   backdrop-filter:blur(5px);
@@ -189,31 +161,21 @@ body{
 
 .main::before{
   content:"✦";
-
   position:absolute;
-
   top:15px;
   left:16px;
-
   color:#7A8267;
-
   font-size:14px;
-
   opacity:.75;
 }
 
 .main::after{
   content:"✦";
-
   position:absolute;
-
   top:15px;
   right:17px;
-
   color:#7A8267;
-
   font-size:14px;
-
   opacity:.75;
 }
 
@@ -222,75 +184,52 @@ body{
 
 .header{
   margin-bottom:12px;
-
   padding:3px 10px 5px;
-
   text-align:center;
 }
 
 .script-title{
   margin:0;
-
   color:#536047;
-
   font-size:40px;
-
   line-height:1;
-
   font-style:italic;
   font-weight:normal;
-
   text-shadow:0 2px 5px rgba(255,255,255,.70);
 }
 
 .virtual-title{
   margin-top:4px;
-
   color:#4E3524;
-
   font-size:13px;
-
   font-weight:bold;
-
   letter-spacing:4px;
-
   text-shadow:0 1px 2px rgba(255,255,255,.65);
 }
 
 .header-line{
   display:flex;
   align-items:center;
-
   gap:8px;
-
   width:min(280px,75%);
-
   margin:7px auto 4px;
-
   color:#7A8267;
 }
 
 .header-line::before,
 .header-line::after{
   content:"";
-
   flex:1;
-
   height:1px;
-
   background:rgba(122,130,103,.70);
 }
 
 .subtitle{
   margin:0;
-
   color:#5A3E2B;
-
   font-size:9px;
-
   font-weight:600;
   font-style:italic;
-
   text-shadow:0 1px 2px rgba(255,255,255,.75);
 }
 
@@ -300,33 +239,22 @@ body{
 .topbar{
   display:flex;
   align-items:center;
-
   gap:8px;
-
   margin-bottom:12px;
 }
 
 .search-box{
   flex:1;
-
   display:flex;
   align-items:center;
-
   padding:5px 10px;
-
   border:1px solid rgba(255,255,255,.38);
   border-radius:18px;
-
   background:rgba(255,255,255,.38);
-
   box-shadow:0 7px 18px rgba(68,52,39,.10);
 
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
-
-  transition:
-    background .25s ease,
-    box-shadow .25s ease;
 }
 
 .search-box:focus-within{
@@ -339,28 +267,19 @@ body{
 
 .search-icon{
   margin-right:6px;
-
   color:#657055;
-
   font-size:12px;
 }
 
 .search{
   width:100%;
-
   padding:5px 2px;
-
   border:none;
   outline:none;
-
   background:transparent;
-
   color:#4E3524;
-
   font-family:Georgia,"Times New Roman",serif;
-
   font-size:9px;
-
   font-weight:600;
 }
 
@@ -371,21 +290,14 @@ body{
 
 .back{
   padding:8px 11px;
-
   border:1px solid rgba(93,102,77,.25);
   border-radius:14px;
-
   background:#C4CCB4;
-
   color:#4F583F;
-
   font-size:9px;
   font-weight:bold;
-
   text-decoration:none;
-
   white-space:nowrap;
-
   box-shadow:0 6px 15px rgba(57,50,35,.12);
 
   transition:
@@ -396,9 +308,7 @@ body{
 
 .back:hover{
   transform:translateY(-2px);
-
   box-shadow:0 10px 20px rgba(57,50,35,.18);
-
   filter:brightness(1.03);
 }
 
@@ -407,9 +317,7 @@ body{
 
 .book-grid{
   display:grid;
-
   grid-template-columns:repeat(5,minmax(0,1fr));
-
   gap:10px;
 }
 
@@ -418,16 +326,11 @@ body{
 
 .book-card{
   position:relative;
-
   overflow:hidden;
-
   padding:6px;
-
   border:1px solid rgba(255,255,255,.38);
   border-radius:14px;
-
   background:rgba(247,244,239,.38);
-
   box-shadow:0 7px 18px rgba(55,48,34,.13);
 
   backdrop-filter:blur(9px);
@@ -442,9 +345,7 @@ body{
 
 .book-card:hover{
   transform:translateY(-5px);
-
   background:rgba(247,244,239,.57);
-
   border-color:rgba(255,255,255,.60);
 
   box-shadow:
@@ -457,9 +358,7 @@ body{
 
 .book-cover{
   width:100%;
-
   aspect-ratio:2/3;
-
   overflow:hidden;
 
   display:flex;
@@ -477,18 +376,14 @@ body{
     );
 
   color:#536047;
-
   text-align:center;
-
   box-shadow:0 4px 10px rgba(54,50,34,.13);
 }
 
 .book-cover img{
   width:100%;
   height:100%;
-
   display:block;
-
   object-fit:cover;
 }
 
@@ -498,33 +393,24 @@ body{
 .placeholder{
   width:100%;
   height:100%;
-
   display:flex;
   flex-direction:column;
-
   align-items:center;
   justify-content:center;
-
   padding:8px;
-
   color:#536047;
-
   text-align:center;
 }
 
 .placeholder-icon{
   margin-bottom:7px;
-
   font-size:22px;
 }
 
 .placeholder-title{
   font-size:8px;
-
   line-height:1.3;
-
   text-transform:uppercase;
-
   letter-spacing:.5px;
 }
 
@@ -533,39 +419,26 @@ body{
 
 .book-info{
   min-height:45px;
-
   padding:6px 2px 2px;
-
   text-align:center;
 }
 
 .book-title{
   margin:0;
-
   color:#4E3524;
-
   font-size:8px;
-
   font-weight:bold;
-
   line-height:1.28;
 }
 
 .book-status{
   display:inline-block;
-
   margin:4px 0 0;
-
   padding:2px 6px;
-
   border-radius:20px;
-
   background:rgba(122,130,103,.18);
-
   color:#536047;
-
   font-size:7px;
-
   font-weight:bold;
 }
 
@@ -574,26 +447,16 @@ body{
 
 .empty{
   grid-column:1/-1;
-
   max-width:430px;
-
   margin:25px auto;
-
   padding:22px;
-
   border:1px solid rgba(255,255,255,.38);
   border-radius:18px;
-
   background:rgba(247,244,239,.45);
-
   color:#4E3524;
-
   text-align:center;
-
   font-size:10px;
-
   line-height:1.7;
-
   box-shadow:0 9px 22px rgba(55,48,34,.13);
 
   backdrop-filter:blur(10px);
@@ -605,9 +468,7 @@ body{
 
 .rightbar{
   padding:13px 10px;
-
   border-left:1px solid rgba(255,255,255,.24);
-
   background:rgba(122,130,103,.36);
 
   backdrop-filter:blur(12px);
@@ -616,16 +477,11 @@ body{
 
 .widget{
   margin-bottom:9px;
-
   padding:11px 9px;
-
   border:1px solid rgba(255,255,255,.28);
   border-radius:16px;
-
   background:rgba(247,244,239,.28);
-
   text-align:center;
-
   box-shadow:0 8px 20px rgba(55,55,39,.13);
 
   backdrop-filter:blur(10px);
@@ -639,57 +495,41 @@ body{
 
 .widget:hover{
   transform:translateY(-3px);
-
   background:rgba(247,244,239,.40);
-
   box-shadow:0 12px 26px rgba(55,55,39,.19);
 }
 
 .widget h3{
   margin:0 0 6px;
-
   color:#46503C;
-
   font-size:8px;
-
   letter-spacing:.9px;
 }
 
 .big-number{
   margin:3px 0;
-
   color:#45513B;
-
   font-size:28px;
-
   font-weight:bold;
 }
 
 .small-text{
   color:#4F493C;
-
   font-size:8px;
-
   font-weight:600;
 }
 
 .quote-symbol{
   height:15px;
-
   color:#59644C;
-
   font-size:19px;
 }
 
 .quote{
   margin:4px 0 6px;
-
   color:#4E4437;
-
   font-size:9px;
-
   font-style:italic;
-
   line-height:1.5;
 }
 
@@ -716,15 +556,10 @@ body{
 
   .rightbar{
     grid-column:1/-1;
-
     display:grid;
-
     grid-template-columns:repeat(2,1fr);
-
     gap:8px;
-
     border-left:none;
-
     border-top:1px solid rgba(255,255,255,.24);
   }
 
@@ -742,23 +577,18 @@ body{
 
   .library-app{
     display:block;
-
     width:100%;
   }
 
   .sidebar{
     border-right:none;
-
     border-bottom:1px solid rgba(255,255,255,.24);
   }
 
   .nav{
     display:flex;
-
     flex-wrap:wrap;
-
     justify-content:center;
-
     gap:4px;
   }
 
@@ -789,7 +619,6 @@ body{
 }
 
 </style>
-
 </head>
 
 
@@ -830,10 +659,7 @@ Da leggere
 Dark Romance
 </a>
 
-<a
-href="fantasy-romance.html"
-class="active"
->
+<a href="fantasy-romance.html" class="active">
 <span class="nav-icon">✦</span>
 Fantasy Romance
 </a>
@@ -906,22 +732,14 @@ placeholder="Cerca tra i Fantasy Romance da leggere..."
 
 </div>
 
-
-<a
-href="fantasy-romance.html"
-class="back"
->
+<a href="fantasy-romance.html" class="back">
 ← Fantasy Romance
 </a>
 
 </div>
 
 
-<section
-class="book-grid"
-id="listaLibri"
-></section>
-
+<section class="book-grid" id="listaLibri"></section>
 
 </main>
 
@@ -940,10 +758,7 @@ id="listaLibri"
 Da leggere
 </div>
 
-<div
-class="big-number"
-id="numeroLibri"
->
+<div class="big-number" id="numeroLibri">
 0
 </div>
 
@@ -991,17 +806,15 @@ function normalizza(titolo){
 }
 
 
-/* COPERTINE */
+/* COPERTINA LOCALE DI RISERVA */
 
 function chiaveCopertina(titolo){
 
-  return "cover_" +
-    normalizza(titolo);
+  return "cover_" + normalizza(titolo);
 
 }
 
-
-function trovaCopertina(titolo){
+function trovaCopertinaLocale(titolo){
 
   return localStorage.getItem(
     chiaveCopertina(titolo)
@@ -1011,7 +824,7 @@ function trovaCopertina(titolo){
 
 
 /* =========================
-   27 LIBRI DA LEGGERE
+   27 LIBRI BASE
 ========================= */
 
 const libriBase=[
@@ -1047,45 +860,14 @@ const libriBase=[
 ];
 
 
-/* LIBRI SALVATI */
-
-let libriSalvati=[];
-
-
-const dati=
-  localStorage.getItem(
-    "mieiLibriAggiunti"
-  );
-
-
-if(dati){
-
-  try{
-
-    libriSalvati=
-      JSON.parse(dati);
-
-  }
-
-  catch{
-
-    libriSalvati=[];
-
-  }
-
-}
-
-
 /* PLACEHOLDER */
 
-function creaPlaceholder(
-  contenitore,
-  titolo
-){
+function creaPlaceholder(contenitore,titolo){
+
+  contenitore.innerHTML="";
 
   const placeholder=
     document.createElement("div");
-
 
   placeholder.className=
     "placeholder";
@@ -1094,10 +876,8 @@ function creaPlaceholder(
   const icona=
     document.createElement("div");
 
-
   icona.className=
     "placeholder-icon";
-
 
   icona.textContent=
     "✦";
@@ -1106,46 +886,49 @@ function creaPlaceholder(
   const nome=
     document.createElement("div");
 
-
   nome.className=
     "placeholder-title";
-
 
   nome.textContent=
     titolo;
 
 
-  placeholder.appendChild(
-    icona
-  );
+  placeholder.appendChild(icona);
+  placeholder.appendChild(nome);
 
-
-  placeholder.appendChild(
-    nome
-  );
-
-
-  contenitore.appendChild(
-    placeholder
-  );
+  contenitore.appendChild(placeholder);
 
 }
 
 
 /* CREA SCHEDA */
 
-function creaScheda(
-  titolo,
-  copertina
-){
+function creaScheda(libro){
+
+  const titolo=
+    libro.titolo;
+
+  /*
+    Prima usa la copertina
+    salvata nel CLOUD.
+
+    Solo se manca, prova quella
+    locale del dispositivo.
+  */
+
+  const copertina=
+    libro.copertina
+    ||
+    trovaCopertinaLocale(titolo)
+    ||
+    "";
+
 
   const scheda=
     document.createElement("div");
 
-
   scheda.className=
     "book-card";
-
 
   scheda.dataset.titolo=
     normalizza(titolo);
@@ -1153,7 +936,6 @@ function creaScheda(
 
   const cover=
     document.createElement("div");
-
 
   cover.className=
     "book-cover";
@@ -1164,24 +946,17 @@ function creaScheda(
     const immagine=
       document.createElement("img");
 
-
     immagine.src=
       copertina;
-
 
     immagine.alt=
       titolo;
 
-
     immagine.loading=
       "lazy";
 
-
     immagine.onerror=
       function(){
-
-        cover.innerHTML="";
-
 
         creaPlaceholder(
           cover,
@@ -1189,7 +964,6 @@ function creaScheda(
         );
 
       };
-
 
     cover.appendChild(
       immagine
@@ -1210,7 +984,6 @@ function creaScheda(
   const info=
     document.createElement("div");
 
-
   info.className=
     "book-info";
 
@@ -1218,10 +991,8 @@ function creaScheda(
   const nome=
     document.createElement("h3");
 
-
   nome.className=
     "book-title";
-
 
   nome.textContent=
     titolo;
@@ -1230,240 +1001,349 @@ function creaScheda(
   const stato=
     document.createElement("p");
 
-
   stato.className=
     "book-status";
-
 
   stato.textContent=
     "♡ Da leggere";
 
 
-  info.appendChild(
-    nome
-  );
+  info.appendChild(nome);
+  info.appendChild(stato);
 
-
-  info.appendChild(
-    stato
-  );
-
-
-  scheda.appendChild(
-    cover
-  );
-
-
-  scheda.appendChild(
-    info
-  );
-
+  scheda.appendChild(cover);
+  scheda.appendChild(info);
 
   return scheda;
 
 }
 
 
-/* MOSTRA LIBRI */
+/* =========================
+   UNISCE BASE + CLOUD
+========================= */
 
-const lista=
-  document.getElementById(
-    "listaLibri"
+function creaListaFinale(libriCloud){
+
+  const mappaCloud=
+    new Map();
+
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+      ){
+        return;
+      }
+
+      mappaCloud.set(
+        normalizza(libro.titolo),
+        libro
+      );
+
+    }
   );
 
 
-let totaleMostrato=0;
+  const risultato=[];
+
+  const titoliUsati=
+    new Set();
 
 
-/* LIBRI BASE */
+  /*
+    LIBRI BASE
 
-libriBase.forEach(
-  function(titolo){
+    Se il libro esiste nel cloud,
+    la versione cloud decide
+    categoria, stato e copertina.
 
-    const nome=
-      normalizza(titolo);
+    Se è stato spostato in Letto
+    o in un'altra categoria,
+    non compare più qui.
+  */
+
+  libriBase.forEach(
+    function(titoloBase){
+
+      const chiave=
+        normalizza(titoloBase);
+
+      const versioneCloud=
+        mappaCloud.get(chiave);
 
 
-    const versioneGestita=
-      libriSalvati.find(
-        function(libro){
+      if(versioneCloud){
 
-          return (
-            normalizza(
-              libro.titolo
-            )
-            ===
-            nome
-          );
+        if(
+          versioneCloud.categoria
+            === "Fantasy Romance"
+          &&
+          versioneCloud.stato
+            === "Da leggere"
+        ){
+
+          risultato.push({
+            ...versioneCloud,
+            titolo:
+              versioneCloud.titolo
+              || titoloBase
+          });
+
+          titoliUsati.add(chiave);
 
         }
-      );
+
+        return;
+
+      }
 
 
-    /*
-       Se il libro è stato modificato
-       e non è più Fantasy Romance
-       Da leggere, non compare qui.
-    */
+      risultato.push({
 
-    if(
-      versioneGestita
-      &&
-      (
-        versioneGestita.categoria
+        id:null,
+
+        titolo:
+          titoloBase,
+
+        categoria:
+          "Fantasy Romance",
+
+        stato:
+          "Da leggere",
+
+        copertina:
+          "",
+
+        lettura_attuale:
+          false
+
+      });
+
+      titoliUsati.add(chiave);
+
+    }
+  );
+
+
+  /*
+    NUOVI LIBRI AGGIUNTI
+    DIRETTAMENTE NEL CLOUD
+  */
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+        ||
+        libro.categoria
           !== "Fantasy Romance"
         ||
-        versioneGestita.stato
+        libro.stato
           !== "Da leggere"
-      )
-    ){
+      ){
 
-      return;
+        return;
 
-    }
+      }
 
 
-    let copertina=
-      trovaCopertina(
-        titolo
+      const chiave=
+        normalizza(
+          libro.titolo
+        );
+
+
+      if(
+        titoliUsati.has(chiave)
+      ){
+
+        return;
+
+      }
+
+
+      risultato.push(
+        libro
       );
 
-
-    if(
-      !copertina
-      &&
-      versioneGestita
-      &&
-      versioneGestita.copertina
-    ){
-
-      copertina=
-        versioneGestita.copertina;
-
-    }
-
-
-    lista.appendChild(
-
-      creaScheda(
-        titolo,
-        copertina
-      )
-
-    );
-
-
-    totaleMostrato++;
-
-  }
-);
-
-
-/* NUOVI LIBRI AGGIUNTI */
-
-libriSalvati.forEach(
-  function(libro){
-
-    if(
-      libro.categoria
-        !== "Fantasy Romance"
-      ||
-      libro.stato
-        !== "Da leggere"
-    ){
-
-      return;
-
-    }
-
-
-    const giaPresente=
-      libriBase.some(
-        function(titoloBase){
-
-          return (
-            normalizza(
-              titoloBase
-            )
-            ===
-            normalizza(
-              libro.titolo
-            )
-          );
-
-        }
+      titoliUsati.add(
+        chiave
       );
 
-
-    if(giaPresente){
-
-      return;
-
     }
-
-
-    const copertina=
-      trovaCopertina(
-        libro.titolo
-      )
-      ||
-      libro.copertina
-      ||
-      "";
-
-
-    lista.appendChild(
-
-      creaScheda(
-        libro.titolo,
-        copertina
-      )
-
-    );
-
-
-    totaleMostrato++;
-
-  }
-);
-
-
-/* CONTATORE */
-
-document.getElementById(
-  "numeroLibri"
-).textContent=
-  totaleMostrato;
-
-
-/* NESSUN LIBRO */
-
-if(totaleMostrato === 0){
-
-  const empty=
-    document.createElement(
-      "div"
-    );
-
-
-  empty.className=
-    "empty";
-
-
-  empty.innerHTML=
-    "✦ Nessun Fantasy Romance da leggere.<br>"
-    +
-    "Puoi aggiungerne uno da <b>Gestisci libri</b>.";
-
-
-  lista.appendChild(
-    empty
   );
+
+
+  return risultato;
 
 }
 
 
-/* RICERCA */
+/* MOSTRA LIBRI */
+
+function mostraLibri(libri){
+
+  const lista=
+    document.getElementById(
+      "listaLibri"
+    );
+
+
+  lista.innerHTML="";
+
+
+  libri.forEach(
+    function(libro){
+
+      lista.appendChild(
+        creaScheda(libro)
+      );
+
+    }
+  );
+
+
+  document.getElementById(
+    "numeroLibri"
+  ).textContent=
+    libri.length;
+
+
+  if(libri.length === 0){
+
+    const empty=
+      document.createElement("div");
+
+    empty.className=
+      "empty";
+
+    empty.innerHTML=
+      "✦ Nessun Fantasy Romance da leggere.<br>"
+      +
+      "Puoi aggiungerne uno da <b>Gestisci libri</b>.";
+
+    lista.appendChild(
+      empty
+    );
+
+  }
+
+}
+
+
+/* =========================
+   CARICA DAL CLOUD
+========================= */
+
+async function caricaLibri(){
+
+  try{
+
+    const risposta=
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    if(!risposta.ok){
+
+      throw new Error(
+        "Errore nel caricamento dei libri."
+      );
+
+    }
+
+
+    const dati=
+      await risposta.json();
+
+
+    const libriCloud=
+      Array.isArray(dati)
+      ?
+      dati
+      :
+      [];
+
+
+    const listaFinale=
+      creaListaFinale(
+        libriCloud
+      );
+
+
+    mostraLibri(
+      listaFinale
+    );
+
+  }
+
+  catch(errore){
+
+    console.error(
+      "Cloud non disponibile:",
+      errore
+    );
+
+
+    /*
+      Se il cloud non risponde,
+      mostra comunque i 27
+      libri base.
+    */
+
+    const libriEmergenza=
+      libriBase.map(
+        function(titolo){
+
+          return {
+
+            id:null,
+
+            titolo:
+              titolo,
+
+            categoria:
+              "Fantasy Romance",
+
+            stato:
+              "Da leggere",
+
+            copertina:
+              "",
+
+            lettura_attuale:
+              false
+
+          };
+
+        }
+      );
+
+
+    mostraLibri(
+      libriEmergenza
+    );
+
+  }
+
+}
+
+
+/* =========================
+   RICERCA
+========================= */
 
 document.getElementById(
   "searchInput"
@@ -1499,8 +1379,12 @@ document.getElementById(
 );
 
 
+/* AVVIO */
+
+caricaLibri();
+
+
 </script>
 
 </body>
-
 </html>
