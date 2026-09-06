@@ -1014,6 +1014,8 @@ mi sta aspettando.
 <script>
 
 
+/* NORMALIZZA */
+
 function normalizza(titolo){
 
   return String(titolo || "")
@@ -1024,6 +1026,8 @@ function normalizza(titolo){
 }
 
 
+/* COPERTINA LOCALE DI RISERVA */
+
 function chiaveCopertina(titolo){
 
   return "cover_" +
@@ -1032,7 +1036,7 @@ function chiaveCopertina(titolo){
 }
 
 
-function trovaCopertina(titolo){
+function trovaCopertinaLocale(titolo){
 
   return localStorage.getItem(
     chiaveCopertina(titolo)
@@ -1041,96 +1045,9 @@ function trovaCopertina(titolo){
 }
 
 
-/* LIBRI SALVATI */
-
-let libriSalvati=[];
-
-
-try{
-
-  libriSalvati=
-    JSON.parse(
-      localStorage.getItem(
-        "mieiLibriAggiunti"
-      )
-      ||
-      "[]"
-    );
-
-}
-
-catch(errore){
-
-  libriSalvati=[];
-
-}
-
-
-/* SOLO MANGA DA LEGGERE */
-
-const mangaDaLeggereMap=
-  new Map();
-
-
-libriSalvati.forEach(
-  function(libro){
-
-    if(
-      libro.categoria
-      !==
-      "Manga"
-      ||
-      libro.stato
-      !==
-      "Da leggere"
-    ){
-
-      return;
-
-    }
-
-
-    const nome=
-      normalizza(
-        libro.titolo
-      );
-
-
-    if(!nome){
-
-      return;
-
-    }
-
-
-    mangaDaLeggereMap.set(
-      nome,
-      libro
-    );
-
-  }
-);
-
-
-const mangaDaLeggere=
-  Array.from(
-    mangaDaLeggereMap.values()
-  );
-
-
-const lista=
-  document.getElementById(
-    "listaLibri"
-  );
-
-
-const messaggioVuoto=
-  document.getElementById(
-    "messaggioVuoto"
-  );
-
-
-/* CREA CARD */
+/* =========================
+   CREA CARD
+========================= */
 
 function creaScheda(libro){
 
@@ -1160,22 +1077,23 @@ function creaScheda(libro){
     "book-cover";
 
 
-  let copertina=
-    trovaCopertina(
-      libro.titolo
-    );
+  /*
+    Prima viene usata la
+    copertina sincronizzata
+    nel CLOUD.
 
+    Solo se manca viene usata
+    quella locale del dispositivo.
+  */
 
-  if(
-    !copertina
-    &&
+  const copertina=
     libro.copertina
-  ){
-
-    copertina=
-      libro.copertina;
-
-  }
+    ||
+    trovaCopertinaLocale(
+      libro.titolo
+    )
+    ||
+    "";
 
 
   if(copertina){
@@ -1281,60 +1199,227 @@ function creaScheda(libro){
   );
 
 
-  lista.appendChild(
-    scheda
+  return scheda;
+
+}
+
+
+/* =========================
+   FILTRA E RIMUOVE DUPLICATI
+========================= */
+
+function preparaMangaDaLeggere(libriCloud){
+
+  const mappa=
+    new Map();
+
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+        ||
+        libro.categoria
+          !== "Manga"
+        ||
+        libro.stato
+          !== "Da leggere"
+      ){
+
+        return;
+
+      }
+
+
+      const chiave=
+        normalizza(
+          libro.titolo
+        );
+
+
+      if(!chiave){
+
+        return;
+
+      }
+
+
+      /*
+        Se per errore nel cloud
+        esistono due righe con
+        lo stesso titolo, qui
+        ne viene mostrata una sola.
+      */
+
+      mappa.set(
+        chiave,
+        libro
+      );
+
+    }
+  );
+
+
+  return Array.from(
+    mappa.values()
   );
 
 }
 
 
-/* MOSTRA */
+/* =========================
+   MOSTRA LIBRI
+========================= */
 
-mangaDaLeggere.forEach(
-  function(libro){
+function mostraLibri(libri){
 
-    creaScheda(
-      libro
+  const lista=
+    document.getElementById(
+      "listaLibri"
+    );
+
+
+  const messaggioVuoto=
+    document.getElementById(
+      "messaggioVuoto"
+    );
+
+
+  lista.innerHTML=
+    "";
+
+
+  libri.forEach(
+    function(libro){
+
+      lista.appendChild(
+        creaScheda(
+          libro
+        )
+      );
+
+    }
+  );
+
+
+  const totale=
+    libri.length;
+
+
+  document.getElementById(
+    "numeroLibri"
+  ).textContent=
+    totale;
+
+
+  document.getElementById(
+    "numeroManga"
+  ).textContent=
+    totale;
+
+
+  if(totale>0){
+
+    messaggioVuoto.style.display=
+      "none";
+
+  }
+
+  else{
+
+    messaggioVuoto.style.display=
+      "block";
+
+  }
+
+}
+
+
+/* =========================
+   CARICA DAL CLOUD
+========================= */
+
+async function caricaLibri(){
+
+  try{
+
+    const risposta=
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    if(
+      !risposta.ok
+    ){
+
+      throw new Error(
+        "Errore nel caricamento dei Manga."
+      );
+
+    }
+
+
+    const dati=
+      await risposta.json();
+
+
+    const libriCloud=
+      Array.isArray(
+        dati
+      )
+      ?
+      dati
+      :
+      [];
+
+
+    const mangaDaLeggere=
+      preparaMangaDaLeggere(
+        libriCloud
+      );
+
+
+    mostraLibri(
+      mangaDaLeggere
     );
 
   }
-);
+
+  catch(errore){
+
+    console.error(
+      "Cloud non disponibile:",
+      errore
+    );
 
 
-/* LISTA VUOTA */
+    /*
+      Non esistono Manga base
+      Da leggere.
 
-if(
-  mangaDaLeggere.length>0
-){
+      Se il cloud non risponde,
+      la pagina resta vuota.
+    */
 
-  messaggioVuoto.style.display=
-    "none";
+    mostraLibri(
+      []
+    );
+
+  }
 
 }
 
-else{
 
-  messaggioVuoto.style.display=
-    "block";
-
-}
-
-
-/* CONTATORI */
-
-document.getElementById(
-  "numeroLibri"
-).textContent=
-  mangaDaLeggere.length;
-
-
-document.getElementById(
-  "numeroManga"
-).textContent=
-  mangaDaLeggere.length;
-
-
-/* RICERCA */
+/* =========================
+   RICERCA
+========================= */
 
 const input=
   document.getElementById(
@@ -1371,6 +1456,11 @@ input.addEventListener(
 
   }
 );
+
+
+/* AVVIO */
+
+caricaLibri();
 
 
 </script>
