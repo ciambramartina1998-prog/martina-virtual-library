@@ -1317,54 +1317,363 @@ let idModifica = null;
 
 
 /* =========================
-   LIBRI BASE
+   CATALOGO BASE COMPLETO
 ========================= */
 
-const libriBase = [
+const libriBase = [];
 
-  {
-    titolo:"Butcher & Blackbird",
-    categoria:"Dark Romance",
-    stato:"Da leggere"
-  },
 
-  {
-    titolo:"Deadly Sins: Sloth",
-    categoria:"Dark Romance",
-    stato:"Da leggere"
-  },
+function aggiungiBase(
+  lista,
+  categoria,
+  stato
+){
 
-  {
-    titolo:"God of Pain",
-    categoria:"Dark Romance",
-    stato:"Da leggere"
-  },
+  lista.forEach(
+    function(titolo){
 
-  {
-    titolo:"Le bugie che rubiamo",
-    categoria:"Dark Romance",
-    stato:"Da leggere"
-  },
+      libriBase.push({
+        titolo: titolo,
+        categoria: categoria,
+        stato: stato
+      });
 
-  {
-    titolo:"Leather & Lark",
-    categoria:"Dark Romance",
-    stato:"Da leggere"
-  },
+    }
+  );
 
-  {
-    titolo:"Scythe & Sparrow",
-    categoria:"Dark Romance",
-    stato:"Da leggere"
-  },
+}
 
-  {
-    titolo:"Taste Me. Fuoco e oscurità",
-    categoria:"Dark Romance",
-    stato:"Da leggere"
+
+/* DARK ROMANCE */
+
+aggiungiBase(
+[
+  "Butcher & Blackbird",
+  "Deadly Sins: Sloth",
+  "God of Pain",
+  "Le bugie che rubiamo",
+  "Leather & Lark",
+  "Scythe & Sparrow",
+  "Taste Me. Fuoco e oscurità"
+],
+"Dark Romance",
+"Da leggere"
+);
+
+
+/* FANTASY ROMANCE LETTI */
+
+aggiungiBase(
+[
+  "Un amore di angelo",
+  "Un patto con il Re degli Elfi",
+  "Un'alba di onice",
+  "Una corte di rose e spine",
+  "Una corte di nebbia e furia",
+  "Una corte di ali e rovina",
+  "Una corte di gelo e stelle",
+  "Sangue e cenere",
+  "Regno di carne e fuoco",
+  "La corona di ossa",
+  "La guerra delle due regine",
+  "Anima di cenere e sangue",
+  "Shadowhunters — Città di ossa",
+  "Shadowhunters — Città di cenere",
+  "Shadowhunters — Città di vetro",
+  "Shadowhunters — Città degli angeli caduti",
+  "Shadowhunters — Città delle anime perdute",
+  "Il principe — Shadowhunters",
+  "Fourth Wing",
+  "Iron Flame",
+  "Onyx Storm",
+  "Il principe crudele",
+  "Il re malvagio",
+  "Le streghe in eterno",
+  "Il regno dei malvagi",
+  "Il regno dei dannati",
+  "Il regno delle fiere",
+  "C'era una volta un cuore spezzato",
+  "La maledizione del vero amore",
+  "Caraval — La trilogia",
+  "The Selection",
+  "The Selection Stories: The Prince & The Guard",
+  "The Elite",
+  "La principessa",
+  "La sfida del re",
+  "Fidanzati dell'inverno",
+  "La memoria di Babel",
+  "Gli scomparsi di Chiardiluna",
+  "The Book of Azrael",
+  "The Scarlet Veil",
+  "The High Mountain Court",
+  "The Bond That Burns",
+  "Re di spade e sangue",
+  "Fall of Ruin and Wrath",
+  "On Wings of Blood",
+  "Echi in tempesta",
+  "E non vissero per sempre felici e contenti",
+  "La figlia della dea della luna",
+  "A Shadow in the Ember",
+  "A Light in the Flame",
+  "A Fire in the Flesh",
+  "La guerra delle dieci regine",
+  "Il mio angelo segreto",
+  "Innamorata di un angelo",
+  "L'angelo",
+  "Apprendista cercasi",
+  "Assistente cercasi",
+  "Bride"
+],
+"Fantasy Romance",
+"Letto"
+);
+
+
+/* FANTASY ROMANCE DA LEGGERE */
+
+aggiungiBase(
+[
+  "All This Twisted Glory",
+  "Belladonna",
+  "Bitten. La regina dei lupi",
+  "Caldo come il fuoco",
+  "Dark Rise — Vol. 1",
+  "Dove bruciano gli oceani",
+  "Dragonfall",
+  "Half a Soul",
+  "I peccati degli dei",
+  "Il re degli elfi",
+  "Il re dei draghi",
+  "Il Trono di Ghiaccio — La lama dell'assassina",
+  "L'immortale",
+  "L'incanto della biblioteca d'agrifoglio",
+  "La casa di terra e sangue",
+  "La maschera di No",
+  "Little Thieves",
+  "Mate",
+  "Quicksilver",
+  "Rose in Chains",
+  "Sun of Blood and Ruin",
+  "These Infinite Threads",
+  "This Woven Kingdom",
+  "Thershing day",
+  "Una condanna di ombre e spine",
+  "Una danza con il Principe delle Fate",
+  "When the Moon Hatched"
+],
+"Fantasy Romance",
+"Da leggere"
+);
+
+
+/* ROMANCE LETTI */
+
+aggiungiBase(
+[
+  "31 giorni per innamorarsi",
+  "36 domande per farti innamorare di me",
+  "365 giorni senza di te",
+  "After Midnight",
+  "Ancora una volta con te",
+  "Anime elettriche",
+  "Ascolta il tuo cuore",
+  "Baci nell'ombra",
+  "Battitore e batticuore",
+  "Buongiorno amore",
+  "But Santa, I Love Him",
+  "Collide",
+  "Come dire ti amo ad alta voce",
+  "Come inciampare nel principe azzurro",
+  "Con te sarà diverso",
+  "Cruel. Tormento",
+  "Cuori magnetici",
+  "Dalla mia finestra",
+  "Dammi mille baci",
+  "Destiny. Un amore in gioco",
+  "Done and Dusted",
+  "Finalmente ci sei",
+  "Finalmente noi",
+  "First. La mia prima volta",
+  "Forget Me Not",
+  "Forse un giorno",
+  "Giura che sei mio",
+  "Giuro che ti amo",
+  "Ho voglia di innamorarmi",
+  "I cento colori del blu",
+  "I cento colori del blu — Sei il mio sole anche di notte — Infinito+1",
+  "I passi dell'amore",
+  "Il cattivo ragazzo che amo",
+  "Il contratto. The Deal",
+  "Il tradimento. The Score",
+  "Indimenticabile",
+  "Innamorarsi è la parte più facile",
+  "Irraggiungibile",
+  "Irresistibile",
+  "L'altra sposa",
+  "L'eredità. The Legacy",
+  "L'imprevisto. The Goal",
+  "La lettera d'amore",
+  "La storia d'amore più bella del mondo",
+  "La teoria imperfetta dell'amore",
+  "Le stelle non fanno rumore",
+  "Lo sbaglio. The Mistake",
+  "Love Me Love Me 3",
+  "Mal che vada ci innamoriamo",
+  "Meglio non parlarne",
+  "Mi sono innamorata del mio migliore amico",
+  "Mile High",
+  "Mille pezzi del mio cuore",
+  "Nei tuoi occhi",
+  "Non mi piaci ma ti amo",
+  "Oltre il destino",
+  "Once Upon a K-Prom",
+  "P.S. Ti amo ancora",
+  "Perfect Boy",
+  "Rebel Love",
+  "Se stiamo insieme ci sarà un perché",
+  "Senza limiti. Heartless",
+  "Senza paura. Reckless",
+  "Senza regole",
+  "Senza regole. Flawless",
+  "Senza rimorso. Powerless",
+  "Stai qui con me",
+  "That Boy",
+  "The Brightest Light of Sunshine",
+  "The C*ck Down the Block",
+  "The Love Hypothesis",
+  "The Love Map",
+  "The Right Move",
+  "Ti odierò fino ad amarti",
+  "Tienimi con te",
+  "Tutte le volte che ho scritto ti amo",
+  "Twisted Games",
+  "Twisted Hate",
+  "Twisted Lies",
+  "Twisted Love",
+  "Un giorno per volta",
+  "Un magnifico equivoco",
+  "Un maledetto lieto fine",
+  "Un'incredibile follia",
+  "Una ragione per restare",
+  "Una ragione per vivere",
+  "Vicino a te non ho paura",
+  "Vorrei che fossi ancora tu",
+  "Waylon University. La sfida",
+  "Wild Eyes. Sguardo selvaggio",
+  "Wild Love. Desiderio selvaggio",
+  "XOXO"
+],
+"Romance",
+"Letto"
+);
+
+
+/* ROMANCE DA LEGGERE */
+
+aggiungiBase(
+[
+  "Amori e segreti al Pumpkin Spice Café",
+  "Before Dawn",
+  "Caught Up. Incastro vincente",
+  "Cinder & Ella",
+  "Delay of Game",
+  "Due cuori in affitto",
+  "Facciamo finta che mi ami",
+  "Fireflies & Lullabies",
+  "Icebreaker",
+  "Innamorati pazzi",
+  "La bella e il campione",
+  "Le regole del gioco",
+  "Lessons in Faking",
+  "Mai seguire le regole",
+  "Prova a prendermi",
+  "The Bad Boy's Deal",
+  "The Fine Print. Un accordo per due",
+  "Wild Card. Cuore selvaggio",
+  "Wild Side. Spirito selvaggio"
+],
+"Romance",
+"Da leggere"
+);
+
+
+/* MANGA */
+
+function aggiungiManga(
+  nome,
+  volumi
+){
+
+  for(
+    let i = 1;
+    i <= volumi;
+    i++
+  ){
+
+    libriBase.push({
+      titolo:
+        nome +
+        " — Vol. " +
+        i,
+
+      categoria:
+        "Manga",
+
+      stato:
+        "Letto"
+    });
+
   }
 
-];
+}
+
+
+aggiungiManga(
+  "My Dress-Up Darling",
+  15
+);
+
+aggiungiManga(
+  "The Fragrant Flower Blooms with Dignity",
+  5
+);
+
+aggiungiManga(
+  "Inazuma & Romance",
+  6
+);
+
+aggiungiManga(
+  "Lei e il suo cane da guardia",
+  6
+);
+
+aggiungiManga(
+  "Ice Guy & Cool Girl",
+  11
+);
+
+aggiungiManga(
+  "I diari della speziale",
+  15
+);
+
+aggiungiManga(
+  "A Sign of Affection",
+  12
+);
+
+
+aggiungiBase(
+[
+  "Le 100 ragazze che ti amano tanto tanto tanto tanto tanto — Vol. 1",
+  "First Kiss",
+  "Gli agenti delle quattro stagioni — Vol. 1",
+  "Gli agenti delle quattro stagioni — Vol. 2"
+],
+"Manga",
+"Letto"
+);
 
 
 /* =========================
@@ -2642,7 +2951,7 @@ async function salvaCopertinaManuale(){
 
 /* =========================
    AGGIORNA COPERTINA
-   TELEFONO + COMPUTER
+   CLOUD + CACHE LOCALE
 ========================= */
 
 async function aggiornaCopertinaLibro(
@@ -2675,6 +2984,13 @@ async function aggiornaCopertinaLibro(
       }
     );
 
+
+  /*
+    Se il libro esiste già nel cloud
+    aggiorniamo SOLO la copertina,
+    mantenendo categoria, stato
+    e lettura attuale.
+  */
 
   if(libroCloud){
 
@@ -2709,6 +3025,16 @@ async function aggiornaCopertinaLibro(
 
   }
 
+
+  /*
+    Se non è ancora nel cloud,
+    cerchiamo il libro nel catalogo
+    base completo dei 277 libri.
+
+    In questo modo categoria e stato
+    vengono presi automaticamente
+    dal catalogo corretto.
+  */
 
   const libroBase =
     trovaLibroBase(
@@ -2747,45 +3073,18 @@ async function aggiornaCopertinaLibro(
   }
 
 
-  const categoriaSelezionata =
-    document.getElementById(
-      "categoria"
-    ).value
-    ||
-    "Romance";
+  /*
+    Se il titolo non esiste né nel
+    cloud né nei 277 libri base,
+    NON creiamo automaticamente
+    un libro con categoria sbagliata.
+  */
 
-
-  const statoSelezionato =
-    document.getElementById(
-      "stato"
-    ).value
-    ||
-    "Da leggere";
-
-
-  await creaLibro(
-    {
-
-      titolo:
-        titolo,
-
-      categoria:
-        categoriaSelezionata,
-
-      stato:
-        statoSelezionato,
-
-      copertina:
-        url,
-
-      lettura_attuale:
-        false
-
-    }
+  throw new Error(
+    'Il libro "' +
+    titolo +
+    '" non è ancora nella libreria. Aggiungilo prima con "Aggiungi libro", poi sistema la copertina.'
   );
-
-
-  await caricaLibri();
 
 }
 
