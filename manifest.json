@@ -1,0 +1,17 @@
+{
+  "name": "Martina's Virtual Library",
+  "short_name": "La mia Libreria",
+  "description": "La libreria virtuale personale di Martina",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4d9df",
+  "theme_color": "#c98598",
+  "icons": [
+    {
+      "src": "/copertine/icona-libreria.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
