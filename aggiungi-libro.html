@@ -938,9 +938,30 @@ Aggiungi, modifica e organizza la tua libreria ♡
 
 <section class="section">
 
-<h2>
+<button
+type="button"
+class="toggle-button"
+onclick="toggleAggiungiLibro()"
+>
+
+<span class="toggle-left">
 ➕ Aggiungi libro
-</h2>
+</span>
+
+<span
+class="toggle-right"
+id="testoAggiungiLibro"
+>
+Apri ▾
+</span>
+
+</button>
+
+
+<div
+id="contenitoreAggiungiLibro"
+class="collapsible"
+>
 
 <div class="form-grid">
 
@@ -1044,6 +1065,8 @@ class="results"
 <div
 id="messaggioAggiunta"
 ></div>
+
+</div>
 
 </section>
 
@@ -2627,11 +2650,6 @@ async function aggiornaCopertinaLibro(
   url
 ){
 
-  /*
-     La salviamo comunque
-     sul dispositivo attuale.
-  */
-
   localStorage.setItem(
     chiaveCopertina(
       titolo
@@ -2639,11 +2657,6 @@ async function aggiornaCopertinaLibro(
     url
   );
 
-
-  /*
-     Controlliamo se il libro
-     esiste già su Neon.
-  */
 
   const libroCloud =
     libriCloud.find(
@@ -2662,11 +2675,6 @@ async function aggiornaCopertinaLibro(
       }
     );
 
-
-  /*
-     Se esiste già,
-     aggiorniamo la copertina.
-  */
 
   if(libroCloud){
 
@@ -2702,27 +2710,11 @@ async function aggiornaCopertinaLibro(
   }
 
 
-  /*
-     Se non è ancora nel cloud,
-     controlliamo se è uno dei
-     libri base conosciuti.
-  */
-
   const libroBase =
     trovaLibroBase(
       titolo
     );
 
-
-  /*
-     Libro base:
-     lo creiamo nel cloud.
-
-     Da questo momento
-     la sua copertina sarà
-     disponibile anche
-     sull'altro dispositivo.
-  */
 
   if(libroBase){
 
@@ -2754,16 +2746,6 @@ async function aggiornaCopertinaLibro(
 
   }
 
-
-  /*
-     Se non era nella lista base
-     e non esisteva nel cloud,
-     lo salviamo usando i dati
-     selezionati nel form.
-
-     Così la copertina non resta
-     soltanto nel telefono.
-  */
 
   const categoriaSelezionata =
     document.getElementById(
@@ -2811,6 +2793,36 @@ async function aggiornaCopertinaLibro(
 /* =========================
    APRI / CHIUDI
 ========================= */
+
+function toggleAggiungiLibro(){
+
+  const contenitore =
+    document.getElementById(
+      "contenitoreAggiungiLibro"
+    );
+
+
+  const testo =
+    document.getElementById(
+      "testoAggiungiLibro"
+    );
+
+
+  const aperto =
+    contenitore.classList.toggle(
+      "open"
+    );
+
+
+  testo.textContent =
+    aperto
+    ?
+    "Chiudi ▴"
+    :
+    "Apri ▾";
+
+}
+
 
 function toggleCopertine(){
 
@@ -3364,6 +3376,27 @@ function preparaModifica(id){
     "pulsanteSalvaLibro"
   ).textContent =
     "💾 Salva modifica";
+
+
+  const contenitoreAggiungi =
+    document.getElementById(
+      "contenitoreAggiungiLibro"
+    );
+
+
+  const testoAggiungi =
+    document.getElementById(
+      "testoAggiungiLibro"
+    );
+
+
+  contenitoreAggiungi.classList.add(
+    "open"
+  );
+
+
+  testoAggiungi.textContent =
+    "Chiudi ▴";
 
 
   window.scrollTo({
