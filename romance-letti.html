@@ -2,7 +2,6 @@
 <html lang="it">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -944,10 +943,7 @@ placeholder="Cerca tra i Romance letti..."
 🌷 ROMANCE LETTI
 </div>
 
-<div
-class="total-number"
-id="numeroLibri"
->
+<div class="total-number" id="numeroLibri">
 0
 </div>
 
@@ -1005,6 +1001,8 @@ ma restano nel cuore.”
 <script>
 
 
+/* NORMALIZZA */
+
 function normalizza(titolo){
 
   return String(titolo || "")
@@ -1015,6 +1013,8 @@ function normalizza(titolo){
 }
 
 
+/* COPERTINA LOCALE DI RISERVA */
+
 function chiaveCopertina(titolo){
 
   return "cover_" +
@@ -1023,7 +1023,18 @@ function chiaveCopertina(titolo){
 }
 
 
-/* 92 ROMANCE LETTI */
+function trovaCopertinaLocale(titolo){
+
+  return localStorage.getItem(
+    chiaveCopertina(titolo)
+  ) || "";
+
+}
+
+
+/* =========================
+   92 ROMANCE LETTI
+========================= */
 
 const libriBase=[
 
@@ -1123,35 +1134,32 @@ const libriBase=[
 ];
 
 
-let aggiunti=[];
+/* =========================
+   CREA CARD
+========================= */
+
+function creaCard(libro){
+
+  const titolo=
+    libro.titolo;
 
 
-try{
+  /*
+    Prima viene usata la
+    copertina sincronizzata
+    nel CLOUD.
 
-  aggiunti=
-    JSON.parse(
-      localStorage.getItem(
-        "mieiLibriAggiunti"
-      )
-      ||
-      "[]"
-    );
+    Se manca, prova quella
+    locale del dispositivo.
+  */
 
-}
+  const url=
+    libro.copertina
+    ||
+    trovaCopertinaLocale(titolo)
+    ||
+    "";
 
-catch{
-
-  aggiunti=[];
-
-}
-
-
-/* CREA CARD */
-
-function creaCard(
-  titolo,
-  copertina
-){
 
   const card=
     document.createElement(
@@ -1175,22 +1183,6 @@ function creaCard(
 
   cover.className=
     "book-cover";
-
-
-  const override=
-    localStorage.getItem(
-      chiaveCopertina(
-        titolo
-      )
-    );
-
-
-  const url=
-    override
-    ||
-    copertina
-    ||
-    "";
 
 
   if(url){
@@ -1220,22 +1212,22 @@ function creaCard(
           '<div class="placeholder">♡</div>';
 
 
-        const badge=
+        const badgeErrore=
           document.createElement(
             "div"
           );
 
 
-        badge.className=
+        badgeErrore.className=
           "badge";
 
 
-        badge.textContent=
+        badgeErrore.textContent=
           "LETTO";
 
 
         cover.appendChild(
-          badge
+          badgeErrore
         );
 
       };
@@ -1337,9 +1329,206 @@ function creaCard(
 }
 
 
-/* RENDER */
+/* =========================
+   UNISCE BASE + CLOUD
+========================= */
 
-function mostraLibri(){
+function creaListaFinale(libriCloud){
+
+  const mappaCloud=
+    new Map();
+
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+      ){
+
+        return;
+
+      }
+
+
+      mappaCloud.set(
+        normalizza(
+          libro.titolo
+        ),
+        libro
+      );
+
+    }
+  );
+
+
+  const risultato=[];
+
+  const titoliUsati=
+    new Set();
+
+
+  /*
+    PRIMA I 92 LIBRI BASE.
+
+    Se nel cloud esiste
+    lo stesso titolo,
+    la versione cloud decide
+    categoria e stato.
+
+    Quindi se un libro è stato
+    spostato da Romance a
+    Dark Romance, non compare
+    più in questa pagina.
+  */
+
+  libriBase.forEach(
+    function(titoloBase){
+
+      const chiave=
+        normalizza(
+          titoloBase
+        );
+
+
+      const versioneCloud=
+        mappaCloud.get(
+          chiave
+        );
+
+
+      if(versioneCloud){
+
+        if(
+          versioneCloud.categoria
+            === "Romance"
+          &&
+          versioneCloud.stato
+            === "Letto"
+        ){
+
+          risultato.push({
+
+            ...versioneCloud,
+
+            titolo:
+              versioneCloud.titolo
+              ||
+              titoloBase
+
+          });
+
+
+          titoliUsati.add(
+            chiave
+          );
+
+        }
+
+
+        return;
+
+      }
+
+
+      risultato.push({
+
+        id:null,
+
+        titolo:
+          titoloBase,
+
+        categoria:
+          "Romance",
+
+        stato:
+          "Letto",
+
+        copertina:
+          "",
+
+        lettura_attuale:
+          false
+
+      });
+
+
+      titoliUsati.add(
+        chiave
+      );
+
+    }
+  );
+
+
+  /*
+    POI AGGIUNGE GLI EVENTUALI
+    ROMANCE LETTI PRESENTI
+    SOLO NEL CLOUD.
+  */
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+        ||
+        libro.categoria
+          !== "Romance"
+        ||
+        libro.stato
+          !== "Letto"
+      ){
+
+        return;
+
+      }
+
+
+      const chiave=
+        normalizza(
+          libro.titolo
+        );
+
+
+      if(
+        titoliUsati.has(
+          chiave
+        )
+      ){
+
+        return;
+
+      }
+
+
+      risultato.push(
+        libro
+      );
+
+
+      titoliUsati.add(
+        chiave
+      );
+
+    }
+  );
+
+
+  return risultato;
+
+}
+
+
+/* =========================
+   MOSTRA LIBRI
+========================= */
+
+function mostraLibri(libri){
 
   const griglia=
     document.getElementById(
@@ -1351,123 +1540,13 @@ function mostraLibri(){
     "";
 
 
-  const mostrati=
-    new Set();
-
-
-  libriBase.forEach(
-    function(titolo){
-
-      const nome=
-        normalizza(
-          titolo
-        );
-
-
-      const versioneGestita=
-        aggiunti.find(
-          function(libro){
-
-            return (
-              normalizza(
-                libro.titolo
-              )
-              ===
-              nome
-            );
-
-          }
-        );
-
-
-      if(
-        versioneGestita
-        &&
-        (
-          versioneGestita.categoria
-          !==
-          "Romance"
-          ||
-          versioneGestita.stato
-          !==
-          "Letto"
-        )
-      ){
-
-        return;
-
-      }
-
-
-      const copertina=
-        versioneGestita
-        ?
-        versioneGestita.copertina
-        :
-        "";
-
-
-      griglia.appendChild(
-        creaCard(
-          titolo,
-          copertina
-        )
-      );
-
-
-      mostrati.add(
-        nome
-      );
-
-    }
-  );
-
-
-  aggiunti.forEach(
+  libri.forEach(
     function(libro){
 
-      if(
-        libro.categoria
-        !==
-        "Romance"
-        ||
-        libro.stato
-        !==
-        "Letto"
-      ){
-
-        return;
-
-      }
-
-
-      const nome=
-        normalizza(
-          libro.titolo
-        );
-
-
-      if(
-        mostrati.has(
-          nome
-        )
-      ){
-
-        return;
-
-      }
-
-
       griglia.appendChild(
         creaCard(
-          libro.titolo,
-          libro.copertina
+          libro
         )
-      );
-
-
-      mostrati.add(
-        nome
       );
 
     }
@@ -1475,9 +1554,7 @@ function mostraLibri(){
 
 
   const totale=
-    griglia.querySelectorAll(
-      ".book-card"
-    ).length;
+    libri.length;
 
 
   document.getElementById(
@@ -1502,10 +1579,115 @@ function mostraLibri(){
 }
 
 
-mostraLibri();
+/* =========================
+   CARICA DAL CLOUD
+========================= */
+
+async function caricaLibri(){
+
+  try{
+
+    const risposta=
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
 
 
-/* RICERCA */
+    if(
+      !risposta.ok
+    ){
+
+      throw new Error(
+        "Errore nel caricamento dei libri."
+      );
+
+    }
+
+
+    const dati=
+      await risposta.json();
+
+
+    const libriCloud=
+      Array.isArray(
+        dati
+      )
+      ?
+      dati
+      :
+      [];
+
+
+    const listaFinale=
+      creaListaFinale(
+        libriCloud
+      );
+
+
+    mostraLibri(
+      listaFinale
+    );
+
+  }
+
+  catch(errore){
+
+    console.error(
+      "Cloud non disponibile:",
+      errore
+    );
+
+
+    /*
+      Se momentaneamente il cloud
+      non risponde, mostra almeno
+      i 92 libri base.
+    */
+
+    const libriEmergenza=
+      libriBase.map(
+        function(titolo){
+
+          return {
+
+            id:null,
+
+            titolo:
+              titolo,
+
+            categoria:
+              "Romance",
+
+            stato:
+              "Letto",
+
+            copertina:
+              "",
+
+            lettura_attuale:
+              false
+
+          };
+
+        }
+      );
+
+
+    mostraLibri(
+      libriEmergenza
+    );
+
+  }
+
+}
+
+
+/* =========================
+   RICERCA
+========================= */
 
 const cerca=
   document.getElementById(
@@ -1542,6 +1724,11 @@ cerca.addEventListener(
 
   }
 );
+
+
+/* AVVIO */
+
+caricaLibri();
 
 
 </script>
