@@ -59,6 +59,9 @@ body{
   -webkit-backdrop-filter:blur(2px);
 }
 
+
+/* SIDEBAR */
+
 .sidebar{
   padding:17px 12px;
 
@@ -76,7 +79,9 @@ body{
 .logo{
   text-align:center;
   margin-bottom:14px;
+
   color:#4E3524;
+
   font-size:12px;
   font-weight:bold;
   line-height:1.4;
@@ -91,6 +96,7 @@ body{
   content:"── ❦ ──";
   display:block;
   margin-top:8px;
+
   color:#5A3E2B;
   font-size:8px;
 }
@@ -98,14 +104,18 @@ body{
 .menu a{
   display:flex;
   align-items:center;
+
   gap:8px;
+
   margin-bottom:5px;
+
   padding:8px 9px;
 
   border:1px solid transparent;
   border-radius:12px;
 
   color:#4E3524;
+
   font-size:10px;
   text-decoration:none;
 
@@ -117,7 +127,9 @@ body{
 
 .menu a:hover{
   transform:translateX(3px);
+
   background:rgba(255,255,255,.42);
+
   border-color:rgba(255,255,255,.50);
 
   box-shadow:
@@ -127,12 +139,20 @@ body{
 
 .menu .active{
   color:white;
-  background:rgba(122,130,103,.90);
-  border-color:rgba(255,255,255,.35);
+
+  background:
+    rgba(122,130,103,.90);
+
+  border-color:
+    rgba(255,255,255,.35);
 }
+
+
+/* CENTRO */
 
 .main{
   min-width:0;
+
   padding:15px;
 
   background:
@@ -144,8 +164,11 @@ body{
 
 h1{
   margin:0;
+
   text-align:center;
+
   color:#4E3524;
+
   font-size:36px;
   font-weight:normal;
   font-style:italic;
@@ -162,6 +185,7 @@ h1{
     5px auto 15px;
 
   padding-bottom:8px;
+
   text-align:center;
 
   border-bottom:
@@ -169,13 +193,18 @@ h1{
     rgba(198,139,89,.70);
 
   color:#5A3E2B;
+
   font-size:9px;
   font-weight:600;
   font-style:italic;
 }
 
+
+/* SEZIONI */
+
 .section{
   margin-bottom:12px;
+
   padding:13px;
 
   border:
@@ -200,7 +229,8 @@ h1{
 }
 
 .section:hover{
-  background:rgba(255,255,255,.43);
+  background:
+    rgba(255,255,255,.43);
 
   box-shadow:
     0 11px 25px
@@ -209,13 +239,21 @@ h1{
 
 .section h2{
   margin:0 0 12px;
+
   color:#4E3524;
+
   font-size:15px;
 }
 
+
+/* FORM */
+
 .form-grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+
+  grid-template-columns:
+    repeat(2,1fr);
+
   gap:9px;
 }
 
@@ -225,8 +263,11 @@ h1{
 
 label{
   display:block;
+
   margin-bottom:4px;
+
   color:#5A3E2B;
+
   font-size:9px;
   font-weight:bold;
 }
@@ -234,6 +275,7 @@ label{
 input,
 select{
   width:100%;
+
   padding:8px 9px;
 
   border:
@@ -241,6 +283,7 @@ select{
     rgba(111,76,48,.25);
 
   border-radius:11px;
+
   outline:none;
 
   background:
@@ -262,8 +305,11 @@ select{
 
 input:focus,
 select:focus{
-  background:rgba(255,255,255,.78);
-  border-color:rgba(198,139,89,.75);
+  background:
+    rgba(255,255,255,.78);
+
+  border-color:
+    rgba(198,139,89,.75);
 
   box-shadow:
     0 0 0 2px
@@ -274,10 +320,16 @@ input::placeholder{
   color:#7B6758;
 }
 
+
+/* PULSANTI */
+
 button{
   border:none;
+
   border-radius:11px;
+
   padding:8px 11px;
+
   cursor:pointer;
 
   font-family:
@@ -330,20 +382,30 @@ button:disabled{
 
 .actions{
   display:flex;
+
   gap:8px;
+
   flex-wrap:wrap;
+
   margin-top:10px;
 }
 
+
+/* ANTEPRIMA */
+
 .preview{
   margin-top:11px;
+
   text-align:center;
 }
 
 .preview img{
   width:100px;
+
   aspect-ratio:2/3;
+
   object-fit:cover;
+
   border-radius:9px;
 
   box-shadow:
@@ -351,16 +413,25 @@ button:disabled{
     rgba(50,40,30,.17);
 }
 
+
+/* RISULTATI COPERTINE */
+
 .results{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+
+  grid-template-columns:
+    repeat(5,1fr);
+
   gap:8px;
+
   margin-top:12px;
 }
 
 .result{
   padding:5px;
+
   cursor:pointer;
+
   overflow:hidden;
 
   border:
@@ -386,7 +457,9 @@ button:disabled{
 
 .result:hover{
   transform:translateY(-4px);
-  background:rgba(255,255,255,.66);
+
+  background:
+    rgba(255,255,255,.66);
 
   box-shadow:
     0 10px 20px
@@ -395,28 +468,41 @@ button:disabled{
 
 .result img{
   width:100%;
+
   aspect-ratio:2/3;
+
   display:block;
+
   object-fit:cover;
+
   border-radius:7px;
 }
 
 .result-title{
   margin-top:5px;
+
   color:#4E3524;
+
   font-size:8px;
   line-height:1.2;
+
   font-weight:bold;
 }
 
 .result-author{
   margin-top:2px;
+
   color:#5A3E2B;
+
   font-size:7px;
 }
 
+
+/* MESSAGGI */
+
 .message{
   margin-top:10px;
+
   padding:8px 10px;
 
   border:
@@ -429,22 +515,32 @@ button:disabled{
     rgba(244,235,225,.70);
 
   color:#4E3524;
+
   font-size:9px;
   font-weight:600;
 }
 
 .small{
   margin:3px 0 11px;
+
   color:#5A3E2B;
+
   font-size:9px;
   line-height:1.5;
 }
 
+
+/* APRI CHIUDI */
+
 .toggle-button{
   width:100%;
+
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   gap:10px;
 
   padding:10px 12px;
@@ -456,6 +552,7 @@ button:disabled{
   border-radius:13px;
 
   background:#E8D6C2;
+
   color:#4E3524;
 
   box-shadow:
@@ -487,9 +584,14 @@ button:disabled{
   display:block;
 }
 
+
+/* LISTA LIBRI */
+
 .book-list{
   display:flex;
+
   flex-direction:column;
+
   gap:7px;
 }
 
@@ -502,7 +604,9 @@ button:disabled{
     auto;
 
   align-items:center;
+
   gap:9px;
+
   padding:7px;
 
   border:
@@ -525,13 +629,18 @@ button:disabled{
 
 .book-row:hover{
   transform:translateY(-1px);
-  background:rgba(255,255,255,.62);
+
+  background:
+    rgba(255,255,255,.62);
 }
 
 .book-row img{
   width:42px;
+
   height:62px;
+
   object-fit:cover;
+
   border-radius:6px;
 
   box-shadow:
@@ -541,36 +650,46 @@ button:disabled{
 
 .book-placeholder{
   width:42px;
+
   height:62px;
 
   display:flex;
+
   align-items:center;
+
   justify-content:center;
 
   border-radius:6px;
+
   background:#E8D6C2;
+
   font-size:18px;
 }
 
 .book-name{
   color:#4E3524;
+
   font-size:9px;
   font-weight:bold;
 }
 
 .book-meta{
   margin-top:3px;
+
   color:#5A3E2B;
+
   font-size:8px;
 }
 
 .row-buttons{
   display:flex;
+
   gap:5px;
 }
 
 .row-buttons button{
   padding:6px 7px;
+
   font-size:9px;
 }
 
@@ -583,6 +702,9 @@ button:disabled{
   background:#7A8267;
   color:white;
 }
+
+
+/* DESTRA */
 
 .rightbar{
   padding:13px 10px;
@@ -600,6 +722,7 @@ button:disabled{
 
 .right-card{
   margin-bottom:9px;
+
   padding:11px 8px;
 
   border:
@@ -612,7 +735,9 @@ button:disabled{
     rgba(255,255,255,.39);
 
   color:#5A3E2B;
+
   text-align:center;
+
   font-size:9px;
 
   box-shadow:
@@ -625,23 +750,33 @@ button:disabled{
 
 .right-card strong{
   display:block;
+
   margin-top:5px;
+
   color:#4E3524;
+
   font-size:25px;
 }
 
 .right-icon{
   margin-bottom:5px;
+
   font-size:21px;
 }
 
 .right-title{
   margin-bottom:5px;
+
   color:#4E3524;
+
   font-size:8px;
   font-weight:bold;
+
   letter-spacing:.8px;
 }
+
+
+/* RESPONSIVE */
 
 @media(max-width:900px){
 
@@ -654,6 +789,7 @@ button:disabled{
   .rightbar{
     display:none;
   }
+
 }
 
 @media(max-width:650px){
@@ -677,8 +813,11 @@ button:disabled{
 
   .menu{
     display:flex;
+
     flex-wrap:wrap;
+
     gap:4px;
+
     justify-content:center;
   }
 
@@ -695,14 +834,17 @@ button:disabled{
   }
 
   .results{
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:
+      repeat(3,1fr);
   }
+
 }
 
 @media(max-width:430px){
 
   .results{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:
+      repeat(2,1fr);
   }
 
   .book-row{
@@ -713,8 +855,10 @@ button:disabled{
 
   .row-buttons{
     grid-column:1/-1;
+
     justify-content:flex-end;
   }
+
 }
 
 </style>
@@ -724,6 +868,9 @@ button:disabled{
 <body>
 
 <div class="library-app">
+
+
+<!-- SIDEBAR -->
 
 <aside class="sidebar">
 
@@ -773,6 +920,9 @@ class="active"
 
 </aside>
 
+
+<!-- CENTRO -->
+
 <main class="main">
 
 <h1>
@@ -782,6 +932,9 @@ Gestisci libri
 <div class="subtitle">
 Aggiungi, modifica e organizza la tua libreria ♡
 </div>
+
+
+<!-- AGGIUNGI -->
 
 <section class="section">
 
@@ -805,6 +958,7 @@ placeholder="Es. The Love Hypothesis"
 
 </div>
 
+
 <div>
 
 <label>
@@ -822,6 +976,7 @@ Categoria
 
 </div>
 
+
 <div>
 
 <label>
@@ -836,6 +991,7 @@ Stato
 </select>
 
 </div>
+
 
 <div class="full">
 
@@ -853,6 +1009,7 @@ placeholder="https://..."
 </div>
 
 </div>
+
 
 <div class="actions">
 
@@ -873,6 +1030,7 @@ onclick="salvaLibro()"
 
 </div>
 
+
 <div
 id="anteprimaAggiunta"
 class="preview"
@@ -888,6 +1046,9 @@ id="messaggioAggiunta"
 ></div>
 
 </section>
+
+
+<!-- SISTEMA COPERTINE -->
 
 <section class="section">
 
@@ -910,6 +1071,7 @@ Apri ▾
 
 </button>
 
+
 <div
 id="contenitoreCopertine"
 class="collapsible"
@@ -917,7 +1079,9 @@ class="collapsible"
 
 <p class="small">
 Cerca online la copertina corretta oppure incolla direttamente il link dell'immagine.
+Le copertine vengono salvate nel cloud così si vedono sia sul telefono sia sul computer.
 </p>
+
 
 <div class="form-grid">
 
@@ -930,10 +1094,11 @@ Titolo del libro
 <input
 id="coverTitle"
 type="text"
-placeholder="Es. 36 domande per farti innamorare di me"
+placeholder="Es. God of Pain"
 >
 
 </div>
+
 
 <div>
 
@@ -949,6 +1114,7 @@ placeholder="Facoltativo"
 
 </div>
 
+
 <div>
 
 <label>
@@ -962,6 +1128,7 @@ placeholder="Facoltativo"
 >
 
 </div>
+
 
 <div class="full">
 
@@ -978,6 +1145,7 @@ placeholder="https://..."
 </div>
 
 </div>
+
 
 <div class="actions">
 
@@ -997,6 +1165,7 @@ onclick="salvaCopertinaManuale()"
 
 </div>
 
+
 <div
 id="anteprimaCorrezione"
 class="preview"
@@ -1014,6 +1183,9 @@ id="messaggioCorrezione"
 </div>
 
 </section>
+
+
+<!-- LIBRI SALVATI -->
 
 <section class="section">
 
@@ -1036,6 +1208,7 @@ Apri ▾
 
 </button>
 
+
 <div
 id="contenitoreLibriSalvati"
 class="collapsible"
@@ -1051,6 +1224,9 @@ class="book-list"
 </section>
 
 </main>
+
+
+<!-- DESTRA -->
 
 <aside class="rightbar">
 
@@ -1070,6 +1246,7 @@ nel cloud
 
 </div>
 
+
 <div class="right-card">
 
 <div class="right-icon">
@@ -1084,6 +1261,7 @@ Chromebook e telefono<br>
 usano lo stesso database.
 
 </div>
+
 
 <div class="right-card">
 
@@ -1104,13 +1282,66 @@ un libro alla volta.
 
 </div>
 
+
 <script>
+
 
 let libriCloud = [];
 
 let copertinaScelta = "";
 
 let idModifica = null;
+
+
+/* =========================
+   LIBRI BASE
+========================= */
+
+const libriBase = [
+
+  {
+    titolo:"Butcher & Blackbird",
+    categoria:"Dark Romance",
+    stato:"Da leggere"
+  },
+
+  {
+    titolo:"Deadly Sins: Sloth",
+    categoria:"Dark Romance",
+    stato:"Da leggere"
+  },
+
+  {
+    titolo:"God of Pain",
+    categoria:"Dark Romance",
+    stato:"Da leggere"
+  },
+
+  {
+    titolo:"Le bugie che rubiamo",
+    categoria:"Dark Romance",
+    stato:"Da leggere"
+  },
+
+  {
+    titolo:"Leather & Lark",
+    categoria:"Dark Romance",
+    stato:"Da leggere"
+  },
+
+  {
+    titolo:"Scythe & Sparrow",
+    categoria:"Dark Romance",
+    stato:"Da leggere"
+  },
+
+  {
+    titolo:"Taste Me. Fuoco e oscurità",
+    categoria:"Dark Romance",
+    stato:"Da leggere"
+  }
+
+];
 
 
 /* =========================
@@ -1130,7 +1361,8 @@ function normalizza(testo){
 function chiaveCopertina(titolo){
 
   return (
-    "cover_" +
+    "cover_"
+    +
     normalizza(titolo)
   );
 
@@ -1138,8 +1370,30 @@ function chiaveCopertina(titolo){
 
 
 /* =========================
-   COMPATIBILITÀ TEMPORANEA
-   CON LE ALTRE PAGINE
+   TROVA LIBRO BASE
+========================= */
+
+function trovaLibroBase(titolo){
+
+  return libriBase.find(
+    function(libro){
+
+      return (
+        normalizza(libro.titolo)
+        ===
+        normalizza(titolo)
+      );
+
+    }
+  )
+  ||
+  null;
+
+}
+
+
+/* =========================
+   CACHE LOCALE
 ========================= */
 
 function aggiornaCacheLocale(){
@@ -1149,10 +1403,19 @@ function aggiornaCacheLocale(){
       function(libro){
 
         return {
-          titolo:libro.titolo,
-          categoria:libro.categoria,
-          stato:libro.stato,
-          copertina:libro.copertina || ""
+
+          titolo:
+            libro.titolo,
+
+          categoria:
+            libro.categoria,
+
+          stato:
+            libro.stato,
+
+          copertina:
+            libro.copertina || ""
+
         };
 
       }
@@ -1161,7 +1424,9 @@ function aggiornaCacheLocale(){
 
   localStorage.setItem(
     "mieiLibriAggiunti",
-    JSON.stringify(libriCompatibili)
+    JSON.stringify(
+      libriCompatibili
+    )
   );
 
 
@@ -1189,7 +1454,8 @@ function aggiornaCacheLocale(){
 
         return (
           libro.lettura_attuale
-          === true
+          ===
+          true
         );
 
       }
@@ -1201,6 +1467,7 @@ function aggiornaCacheLocale(){
     localStorage.setItem(
       "letturaAttuale",
       JSON.stringify({
+
         titolo:
           lettura.titolo,
 
@@ -1209,6 +1476,7 @@ function aggiornaCacheLocale(){
 
         copertina:
           lettura.copertina || ""
+
       })
     );
 
@@ -1226,7 +1494,7 @@ function aggiornaCacheLocale(){
 
 
 /* =========================
-   API LIBRI
+   CARICA LIBRI CLOUD
 ========================= */
 
 async function caricaLibri(){
@@ -1272,7 +1540,9 @@ async function caricaLibri(){
 
 
     libriCloud =
-      Array.isArray(dati.libri)
+      Array.isArray(
+        dati.libri
+      )
       ?
       dati.libri
       :
@@ -1310,23 +1580,29 @@ async function caricaLibri(){
 }
 
 
+/* =========================
+   CREA LIBRO
+========================= */
+
 async function creaLibro(libro){
 
   const risposta =
     await fetch(
       "/api/libri",
       {
+
         method:"POST",
 
         headers:{
           "Content-Type":
-          "application/json"
+            "application/json"
         },
 
         body:
           JSON.stringify(
             libro
           )
+
       }
     );
 
@@ -1351,6 +1627,10 @@ async function creaLibro(libro){
 }
 
 
+/* =========================
+   MODIFICA LIBRO
+========================= */
+
 async function modificaLibroCloud(
   id,
   libro
@@ -1362,17 +1642,19 @@ async function modificaLibroCloud(
       +
       id,
       {
+
         method:"PUT",
 
         headers:{
           "Content-Type":
-          "application/json"
+            "application/json"
         },
 
         body:
           JSON.stringify(
             libro
           )
+
       }
     );
 
@@ -1396,6 +1678,10 @@ async function modificaLibroCloud(
 
 }
 
+
+/* =========================
+   ELIMINA CLOUD
+========================= */
 
 async function eliminaLibroCloud(id){
 
@@ -1546,7 +1832,8 @@ function mostraAnteprima(
     );
 
 
-  img.src = url;
+  img.src =
+    url;
 
 
   img.onerror =
@@ -1570,7 +1857,7 @@ function mostraAnteprima(
 
 
 /* =========================
-   RISULTATI COPERTINE
+   MOSTRA RISULTATI
 ========================= */
 
 function mostraRisultati(
@@ -1644,7 +1931,9 @@ function mostraRisultati(
 
 
       autore.textContent =
-        Array.isArray(r.autori)
+        Array.isArray(
+          r.autori
+        )
         ?
         r.autori.join(", ")
         :
@@ -1655,9 +1944,11 @@ function mostraRisultati(
         img
       );
 
+
       card.appendChild(
         titolo
       );
+
 
       card.appendChild(
         autore
@@ -1790,7 +2081,7 @@ async function cercaCopertinaAggiunta(){
 
 
 /* =========================
-   SALVA LIBRO SU NEON
+   SALVA LIBRO
 ========================= */
 
 async function salvaLibro(){
@@ -1920,15 +2211,58 @@ async function salvaLibro(){
 
     else{
 
-      await creaLibro(
-        libro
-      );
+      const esistente =
+        libriCloud.find(
+          function(item){
+
+            return (
+              normalizza(
+                item.titolo
+              )
+              ===
+              normalizza(
+                titolo
+              )
+            );
+
+          }
+        );
 
 
-      mostraMessaggio(
-        messaggio,
-        "✅ Libro salvato nel cloud."
-      );
+      if(esistente){
+
+        libro.lettura_attuale =
+          Boolean(
+            esistente.lettura_attuale
+          );
+
+
+        await modificaLibroCloud(
+          esistente.id,
+          libro
+        );
+
+
+        mostraMessaggio(
+          messaggio,
+          "✅ Libro aggiornato nel cloud."
+        );
+
+      }
+
+      else{
+
+        await creaLibro(
+          libro
+        );
+
+
+        mostraMessaggio(
+          messaggio,
+          "✅ Libro salvato nel cloud."
+        );
+
+      }
 
     }
 
@@ -1973,28 +2307,34 @@ function pulisciForm(){
 
   document.getElementById(
     "titolo"
-  ).value = "";
+  ).value =
+    "";
 
 
   document.getElementById(
     "copertinaManuale"
-  ).value = "";
+  ).value =
+    "";
 
 
   document.getElementById(
     "anteprimaAggiunta"
-  ).innerHTML = "";
+  ).innerHTML =
+    "";
 
 
   document.getElementById(
     "risultatiAggiunta"
-  ).innerHTML = "";
+  ).innerHTML =
+    "";
 
 
-  copertinaScelta = "";
+  copertinaScelta =
+    "";
 
 
-  idModifica = null;
+  idModifica =
+    null;
 
 
   document.getElementById(
@@ -2042,13 +2382,16 @@ async function cercaCopertineCorrezione(){
     );
 
 
-  risultatiBox.innerHTML = "";
+  risultatiBox.innerHTML =
+    "";
 
-  messaggio.innerHTML = "";
+  messaggio.innerHTML =
+    "";
 
 
   if(
-    !titolo &&
+    !titolo
+    &&
     !isbn
   ){
 
@@ -2078,7 +2421,8 @@ async function cercaCopertineCorrezione(){
       );
 
 
-    messaggio.innerHTML = "";
+    messaggio.innerHTML =
+      "";
 
 
     mostraRisultati(
@@ -2112,16 +2456,37 @@ async function cercaCopertineCorrezione(){
         );
 
 
-        await aggiornaCopertinaLibro(
-          titolo,
-          url
-        );
+        try{
+
+          mostraMessaggio(
+            messaggio,
+            "☁️ Salvataggio nel cloud..."
+          );
 
 
-        mostraMessaggio(
-          messaggio,
-          "✅ Copertina salvata!"
-        );
+          await aggiornaCopertinaLibro(
+            titolo,
+            url
+          );
+
+
+          mostraMessaggio(
+            messaggio,
+            "✅ Copertina salvata e sincronizzata!"
+          );
+
+        }
+
+        catch(errore){
+
+          mostraMessaggio(
+            messaggio,
+            "⚠️ "
+            +
+            errore.message
+          );
+
+        }
 
       }
     );
@@ -2217,28 +2582,55 @@ async function salvaCopertinaManuale(){
   );
 
 
-  await aggiornaCopertinaLibro(
-    titolo,
-    url
-  );
+  try{
+
+    mostraMessaggio(
+      messaggio,
+      "☁️ Salvataggio nel cloud..."
+    );
 
 
-  mostraMessaggio(
-    messaggio,
-    "✅ Copertina salvata!"
-  );
+    await aggiornaCopertinaLibro(
+      titolo,
+      url
+    );
+
+
+    mostraMessaggio(
+      messaggio,
+      "✅ Copertina salvata e sincronizzata!"
+    );
+
+  }
+
+  catch(errore){
+
+    mostraMessaggio(
+      messaggio,
+      "⚠️ "
+      +
+      errore.message
+    );
+
+  }
 
 }
 
 
 /* =========================
    AGGIORNA COPERTINA
+   TELEFONO + COMPUTER
 ========================= */
 
 async function aggiornaCopertinaLibro(
   titolo,
   url
 ){
+
+  /*
+     La salviamo comunque
+     sul dispositivo attuale.
+  */
 
   localStorage.setItem(
     chiaveCopertina(
@@ -2248,7 +2640,12 @@ async function aggiornaCopertinaLibro(
   );
 
 
-  const libro =
+  /*
+     Controlliamo se il libro
+     esiste già su Neon.
+  */
+
+  const libroCloud =
     libriCloud.find(
       function(item){
 
@@ -2266,32 +2663,142 @@ async function aggiornaCopertinaLibro(
     );
 
 
-  if(!libro){
+  /*
+     Se esiste già,
+     aggiorniamo la copertina.
+  */
+
+  if(libroCloud){
+
+    await modificaLibroCloud(
+      libroCloud.id,
+      {
+
+        titolo:
+          libroCloud.titolo,
+
+        categoria:
+          libroCloud.categoria,
+
+        stato:
+          libroCloud.stato,
+
+        copertina:
+          url,
+
+        lettura_attuale:
+          Boolean(
+            libroCloud.lettura_attuale
+          )
+
+      }
+    );
+
+
+    await caricaLibri();
 
     return;
 
   }
 
 
-  await modificaLibroCloud(
-    libro.id,
+  /*
+     Se non è ancora nel cloud,
+     controlliamo se è uno dei
+     libri base conosciuti.
+  */
+
+  const libroBase =
+    trovaLibroBase(
+      titolo
+    );
+
+
+  /*
+     Libro base:
+     lo creiamo nel cloud.
+
+     Da questo momento
+     la sua copertina sarà
+     disponibile anche
+     sull'altro dispositivo.
+  */
+
+  if(libroBase){
+
+    await creaLibro(
+      {
+
+        titolo:
+          libroBase.titolo,
+
+        categoria:
+          libroBase.categoria,
+
+        stato:
+          libroBase.stato,
+
+        copertina:
+          url,
+
+        lettura_attuale:
+          false
+
+      }
+    );
+
+
+    await caricaLibri();
+
+    return;
+
+  }
+
+
+  /*
+     Se non era nella lista base
+     e non esisteva nel cloud,
+     lo salviamo usando i dati
+     selezionati nel form.
+
+     Così la copertina non resta
+     soltanto nel telefono.
+  */
+
+  const categoriaSelezionata =
+    document.getElementById(
+      "categoria"
+    ).value
+    ||
+    "Romance";
+
+
+  const statoSelezionato =
+    document.getElementById(
+      "stato"
+    ).value
+    ||
+    "Da leggere";
+
+
+  await creaLibro(
     {
+
       titolo:
-        libro.titolo,
+        titolo,
 
       categoria:
-        libro.categoria,
+        categoriaSelezionata,
 
       stato:
-        libro.stato,
+        statoSelezionato,
 
       copertina:
         url,
 
       lettura_attuale:
-        Boolean(
-          libro.lettura_attuale
-        )
+        false
+
     }
   );
 
@@ -2483,7 +2990,8 @@ function mostraListaLibri(){
     libriCloud.length;
 
 
-  lista.innerHTML = "";
+  lista.innerHTML =
+    "";
 
 
   if(!libriCloud.length){
@@ -2538,6 +3046,10 @@ function mostraListaLibri(){
 
         immagine.src =
           copertina;
+
+
+        immagine.alt =
+          libro.titolo;
 
 
         immagine.onerror =
@@ -2933,6 +3445,7 @@ async function eliminaLibro(id){
 ========================= */
 
 caricaLibri();
+
 
 </script>
 
