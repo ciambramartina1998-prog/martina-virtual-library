@@ -44,26 +44,16 @@ body{
   margin:0 auto;
 
   display:grid;
-
-  grid-template-columns:
-    175px
-    minmax(0,1fr)
-    190px;
+  grid-template-columns:175px minmax(0,1fr) 190px;
 
   overflow:hidden;
 
-  border:
-    1px solid
-    rgba(255,255,255,.26);
-
+  border:1px solid rgba(255,255,255,.26);
   border-radius:28px;
 
-  background:
-    rgba(255,255,255,.08);
+  background:rgba(255,255,255,.08);
 
-  box-shadow:
-    0 22px 55px
-    rgba(55,43,32,.28);
+  box-shadow:0 22px 55px rgba(55,43,32,.28);
 
   backdrop-filter:blur(2px);
   -webkit-backdrop-filter:blur(2px);
@@ -75,12 +65,9 @@ body{
 .sidebar{
   padding:17px 12px;
 
-  border-right:
-    1px solid
-    rgba(255,255,255,.25);
+  border-right:1px solid rgba(255,255,255,.25);
 
-  background:
-    rgba(247,244,239,.36);
+  background:rgba(247,244,239,.36);
 
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
@@ -122,9 +109,7 @@ body{
 
   padding:8px 9px;
 
-  border:
-    1px solid
-    transparent;
+  border:1px solid transparent;
 
   border-radius:12px;
 
@@ -142,28 +127,21 @@ body{
 }
 
 .nav a:hover{
-  transform:
-    translateX(3px);
+  transform:translateX(3px);
 
-  background:
-    rgba(255,255,255,.30);
+  background:rgba(255,255,255,.30);
 
-  border-color:
-    rgba(255,255,255,.38);
+  border-color:rgba(255,255,255,.38);
 }
 
 .nav a.active{
   color:#FFFDF8;
 
-  background:
-    rgba(201,133,152,.92);
+  background:rgba(201,133,152,.92);
 
-  border-color:
-    rgba(255,255,255,.30);
+  border-color:rgba(255,255,255,.30);
 
-  box-shadow:
-    0 6px 15px
-    rgba(112,69,81,.18);
+  box-shadow:0 6px 15px rgba(112,69,81,.18);
 }
 
 .nav-icon{
@@ -210,8 +188,7 @@ body{
 
   overflow:hidden;
 
-  background:
-    rgba(247,244,239,.16);
+  background:rgba(247,244,239,.16);
 
   backdrop-filter:blur(5px);
   -webkit-backdrop-filter:blur(5px);
@@ -289,12 +266,7 @@ body{
 
   color:#A75B72;
 
-  font-size:
-    clamp(
-      34px,
-      4vw,
-      47px
-    );
+  font-size:clamp(34px,4vw,47px);
 
   line-height:1;
 
@@ -304,9 +276,7 @@ body{
 
   letter-spacing:-1px;
 
-  text-shadow:
-    0 2px 5px
-    rgba(255,255,255,.70);
+  text-shadow:0 2px 5px rgba(255,255,255,.70);
 }
 
 .virtual-title{
@@ -320,9 +290,7 @@ body{
 
   letter-spacing:5px;
 
-  text-shadow:
-    0 1px 2px
-    rgba(255,255,255,.65);
+  text-shadow:0 1px 2px rgba(255,255,255,.65);
 }
 
 .header-decoration{
@@ -334,8 +302,7 @@ body{
 
   width:min(300px,75%);
 
-  margin:
-    7px auto 4px;
+  margin:7px auto 4px;
 
   color:#C98598;
 }
@@ -378,9 +345,7 @@ body{
 
   font-style:italic;
 
-  text-shadow:
-    0 1px 2px
-    rgba(255,255,255,.75);
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
 }
 
 
@@ -391,16 +356,13 @@ body{
 
   width:min(430px,100%);
 
-  margin:
-    0 auto 12px;
+  margin:0 auto 12px;
 
   overflow:hidden;
 
   padding:10px 8px;
 
-  border:
-    1px solid
-    rgba(176,104,126,.25);
+  border:1px solid rgba(176,104,126,.25);
 
   border-radius:17px;
 
@@ -408,9 +370,7 @@ body{
 
   text-align:center;
 
-  box-shadow:
-    0 9px 21px
-    rgba(91,55,65,.14);
+  box-shadow:0 9px 21px rgba(91,55,65,.14);
 
   transition:
     transform .25s ease,
@@ -429,8 +389,7 @@ body{
   top:-40px;
   left:-90px;
 
-  transform:
-    rotate(25deg);
+  transform:rotate(25deg);
 
   background:
     linear-gradient(
@@ -440,8 +399,7 @@ body{
       transparent
     );
 
-  transition:
-    left .65s ease;
+  transition:left .65s ease;
 }
 
 .total-card::after{
@@ -460,15 +418,11 @@ body{
 }
 
 .total-card:hover{
-  transform:
-    translateY(-3px);
+  transform:translateY(-3px);
 
-  box-shadow:
-    0 13px 27px
-    rgba(91,55,65,.20);
+  box-shadow:0 13px 27px rgba(91,55,65,.20);
 
-  filter:
-    brightness(1.025);
+  filter:brightness(1.025);
 }
 
 .total-card:hover::before{
@@ -519,11 +473,7 @@ body{
 .cards{
   display:grid;
 
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(0,1fr)
-    );
+  grid-template-columns:repeat(2,minmax(0,1fr));
 
   gap:11px;
 
@@ -539,12 +489,9 @@ body{
 
   overflow:hidden;
 
-  padding:
-    17px 10px 43px;
+  padding:17px 10px 43px;
 
-  border:
-    1px solid
-    rgba(176,104,126,.26);
+  border:1px solid rgba(176,104,126,.26);
 
   border-radius:19px;
 
@@ -554,9 +501,7 @@ body{
 
   text-decoration:none;
 
-  box-shadow:
-    0 8px 20px
-    rgba(82,47,57,.14);
+  box-shadow:0 8px 20px rgba(82,47,57,.14);
 
   transition:
     transform .25s ease,
@@ -576,8 +521,7 @@ body{
   top:-35px;
   left:-115px;
 
-  transform:
-    rotate(25deg);
+  transform:rotate(25deg);
 
   background:
     linear-gradient(
@@ -587,8 +531,7 @@ body{
       transparent
     );
 
-  transition:
-    left .65s ease;
+  transition:left .65s ease;
 }
 
 .card::after{
@@ -607,20 +550,15 @@ body{
 }
 
 .card:hover{
-  transform:
-    translateY(-5px);
+  transform:translateY(-5px);
 
-  border-color:
-    rgba(176,104,126,.40);
+  border-color:rgba(176,104,126,.40);
 
   box-shadow:
-    0 14px 28px
-    rgba(82,47,57,.20),
-    inset 0 0 24px
-    rgba(255,242,244,.18);
+    0 14px 28px rgba(82,47,57,.20),
+    inset 0 0 24px rgba(255,242,244,.18);
 
-  filter:
-    brightness(1.035);
+  filter:brightness(1.035);
 }
 
 .card:hover::before{
@@ -674,8 +612,7 @@ body{
 
   z-index:2;
 
-  margin:
-    6px 0 0;
+  margin:6px 0 0;
 
   color:#7A5862;
 
@@ -693,14 +630,11 @@ body{
 
   padding:5px;
 
-  border:
-    1px solid
-    rgba(176,104,126,.20);
+  border:1px solid rgba(176,104,126,.20);
 
   border-radius:11px;
 
-  background:
-    rgba(255,250,244,.34);
+  background:rgba(255,250,244,.34);
 
   color:#754858;
 
@@ -725,20 +659,15 @@ body{
 
   width:fit-content;
 
-  margin:
-    11px auto 4px;
+  margin:11px auto 4px;
 
-  padding:
-    7px 14px;
+  padding:7px 14px;
 
-  border:
-    1px solid
-    rgba(176,104,126,.25);
+  border:1px solid rgba(176,104,126,.25);
 
   border-radius:13px;
 
-  background:
-    rgba(247,244,239,.62);
+  background:rgba(247,244,239,.62);
 
   color:#6D4350;
 
@@ -748,9 +677,7 @@ body{
 
   font-weight:bold;
 
-  box-shadow:
-    0 6px 16px
-    rgba(55,39,32,.10);
+  box-shadow:0 6px 16px rgba(55,39,32,.10);
 
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
@@ -762,15 +689,11 @@ body{
 }
 
 .home-button:hover{
-  transform:
-    translateY(-2px);
+  transform:translateY(-2px);
 
-  background:
-    rgba(255,250,242,.80);
+  background:rgba(255,250,242,.80);
 
-  box-shadow:
-    0 10px 21px
-    rgba(55,39,32,.16);
+  box-shadow:0 10px 21px rgba(55,39,32,.16);
 }
 
 
@@ -787,9 +710,7 @@ body{
 
   font-style:italic;
 
-  text-shadow:
-    0 1px 2px
-    rgba(255,255,255,.75);
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
 }
 
 
@@ -798,12 +719,9 @@ body{
 .rightbar{
   padding:13px 10px;
 
-  border-left:
-    1px solid
-    rgba(255,255,255,.24);
+  border-left:1px solid rgba(255,255,255,.24);
 
-  background:
-    rgba(201,133,152,.34);
+  background:rgba(201,133,152,.34);
 
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
@@ -818,20 +736,15 @@ body{
 
   padding:11px 9px;
 
-  border:
-    1px solid
-    rgba(255,255,255,.30);
+  border:1px solid rgba(255,255,255,.30);
 
   border-radius:16px;
 
-  background:
-    rgba(247,244,239,.29);
+  background:rgba(247,244,239,.29);
 
   text-align:center;
 
-  box-shadow:
-    0 8px 20px
-    rgba(75,48,56,.13);
+  box-shadow:0 8px 20px rgba(75,48,56,.13);
 
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
@@ -858,15 +771,11 @@ body{
 }
 
 .widget:hover{
-  transform:
-    translateY(-3px);
+  transform:translateY(-3px);
 
-  background:
-    rgba(247,244,239,.41);
+  background:rgba(247,244,239,.41);
 
-  box-shadow:
-    0 12px 26px
-    rgba(75,48,56,.18);
+  box-shadow:0 12px 26px rgba(75,48,56,.18);
 }
 
 .widget h3{
@@ -874,8 +783,7 @@ body{
 
   z-index:2;
 
-  margin:
-    0 0 6px;
+  margin:0 0 6px;
 
   color:#734657;
 
@@ -889,8 +797,7 @@ body{
 
   z-index:2;
 
-  margin:
-    3px 0;
+  margin:3px 0;
 
   color:#9A5067;
 
@@ -922,14 +829,11 @@ body{
 
   overflow:hidden;
 
-  border:
-    1px solid
-    rgba(176,104,126,.28);
+  border:1px solid rgba(176,104,126,.28);
 
   border-radius:20px;
 
-  background:
-    rgba(245,240,228,.55);
+  background:rgba(245,240,228,.55);
 }
 
 .progress-inner{
@@ -947,8 +851,7 @@ body{
       #DDA7B6
     );
 
-  transition:
-    width .35s ease;
+  transition:width .35s ease;
 }
 
 .progress-percent{
@@ -982,8 +885,7 @@ body{
 
   z-index:2;
 
-  margin:
-    4px 0 6px;
+  margin:4px 0 6px;
 
   color:#654A52;
 
@@ -1008,9 +910,7 @@ body{
 @media(max-width:900px){
 
   .library-app{
-    grid-template-columns:
-      150px
-      1fr;
+    grid-template-columns:150px 1fr;
   }
 
   .rightbar{
@@ -1018,16 +918,13 @@ body{
 
     display:grid;
 
-    grid-template-columns:
-      repeat(2,1fr);
+    grid-template-columns:repeat(2,1fr);
 
     gap:8px;
 
     border-left:none;
 
-    border-top:
-      1px solid
-      rgba(255,255,255,.24);
+    border-top:1px solid rgba(255,255,255,.24);
   }
 
   .widget{
@@ -1051,9 +948,7 @@ body{
   .sidebar{
     border-right:none;
 
-    border-bottom:
-      1px solid
-      rgba(255,255,255,.24);
+    border-bottom:1px solid rgba(255,255,255,.24);
   }
 
   .nav{
@@ -1351,6 +1246,10 @@ restano nel cuore.
 <script>
 
 
+/* =========================
+   NORMALIZZA
+========================= */
+
 function normalizza(titolo){
 
   return String(titolo || "")
@@ -1361,36 +1260,11 @@ function normalizza(titolo){
 }
 
 
-let libriSalvati=[];
+/* =========================
+   ROMANCE BASE LETTI
+========================= */
 
-
-const dati=
-  localStorage.getItem(
-    "mieiLibriAggiunti"
-  );
-
-
-if(dati){
-
-  try{
-
-    libriSalvati=
-      JSON.parse(dati);
-
-  }
-
-  catch(errore){
-
-    libriSalvati=[];
-
-  }
-
-}
-
-
-/* 92 ROMANCE LETTI */
-
-const libriBaseLetti=[
+const romanceBaseLetti=[
 
   "31 giorni per innamorarsi",
   "36 domande per farti innamorare di me",
@@ -1488,9 +1362,11 @@ const libriBaseLetti=[
 ];
 
 
-/* 19 ROMANCE DA LEGGERE */
+/* =========================
+   ROMANCE BASE DA LEGGERE
+========================= */
 
-const libriBaseDaLeggere=[
+const romanceBaseDaLeggere=[
 
   "Amori e segreti al Pumpkin Spice Café",
   "Before Dawn",
@@ -1515,244 +1391,379 @@ const libriBaseDaLeggere=[
 ];
 
 
-let romanceLetti=0;
+/* =========================
+   TUTTI I ROMANCE BASE
+========================= */
 
-let romanceDaLeggere=0;
+const romanceBase=[
+
+  ...romanceBaseLetti.map(
+    function(titolo){
+
+      return{
+        titolo:titolo,
+        categoria:"Romance",
+        stato:"Letto"
+      };
+
+    }
+  ),
+
+  ...romanceBaseDaLeggere.map(
+    function(titolo){
+
+      return{
+        titolo:titolo,
+        categoria:"Romance",
+        stato:"Da leggere"
+      };
+
+    }
+  )
+
+];
 
 
-function contaLibroBase(
-  titolo,
-  statoOriginale
-){
+/* =========================
+   CALCOLA CONTEGGI CLOUD
+========================= */
 
-  const gestito=
-    libriSalvati.find(
-      function(libro){
+function calcolaConteggi(libriCloud){
 
-        return (
-          normalizza(libro.titolo)
-          ===
-          normalizza(titolo)
+  const cloudPerTitolo=
+    new Map();
+
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+      ){
+
+        return;
+
+      }
+
+
+      cloudPerTitolo.set(
+        normalizza(libro.titolo),
+        libro
+      );
+
+    }
+  );
+
+
+  const finali=
+    new Map();
+
+
+  /*
+    Prima inseriamo i Romance base.
+
+    Se un titolo base esiste nel
+    cloud, la versione cloud decide
+    categoria e stato.
+  */
+
+  romanceBase.forEach(
+    function(libroBase){
+
+      const nome=
+        normalizza(
+          libroBase.titolo
+        );
+
+
+      const versioneCloud=
+        cloudPerTitolo.get(
+          nome
+        );
+
+
+      if(versioneCloud){
+
+        finali.set(
+          nome,
+          versioneCloud
         );
 
       }
-    );
 
+      else{
 
-  if(!gestito){
+        finali.set(
+          nome,
+          libroBase
+        );
 
-    if(
-      statoOriginale ===
-      "Letto"
-    ){
-
-      romanceLetti++;
+      }
 
     }
+  );
 
-    else{
 
-      romanceDaLeggere++;
+  /*
+    Aggiungiamo tutti i libri cloud.
+
+    Un titolo già presente viene
+    sostituito e non duplicato.
+  */
+
+  libriCloud.forEach(
+    function(libro){
+
+      if(
+        !libro
+        ||
+        !libro.titolo
+      ){
+
+        return;
+
+      }
+
+
+      const nome=
+        normalizza(
+          libro.titolo
+        );
+
+
+      if(!nome){
+
+        return;
+
+      }
+
+
+      finali.set(
+        nome,
+        libro
+      );
 
     }
-
-    return;
-
-  }
+  );
 
 
-  if(
-    gestito.categoria !==
-    "Romance"
-  ){
-
-    return;
-
-  }
+  let letti=0;
+  let daLeggere=0;
 
 
-  if(
-    gestito.stato ===
-    "Letto"
-  ){
+  finali.forEach(
+    function(libro){
 
-    romanceLetti++;
+      if(
+        libro.categoria
+        !==
+        "Romance"
+      ){
 
-  }
+        return;
+
+      }
 
 
-  if(
-    gestito.stato ===
-    "Da leggere"
-  ){
+      if(
+        libro.stato
+        ===
+        "Letto"
+      ){
 
-    romanceDaLeggere++;
+        letti++;
 
-  }
+      }
+
+
+      if(
+        libro.stato
+        ===
+        "Da leggere"
+      ){
+
+        daLeggere++;
+
+      }
+
+    }
+  );
+
+
+  return{
+    letti:letti,
+    daLeggere:daLeggere
+  };
 
 }
 
 
-libriBaseLetti.forEach(
-  function(titolo){
+/* =========================
+   MOSTRA CONTEGGI
+========================= */
 
-    contaLibroBase(
-      titolo,
-      "Letto"
-    );
+function mostraConteggi(
+  romanceLetti,
+  romanceDaLeggere
+){
+
+  const totaleRomance=
+    romanceLetti
+    +
+    romanceDaLeggere;
+
+
+  document.getElementById(
+    "totaleRomance"
+  ).textContent=
+    totaleRomance;
+
+
+  document.getElementById(
+    "numeroRomance"
+  ).textContent=
+    totaleRomance;
+
+
+  document.getElementById(
+    "dettaglioRomance"
+  ).textContent=
+    romanceLetti
+    +
+    " letti · "
+    +
+    romanceDaLeggere
+    +
+    " da leggere";
+
+
+  document.getElementById(
+    "testoLetti"
+  ).textContent=
+    romanceLetti
+    +
+    " libri · Apri";
+
+
+  document.getElementById(
+    "testoDaLeggere"
+  ).textContent=
+    romanceDaLeggere
+    +
+    " libri · Apri";
+
+
+  let percentuale=0;
+
+
+  if(totaleRomance>0){
+
+    percentuale=
+      Math.round(
+        (
+          romanceLetti
+          /
+          totaleRomance
+        )
+        *
+        100
+      );
 
   }
-);
 
 
-libriBaseDaLeggere.forEach(
-  function(titolo){
-
-    contaLibroBase(
-      titolo,
-      "Da leggere"
-    );
-
-  }
-);
+  document.getElementById(
+    "barraRomance"
+  ).style.width=
+    percentuale
+    +
+    "%";
 
 
-const tuttiBase=
-  libriBaseLetti.concat(
-    libriBaseDaLeggere
-  );
+  document.getElementById(
+    "percentualeRomance"
+  ).textContent=
+    percentuale
+    +
+    "%";
+
+}
 
 
-libriSalvati.forEach(
-  function(libro){
+/* =========================
+   CARICA DAL CLOUD
+========================= */
 
-    if(
-      libro.categoria !==
-      "Romance"
-    ){
+async function caricaRomance(){
 
-      return;
+  try{
 
-    }
-
-
-    const giaBase=
-      tuttiBase.some(
-        function(titoloBase){
-
-          return (
-            normalizza(titoloBase)
-            ===
-            normalizza(libro.titolo)
-          );
-
+    const risposta=
+      await fetch(
+        "/api/libri",
+        {
+          cache:"no-store"
         }
       );
 
 
-    if(giaBase){
+    if(!risposta.ok){
 
-      return;
-
-    }
-
-
-    if(
-      libro.stato ===
-      "Letto"
-    ){
-
-      romanceLetti++;
+      throw new Error(
+        "Errore nel caricamento."
+      );
 
     }
 
 
-    if(
-      libro.stato ===
-      "Da leggere"
-    ){
+    const dati=
+      await risposta.json();
 
-      romanceDaLeggere++;
 
-    }
+    const libriCloud=
+      Array.isArray(dati.libri)
+      ?
+      dati.libri
+      :
+      [];
+
+
+    const conteggi=
+      calcolaConteggi(
+        libriCloud
+      );
+
+
+    mostraConteggi(
+      conteggi.letti,
+      conteggi.daLeggere
+    );
 
   }
-);
 
+  catch(errore){
 
-const totaleRomance=
-  romanceLetti +
-  romanceDaLeggere;
-
-
-document.getElementById(
-  "totaleRomance"
-).textContent=
-  totaleRomance;
-
-
-document.getElementById(
-  "numeroRomance"
-).textContent=
-  totaleRomance;
-
-
-document.getElementById(
-  "dettaglioRomance"
-).textContent=
-  romanceLetti +
-  " letti · " +
-  romanceDaLeggere +
-  " da leggere";
-
-
-document.getElementById(
-  "testoLetti"
-).textContent=
-  romanceLetti +
-  " libri · Apri";
-
-
-document.getElementById(
-  "testoDaLeggere"
-).textContent=
-  romanceDaLeggere +
-  " libri · Apri";
-
-
-let percentuale=0;
-
-
-if(
-  totaleRomance > 0
-){
-
-  percentuale=
-    Math.round(
-      (
-        romanceLetti
-        /
-        totaleRomance
-      )
-      *
-      100
+    console.error(
+      "Cloud non disponibile:",
+      errore
     );
+
+
+    mostraConteggi(
+      romanceBaseLetti.length,
+      romanceBaseDaLeggere.length
+    );
+
+  }
 
 }
 
 
-document.getElementById(
-  "barraRomance"
-).style.width=
-  percentuale +
-  "%";
+/* AVVIO */
 
-
-document.getElementById(
-  "percentualeRomance"
-).textContent=
-  percentuale +
-  "%";
+caricaRomance();
 
 
 </script>
