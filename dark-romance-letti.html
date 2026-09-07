@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dark Romance - Letti | Martina's Virtual Library</title>
+<title>Dark Romance - Letti | My Little Library</title>
 
 <style>
 
@@ -899,6 +899,157 @@ body{
 
 }
 
+
+/* ===== RIFINITURA FINALE DARK ROMANCE · LETTI ===== */
+
+/* Header coerente con la nuova libreria */
+.script-title{
+  font-size:clamp(40px,4.5vw,54px);
+  line-height:1;
+  letter-spacing:-1px;
+}
+
+.virtual-title{
+  margin-top:5px;
+  font-size:11px;
+  letter-spacing:3.2px;
+}
+
+/* Ricerca e ritorno più puliti */
+.topbar{
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.search-box{
+  background:rgba(255,245,242,.43);
+  box-shadow:0 9px 21px rgba(55,32,33,.13);
+}
+
+.back{
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.back:hover{
+  transform:translateY(-2px);
+  background:#E2CFCA;
+  box-shadow:0 10px 20px rgba(57,35,33,.17);
+}
+
+/* Manteniamo le card già approvate */
+.book-grid{
+  gap:12px 10px;
+  align-items:stretch;
+}
+
+.book-card{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+
+.book-card:hover{
+  transform:translateY(-8px);
+  background:rgba(255,245,242,.60);
+  border-color:rgba(255,255,255,.76);
+  box-shadow:
+    0 20px 34px rgba(55,32,33,.25),
+    0 0 18px rgba(185,125,136,.16);
+}
+
+.book-card:hover .book-cover{
+  transform:scale(1.045);
+}
+
+.book-info{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.book-title{
+  width:100%;
+  min-height:31px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+
+.favorite-row{
+  margin-top:auto;
+}
+
+/* Preferito un po' più elegante senza cambiarne il funzionamento */
+.favorite-button{
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.favorite-button:hover:not(:disabled){
+  transform:translateY(-1px);
+  background:rgba(255,245,242,.66);
+  border-color:rgba(122,47,61,.32);
+  box-shadow:0 4px 10px rgba(65,34,40,.10);
+}
+
+/* Via la fascia verticale destra: restano i widget sospesi */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.widget{
+  background:rgba(255,245,241,.15);
+  border:1px solid rgba(255,255,255,.23);
+  box-shadow:0 10px 24px rgba(35,21,24,.18);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.widget:hover{
+  transform:translateY(-3px);
+  background:rgba(255,245,241,.20);
+  box-shadow:0 14px 28px rgba(35,21,24,.22);
+}
+
+/* Scheda libro leggermente rifinita, funzioni intatte */
+.book-modal-box{
+  box-shadow:
+    0 28px 70px rgba(31,17,20,.50),
+    0 0 25px rgba(160,93,105,.10);
+}
+
+.modal-close,
+.save-plot{
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    box-shadow .18s ease;
+}
+
+.modal-close:hover{
+  transform:scale(1.06);
+  background:rgba(255,255,255,.70);
+}
+
+.save-plot:hover:not(:disabled){
+  transform:translateY(-2px);
+  background:#8A3948;
+  box-shadow:0 9px 18px rgba(72,37,43,.23);
+}
+
 </style>
 </head>
 
@@ -972,11 +1123,11 @@ Gestisci libri
 <header class="header">
 
 <h1 class="script-title">
-Martina's
+Dark Romance
 </h1>
 
 <div class="virtual-title">
-DARK ROMANCE · LETTI
+LETTI
 </div>
 
 <div class="header-decoration">
@@ -1068,11 +1219,11 @@ sono quelle che restano.
 <div class="widget">
 
 <div class="widget-title">
-MARTINA'S
+MY LITTLE
 </div>
 
 <div class="small">
-VIRTUAL LIBRARY
+LIBRARY
 </div>
 
 <div class="flower">
