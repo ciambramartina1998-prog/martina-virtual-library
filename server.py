@@ -185,7 +185,8 @@ def cerca_trama_google_books(titolo):
     if not titolo:
         return ""
 
-    # Proviamo più ricerche: prima precisa, poi più ampia.
+    # Cerchiamo SOLO edizioni italiane.
+    # Facciamo più tentativi perché alcuni titoli vengono indicizzati in modi diversi.
     queries = [
         'intitle:"' + titolo + '"',
         titolo,
@@ -204,43 +205,62 @@ def cerca_trama_google_books(titolo):
                 + "&maxResults=40"
                 + "&printType=books"
                 + "&orderBy=relevance"
+                + "&langRestrict=it"
                 + "&key=" + quote_plus(GOOGLE_BOOKS_API_KEY)
             )
 
-            dati = scarica_json(google_url)
+            dati = scarica_json(
+                google_url
+            )
 
-            for item in dati.get("items", []):
+            for item in dati.get(
+                "items",
+                []
+            ):
 
-                info = item.get("volumeInfo", {})
+                info = item.get(
+                    "volumeInfo",
+                    {}
+                )
+
+                lingua = str(
+                    info.get(
+                        "language",
+                        ""
+                    )
+                ).lower().strip()
+
+                # Non mostriamo descrizioni inglesi o di altre lingue.
+                if lingua != "it":
+                    continue
 
                 descrizione = pulisci_trama_google(
-                    info.get("description", "")
+                    info.get(
+                        "description",
+                        ""
+                    )
                 )
 
                 if not descrizione:
                     continue
 
-                titolo_trovato = info.get("title", "")
+                titolo_trovato = info.get(
+                    "title",
+                    ""
+                )
 
                 punteggio = punteggio_titolo_trama(
                     titolo,
                     titolo_trovato
                 )
 
-                # Evita di prendere la trama di un libro chiaramente diverso.
+                # Evita di prendere la trama di un libro diverso.
                 if punteggio <= 0:
                     continue
 
-                lingua = str(
-                    info.get("language", "")
-                ).lower()
-
-                # Preferiamo l'edizione italiana quando esiste.
-                bonus_lingua = 5 if lingua == "it" else 0
-
                 candidati.append(
                     (
-                        punteggio + bonus_lingua,
+                        punteggio,
                         descrizione
                     )
                 )
@@ -248,7 +268,7 @@ def cerca_trama_google_books(titolo):
         except Exception as errore:
 
             print(
-                "Ricerca trama Google non disponibile per query",
+                "Ricerca trama italiana Google non disponibile per query",
                 query,
                 ":",
                 errore,
@@ -359,14 +379,12 @@ def cerca_trama_open_library(titolo):
 
 def cerca_trama_automatica(titolo):
 
-    # 1) Google Books: normalmente offre la trama migliore.
-    trama = cerca_trama_automatica(titolo)
-
-    if trama:
-        return trama
-
-    # 2) Open Library come seconda possibilità.
-    return cerca_trama_open_library(titolo)
+    # Mostriamo solo trame italiane.
+    # Se Google Books non ha una descrizione italiana,
+    # lasciamo la trama vuota invece di mostrare quella inglese.
+    return cerca_trama_google_books(
+        titolo
+    )
 
 
 # ==========================================
