@@ -1570,14 +1570,13 @@ async function caricaManga(){
 
   try{
 
-    const risposta=
-      await fetch(
-        "/api/libri",
-        {
-          cache:"no-store"
-        }
-      );
-
+   const risposta=
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/libri",
+    {
+      cache:"no-store"
+    }
+  );
 
     if(
       !risposta.ok
