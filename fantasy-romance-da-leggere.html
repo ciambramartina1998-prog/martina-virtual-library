@@ -1247,12 +1247,13 @@ async function caricaLibri(){
 
   try{
 
-   await fetch(
-  "https://martina-virtual-library.onrender.com/api/libri",
-  {
-    cache:"no-store"
-  }
-);
+  const risposta =
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/libri",
+    {
+      cache:"no-store"
+    }
+  );
 
 
     if(!risposta.ok){
