@@ -515,14 +515,90 @@ def cerca_trama_open_library(titolo):
     return candidati[0][1]
 
 
+TRAME_ITALIANE_FALLBACK = {
+    # Fallback verificato per l'edizione italiana di God of Pain.
+    # È una sintesi originale, non una copia della scheda dell'editore.
+    "god of pain": (
+        "Annika Volkov, cresciuta in una potente famiglia mafiosa, sa che il suo futuro "
+        "sembra già scritto. Eppure si sente attratta proprio dall'uomo da cui dovrebbe "
+        "stare lontana: Creighton King, freddo e pericoloso, abituato alla violenza e ai "
+        "combattimenti clandestini. Tra i due nasce un legame oscuro e irresistibile che "
+        "li porta da sconosciuti ad amanti e poi a nemici, in una relazione segnata da "
+        "desiderio, ossessione e conseguenze difficili da evitare."
+    ),
+
+    # Sinossi italiane di serie manga: vengono usate soltanto se Google Books
+    # non dispone della trama italiana del singolo volume.
+    "my dress up darling": (
+        "Wakana Gojo è un liceale timido con una grande passione per le bambole Hina e "
+        "per il cucito. Quando Marin Kitagawa, compagna di classe solare e appassionata "
+        "di cosplay, scopre la sua abilità, gli chiede di aiutarla a realizzare i suoi "
+        "costumi. Da questa collaborazione nasce un rapporto sempre più speciale."
+    ),
+    "my dress-up darling": (
+        "Wakana Gojo è un liceale timido con una grande passione per le bambole Hina e "
+        "per il cucito. Quando Marin Kitagawa, compagna di classe solare e appassionata "
+        "di cosplay, scopre la sua abilità, gli chiede di aiutarla a realizzare i suoi "
+        "costumi. Da questa collaborazione nasce un rapporto sempre più speciale."
+    ),
+    "i diari della speziale": (
+        "Maomao, giovane esperta di erbe medicinali e veleni, viene portata alla corte "
+        "imperiale come serva. Vorrebbe restare nell'ombra, ma le sue conoscenze la "
+        "spingono a risolvere misteri e casi delicati del palazzo, attirando l'attenzione "
+        "di Jinshi e coinvolgendola sempre di più negli intrighi di corte."
+    ),
+    "ice guy cool girl": (
+        "Himuro discende da una donna delle nevi e, quando le sue emozioni prendono il "
+        "sopravvento, provoca involontariamente fenomeni gelidi. Sul lavoro conosce "
+        "Fuyutsuki, una collega calma e premurosa di cui si innamora. Tra piccoli gesti "
+        "quotidiani e situazioni insolite, i due si avvicinano poco alla volta."
+    ),
+    "ice guy & cool girl": (
+        "Himuro discende da una donna delle nevi e, quando le sue emozioni prendono il "
+        "sopravvento, provoca involontariamente fenomeni gelidi. Sul lavoro conosce "
+        "Fuyutsuki, una collega calma e premurosa di cui si innamora. Tra piccoli gesti "
+        "quotidiani e situazioni insolite, i due si avvicinano poco alla volta."
+    ),
+    "a sign of affection": (
+        "Yuki è una studentessa universitaria sorda che comunica soprattutto attraverso "
+        "la lingua dei segni, i messaggi e la lettura labiale. L'incontro con Itsuomi, "
+        "un ragazzo curioso del mondo e delle lingue, apre per lei nuovi orizzonti e dà "
+        "inizio a una delicata storia d'amore."
+    ),
+}
+
+
+def cerca_trama_fallback_italiana(titolo):
+    normalizzato = normalizza_titolo_google(titolo)
+
+    # Titoli esatti.
+    for chiave, trama in TRAME_ITALIANE_FALLBACK.items():
+        if normalizzato == normalizza_titolo_google(chiave):
+            return trama
+
+    # Serie manga: accetta anche "Vol. 6", "06", sottotitoli, ecc.
+    for chiave, trama in TRAME_ITALIANE_FALLBACK.items():
+        chiave_norm = normalizza_titolo_google(chiave)
+        if chiave_norm and (
+            normalizzato.startswith(chiave_norm + " ")
+            or chiave_norm in normalizzato
+        ):
+            return trama
+
+    return ""
+
+
 def cerca_trama_automatica(titolo):
 
-    # Mostriamo solo trame italiane.
-    # Se Google Books non ha una descrizione italiana,
-    # lasciamo la trama vuota invece di mostrare quella inglese.
-    return cerca_trama_google_books(
-        titolo
-    )
+    # 1) Prova Google Books, ma accetta soltanto una trama italiana.
+    trama = cerca_trama_google_books(titolo)
+
+    if trama and not sembra_trama_inglese(trama):
+        return trama
+
+    # 2) Se Google non la fornisce, usa il fallback italiano verificato.
+    # In questo modo non mostriamo mai automaticamente una trama inglese.
+    return cerca_trama_fallback_italiana(titolo)
 
 
 def correggi_trame_inglesi_salvate():
