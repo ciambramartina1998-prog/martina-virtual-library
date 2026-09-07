@@ -297,11 +297,11 @@ body{
   gap:8px;
   margin-bottom:12px;
 }
-  
-.search{
-  width:min(450px,100%);
 
-  margin:10px auto;
+.search{
+  flex:1;
+  width:auto;
+  margin:0;
 
   display:flex;
   align-items:center;
@@ -446,7 +446,7 @@ body{
 
 /* GRIGLIA */
 
-  /* PULSANTE TORNA A ROMANCE */
+/* PULSANTE TORNA A ROMANCE */
 
 .back-button{
   padding:8px 11px;
@@ -471,7 +471,7 @@ body{
   background:rgba(255,250,245,.90);
   box-shadow:0 10px 22px rgba(91,55,65,.18);
 }
-  
+
 .book-grid{
   display:grid;
 
@@ -879,7 +879,7 @@ body{
   background:#f7e4e9;
   transform:translateY(-1px);
 }
-  
+
 </style>
 
 </head>
@@ -973,6 +973,7 @@ Le storie d'amore che ho già vissuto pagina dopo pagina.
 
 </header>
 
+
 <div class="topbar">
 
 <div class="search">
@@ -993,20 +994,8 @@ placeholder="Cerca tra i Romance letti..."
 ← Romance
 </a>
 
-  </div>
-  
-
-
 </div>
 
-</div>
-
-  
-
-<section
-class="book-grid"
-id="grigliaLibri"
-></section>
 
 <section
 class="book-grid"
@@ -1611,9 +1600,6 @@ function mostraLibri(libri){
     libri.length;
 
 
-  
-
-
   document.getElementById(
     "numeroRomance"
   ).textContent=
@@ -1662,12 +1648,13 @@ async function caricaLibri(){
       await risposta.json();
 
 
-  const libriCloud=
-  Array.isArray(dati.libri)
-  ?
-  dati.libri
-  :
-  [];
+    const libriCloud=
+      Array.isArray(dati.libri)
+      ?
+      dati.libri
+      :
+      [];
+
 
     const listaFinale=
       creaListaFinale(
