@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Manga da leggere - Martina's Virtual Library</title>
+<title>Manga - Da leggere | My Little Library</title>
 
 <style>
 
@@ -855,6 +855,91 @@ body{
 .detail-plot{white-space:pre-line;line-height:1.65;color:#59444e;font-size:14px;}
 @media(max-width:560px){.detail-content{grid-template-columns:1fr}.detail-cover{width:150px;margin:0 auto}.detail-title{text-align:center;margin-right:0}.detail-category,.detail-status-wrap{text-align:center}}
 
+
+/* ===== RIFINITURA FINALE MANGA · DA LEGGERE ===== */
+.script-title{
+  font-size:clamp(40px,4.5vw,54px);
+  line-height:1;
+  letter-spacing:-1px;
+}
+.virtual-title{
+  margin-top:5px;
+  font-size:11px;
+  letter-spacing:3.2px;
+}
+.top-row{gap:10px;margin-bottom:14px;}
+.search-box{
+  background:rgba(247,244,239,.46);
+  box-shadow:0 9px 21px rgba(84,64,46,.13);
+}
+.counter-box{
+  background:rgba(232,225,216,.90);
+  box-shadow:0 10px 22px rgba(84,64,46,.14);
+}
+.book-grid{gap:12px 10px;align-items:stretch;}
+.book-card{height:100%;display:flex;flex-direction:column;}
+.book-info{flex:1;display:flex;flex-direction:column;align-items:center;}
+.book-title{
+  width:100%;
+  min-height:31px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+.book-status{margin-top:auto;}
+
+/* niente fascia verticale destra */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.widget{
+  background:rgba(247,244,239,.34);
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:0 10px 24px rgba(84,64,46,.14);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.widget:hover{
+  transform:translateY(-3px);
+  background:rgba(247,244,239,.46);
+  box-shadow:0 14px 28px rgba(84,64,46,.18);
+}
+
+/* scheda trama coordinata alla palette Manga */
+.detail-overlay{
+  background:rgba(62,48,37,.66);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+}
+.detail-modal{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(250,247,242,.98),
+      rgba(229,218,207,.98)
+    );
+  border:1px solid rgba(255,255,255,.50);
+  box-shadow:
+    0 30px 74px rgba(62,46,35,.45),
+    0 0 24px rgba(169,137,112,.11);
+}
+.detail-close{color:#7A5A43;}
+.detail-cover{
+  background:linear-gradient(145deg,#E8E1D8,#F2ECE5);
+  box-shadow:0 12px 26px rgba(84,64,46,.20);
+}
+.detail-category{color:#8D6C53;}
+.detail-title{color:#684A35;}
+.detail-status{
+  background:rgba(169,137,112,.17);
+  border:1px solid rgba(169,137,112,.30);
+  color:#7A5A43;
+}
+.detail-label{color:#684A35;}
+.detail-plot{color:#59483C;}
+
 </style>
 
 </head>
@@ -934,11 +1019,11 @@ Gestisci libri
 <header class="header">
 
 <h1 class="script-title">
-Martina's
+Manga
 </h1>
 
 <div class="virtual-title">
-MANGA · DA LEGGERE
+DA LEGGERE
 </div>
 
 <div class="header-decoration">
