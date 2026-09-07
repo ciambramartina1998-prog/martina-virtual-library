@@ -387,6 +387,138 @@ def cerca_trama_automatica(titolo):
     )
 
 
+def sembra_trama_inglese(trama):
+
+    testo = " " + re.sub(
+        r"[^a-zA-ZÀ-ÿ']+",
+        " ",
+        str(trama or "").lower()
+    ) + " "
+
+    # Confronto semplice e prudente tra parole molto comuni.
+    parole_inglesi = [
+        " the ", " and ", " with ", " from ", " that ", " this ",
+        " his ", " her ", " their ", " when ", " but ", " she ",
+        " he ", " they ", " into ", " love ", " life ", " has ",
+        " have ", " will ", " can ", " only ", " one "
+    ]
+
+    parole_italiane = [
+        " che ", " con ", " per ", " non ", " una ", " uno ",
+        " gli ", " delle ", " della ", " nella ", " quando ",
+        " lui ", " lei ", " loro ", " amore ", " vita ", " ma ",
+        " anche ", " come ", " suo ", " sua ", " sono "
+    ]
+
+    inglese = sum(
+        testo.count(parola)
+        for parola in parole_inglesi
+    )
+
+    italiano = sum(
+        testo.count(parola)
+        for parola in parole_italiane
+    )
+
+    return inglese >= 4 and inglese > italiano * 2
+
+
+def correggi_trame_inglesi_salvate():
+
+    try:
+
+        with connessione_database() as conn:
+
+            with conn.cursor() as cur:
+
+                cur.execute("""
+                    SELECT id, titolo, trama
+                    FROM libri
+                    WHERE COALESCE(TRIM(trama), '') <> ''
+                    ORDER BY id ASC
+                """)
+
+                libri = cur.fetchall()
+
+    except Exception as errore:
+
+        print(
+            "Impossibile controllare le vecchie trame:",
+            errore,
+            flush=True
+        )
+        return
+
+    corrette = 0
+
+    for id_libro, titolo, trama_attuale in libri:
+
+        if not sembra_trama_inglese(
+            trama_attuale
+        ):
+            continue
+
+        try:
+
+            trama_italiana = cerca_trama_automatica(
+                titolo
+            )
+
+            # Sostituiamo soltanto quando abbiamo davvero trovato
+            # una nuova descrizione italiana. Se non la troviamo,
+            # lasciamo intatto il testo esistente per evitare perdite.
+            if not trama_italiana:
+                print(
+                    "⚠️ Nessuna trama italiana trovata per:",
+                    titolo,
+                    flush=True
+                )
+                continue
+
+            with connessione_database() as conn:
+
+                with conn.cursor() as cur:
+
+                    cur.execute("""
+                        UPDATE libri
+                        SET trama = %s
+                        WHERE id = %s
+                          AND trama = %s
+                    """, (
+                        trama_italiana,
+                        id_libro,
+                        trama_attuale
+                    ))
+
+                conn.commit()
+
+            corrette += 1
+
+            print(
+                "🇮🇹 Trama inglese sostituita:",
+                titolo,
+                flush=True
+            )
+
+        except Exception as errore:
+
+            print(
+                "Errore correzione trama per",
+                titolo,
+                ":",
+                errore,
+                flush=True
+            )
+
+        time.sleep(0.15)
+
+    print(
+        "🇮🇹 Controllo vecchie trame completato. Corrette:",
+        corrette,
+        flush=True
+    )
+
+
 # ==========================================
 # COMPLETA LE TRAME MANCANTI GIÀ NEL DATABASE
 # ==========================================
@@ -2354,8 +2486,13 @@ print(
 )
 
 
+def aggiorna_trame_all_avvio():
+    correggi_trame_inglesi_salvate()
+    completa_trame_mancanti()
+
+
 threading.Thread(
-    target=completa_trame_mancanti,
+    target=aggiorna_trame_all_avvio,
     daemon=True
 ).start()
 
