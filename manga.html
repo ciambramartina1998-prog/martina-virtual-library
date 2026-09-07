@@ -1593,15 +1593,12 @@ async function caricaManga(){
       await risposta.json();
 
 
-    const libriCloud=
-      Array.isArray(
-        dati
-      )
-      ?
-      dati
-      :
-      [];
-
+   const libriCloud=
+  Array.isArray(dati.libri)
+  ?
+  dati.libri
+  :
+  [];
 
     const conteggi=
       calcolaConteggi(
