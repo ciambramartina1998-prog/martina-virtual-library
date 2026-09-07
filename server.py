@@ -247,6 +247,29 @@ def sembra_trama_inglese(trama):
     )
 
 
+EDIZIONI_ITALIANE_TRAMA = {
+    "god of pain": {
+        "isbn": "9788855318679",
+        "titolo": "God of pain. Legacy of Gods. Ediz. italiana"
+    }
+}
+
+
+def edizione_italiana_trama(titolo):
+    chiave = normalizza_titolo_google(titolo)
+
+    # Exact match first.
+    if chiave in EDIZIONI_ITALIANE_TRAMA:
+        return EDIZIONI_ITALIANE_TRAMA[chiave]
+
+    # Also allow titles such as "God of Pain - Legacy of Gods".
+    for nome, dati in EDIZIONI_ITALIANE_TRAMA.items():
+        if chiave == nome or chiave.startswith(nome + " "):
+            return dati
+
+    return None
+
+
 def cerca_trama_google_books(titolo):
 
     if not GOOGLE_BOOKS_API_KEY:
@@ -256,6 +279,40 @@ def cerca_trama_google_books(titolo):
 
     if not titolo:
         return ""
+
+    # Prima proviamo l'ISBN dell'edizione italiana quando lo conosciamo.
+    # Questo evita che Google Books scelga l'edizione inglese dello stesso titolo.
+    edizione = edizione_italiana_trama(titolo)
+
+    if edizione:
+        try:
+            google_url_isbn = (
+                "https://www.googleapis.com/books/v1/volumes"
+                "?q=" + quote_plus("isbn:" + edizione["isbn"])
+                + "&maxResults=10"
+                + "&printType=books"
+                + "&key=" + quote_plus(GOOGLE_BOOKS_API_KEY)
+            )
+
+            dati_isbn = scarica_json(google_url_isbn)
+
+            for item in dati_isbn.get("items", []):
+                info = item.get("volumeInfo", {})
+                descrizione = pulisci_trama_google(
+                    info.get("description", "")
+                )
+
+                if descrizione and not sembra_trama_inglese(descrizione):
+                    return descrizione
+
+        except Exception as errore:
+            print(
+                "Ricerca trama tramite ISBN italiano non disponibile per",
+                titolo,
+                ":",
+                errore,
+                flush=True
+            )
 
     # Cerchiamo SOLO edizioni italiane.
     # Per manga e serie proviamo anche il titolo senza "Vol. N".
