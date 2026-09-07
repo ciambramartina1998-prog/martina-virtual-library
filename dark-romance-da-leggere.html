@@ -1582,7 +1582,7 @@ const chiudiModalBtn=
   );
 
 
-function apriSchedaLibro(libro){
+async function apriSchedaLibro(libro){
 
   modalTitolo.textContent=
     libro.titolo
@@ -1689,7 +1689,7 @@ function apriSchedaLibro(libro){
   }
 
 
-  const trama=
+  const tramaSalvata=
     String(
       libro.trama
       ||
@@ -1697,10 +1697,10 @@ function apriSchedaLibro(libro){
     ).trim();
 
 
-  if(trama){
+  if(tramaSalvata){
 
     modalTrama.textContent=
-      trama;
+      tramaSalvata;
 
 
     modalTrama.classList.remove(
@@ -1712,7 +1712,7 @@ function apriSchedaLibro(libro){
   else{
 
     modalTrama.textContent=
-      "Trama non disponibile per questo libro.";
+      "Cerco la trama...";
 
 
     modalTrama.classList.add(
@@ -1731,6 +1731,132 @@ function apriSchedaLibro(libro){
     "aria-hidden",
     "false"
   );
+
+
+  if(!tramaSalvata){
+
+    try{
+
+      const risposta=
+        await fetch(
+          "https://martina-virtual-library.onrender.com/api/trama-automatica?titolo="
+          +
+          encodeURIComponent(
+            libro.titolo
+          ),
+          {
+            cache:"no-store"
+          }
+        );
+
+
+      if(!risposta.ok){
+
+        throw new Error(
+          "Errore ricerca trama."
+        );
+
+      }
+
+
+      const dati=
+        await risposta.json();
+
+
+      const tramaTrovata=
+        String(
+          dati.trama
+          ||
+          ""
+        ).trim();
+
+
+      if(tramaTrovata){
+
+        libro.trama=
+          tramaTrovata;
+
+
+        modalTrama.textContent=
+          tramaTrovata;
+
+
+        modalTrama.classList.remove(
+          "book-modal-empty"
+        );
+
+
+        if(libro.id){
+
+          try{
+
+            await fetch(
+              "https://martina-virtual-library.onrender.com/api/trama/"
+              +
+              libro.id,
+              {
+                method:"POST",
+
+                headers:{
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify({
+                    trama:
+                      tramaTrovata
+                  })
+              }
+            );
+
+          }
+
+          catch(erroreSalvataggio){
+
+            console.error(
+              "Trama trovata ma non salvata:",
+              erroreSalvataggio
+            );
+
+          }
+
+        }
+
+      }
+
+      else{
+
+        modalTrama.textContent=
+          "Trama non disponibile per questo libro.";
+
+
+        modalTrama.classList.add(
+          "book-modal-empty"
+        );
+
+      }
+
+    }
+
+    catch(errore){
+
+      console.error(
+        errore
+      );
+
+
+      modalTrama.textContent=
+        "Trama non disponibile per questo libro.";
+
+
+      modalTrama.classList.add(
+        "book-modal-empty"
+      );
+
+    }
+
+  }
 
 }
 
