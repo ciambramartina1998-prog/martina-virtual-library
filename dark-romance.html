@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dark Romance - Martina's Virtual Library</title>
+<title>Dark Romance - My Little Library</title>
 
 <style>
 
@@ -1022,6 +1022,84 @@ body{
     margin-bottom:8px;
   }
 
+}
+
+
+/* ===== RIFINITURA DARK ROMANCE ===== */
+/* Fasce laterali più chiare e trasparenti */
+.sidebar{
+  background:rgba(104,69,70,.34);
+  border-right:1px solid rgba(255,255,255,.28);
+}
+.rightbar{
+  background:rgba(104,69,70,.30);
+  border-left:1px solid rgba(255,255,255,.28);
+}
+
+/* Titolo più protagonista */
+.header{margin-bottom:16px;padding-top:8px;}
+.script-title{
+  font-size:clamp(39px,4.5vw,54px);
+  letter-spacing:-1.2px;
+  text-shadow:0 2px 5px rgba(255,255,255,.72),0 8px 18px rgba(74,47,45,.12);
+}
+.header-decoration{margin-top:9px;}
+.subtitle{font-size:9.5px;}
+
+/* Totale più compatto */
+.total-card{
+  width:min(390px,100%);
+  padding:11px 9px;
+  margin-bottom:14px;
+  background:rgba(215,194,190,.86);
+  box-shadow:0 11px 25px rgba(57,35,33,.19);
+}
+.total-card:hover{transform:translateY(-5px);box-shadow:0 17px 31px rgba(57,35,33,.24);}
+.total-number{font-size:31px;}
+
+/* Due sezioni principali più presenti */
+.cards{gap:14px;max-width:650px;}
+.card{
+  min-height:150px;
+  padding:19px 12px 47px;
+  border-color:rgba(105,57,66,.34);
+  box-shadow:0 11px 25px rgba(56,35,32,.19);
+}
+.card-read{background:rgba(217,199,192,.90);}
+.card-tbr{background:rgba(207,174,178,.90);}
+.card:hover{
+  transform:translateY(-9px);
+  border-color:rgba(102,49,60,.52);
+  box-shadow:0 22px 38px rgba(56,35,32,.28),0 0 20px rgba(157,85,99,.14);
+  filter:brightness(1.045);
+}
+.card-icon{font-size:31px;}
+.card h2{font-size:13.5px;}
+.card-bottom{
+  padding:6px;
+  background:rgba(255,248,243,.38);
+  border-color:rgba(98,57,61,.25);
+}
+
+/* Riepilogo destro più leggero */
+.widget{
+  background:rgba(255,245,241,.14);
+  border-color:rgba(255,255,255,.24);
+}
+.widget:hover{background:rgba(255,245,241,.20);}
+
+/* Frase finale in piccolo riquadro elegante */
+.footer{
+  width:fit-content;
+  max-width:90%;
+  margin:13px auto 0;
+  padding:8px 15px;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:14px;
+  background:rgba(255,245,241,.18);
+  box-shadow:0 7px 18px rgba(57,35,33,.10);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
 }
 
 </style>
