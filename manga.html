@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Manga - Martina's Virtual Library</title>
+<title>Manga - My Little Library</title>
 
 <style>
 
@@ -888,6 +888,85 @@ body{
 
 }
 
+
+/* ===== RIFINITURA MANGA ===== */
+
+/* Titolo unico */
+.script-title{
+  font-size:clamp(40px,4.5vw,54px);
+  line-height:1;
+  letter-spacing:-1px;
+}
+
+/* Colonna destra senza fascia/bordo verticale */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* Widget sospesi sullo sfondo */
+.rightbar .widget{
+  background:rgba(247,244,239,.26);
+  border:1px solid rgba(255,255,255,.30);
+  box-shadow:0 11px 26px rgba(84,64,46,.16);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+/* Totale più compatto */
+.total-card{
+  width:min(390px,88%);
+  margin-left:auto;
+  margin-right:auto;
+  box-shadow:0 11px 25px rgba(84,64,46,.17);
+}
+
+/* Card principali più presenti */
+.cards{
+  gap:12px;
+}
+
+.card{
+  min-height:146px;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  border-color:rgba(169,137,112,.50);
+  box-shadow:
+    0 23px 40px rgba(84,64,46,.25),
+    0 0 20px rgba(169,137,112,.16),
+    inset 0 0 24px rgba(255,247,230,.22);
+  filter:brightness(1.045);
+}
+
+.card-icon{
+  font-size:31px;
+}
+
+.card h2{
+  font-size:13.5px;
+}
+
+.card-bottom{
+  padding:6px;
+  background:rgba(255,250,239,.46);
+}
+
+/* Citazione finale */
+.footer{
+  width:min(430px,92%);
+  margin:14px auto 0;
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.30);
+  border-radius:14px;
+  background:rgba(247,244,239,.22);
+  box-shadow:0 8px 20px rgba(84,64,46,.10);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
 </style>
 
 </head>
@@ -964,12 +1043,8 @@ Gestisci libri
 <header class="header">
 
 <h1 class="script-title">
-Martina's
+Manga
 </h1>
-
-<div class="virtual-title">
-MANGA
-</div>
 
 <div class="header-decoration">
 🌸
