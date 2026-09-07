@@ -299,7 +299,8 @@ body{
 .book-grid{
   display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:10px;
+  gap:12px 10px;
+  align-items:stretch;
 }
 
 
@@ -308,6 +309,9 @@ body{
 .book-card{
   position:relative;
   overflow:hidden;
+  height:100%;
+  display:flex;
+  flex-direction:column;
   padding:6px;
   border:1px solid rgba(255,255,255,.38);
   border-radius:14px;
@@ -325,13 +329,13 @@ body{
 }
 
 .book-card:hover{
-  transform:translateY(-5px);
+  transform:translateY(-8px);
   background:rgba(247,244,239,.57);
-  border-color:rgba(255,255,255,.60);
+  border-color:rgba(255,255,255,.72);
 
   box-shadow:
-    0 13px 27px rgba(55,48,34,.20),
-    inset 0 0 20px rgba(244,244,218,.12);
+    0 20px 34px rgba(55,48,34,.24),
+    0 0 18px rgba(122,130,103,.15);
 }
 
 
@@ -341,6 +345,7 @@ body{
   width:100%;
   aspect-ratio:2/3;
   overflow:hidden;
+  flex:0 0 auto;
 
   display:flex;
   align-items:center;
@@ -359,6 +364,11 @@ body{
   color:#536047;
   text-align:center;
   box-shadow:0 4px 10px rgba(54,50,34,.13);
+  transition:transform .22s ease;
+}
+
+.book-card:hover .book-cover{
+  transform:scale(1.045);
 }
 
 .book-cover.clickable{
@@ -403,12 +413,21 @@ body{
 /* INFO LIBRO */
 
 .book-info{
-  min-height:60px;
+  flex:1;
+  min-height:78px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
   padding:6px 2px 2px;
   text-align:center;
 }
 
 .book-title{
+  width:100%;
+  min-height:31px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
   margin:0;
   color:#4E3524;
   font-size:8px;
@@ -431,7 +450,8 @@ body{
 /* PREFERITO */
 
 .favorite-row{
-  margin-top:4px;
+  margin-top:auto;
+  padding-top:4px;
   text-align:center;
 }
 
