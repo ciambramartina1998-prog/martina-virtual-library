@@ -1548,13 +1548,11 @@ async function caricaLibri(){
 
 
     const libriCloud=
-      Array.isArray(
-        dati
-      )
-      ?
-      dati
-      :
-      [];
+  Array.isArray(dati.libri)
+  ?
+  dati.libri
+  :
+  [];
 
 
     const listaFinale=
