@@ -516,6 +516,29 @@ def cerca_trama_open_library(titolo):
 
 
 TRAME_ITALIANE_FALLBACK = {
+    "butcher blackbird": (
+        "Sloane e Rowan condividono un segreto decisamente fuori dal comune: entrambi "
+        "danno la caccia a persone pericolose che sono riuscite a sfuggire alla giustizia. "
+        "Quando i loro percorsi si incrociano, tra rivalità, humour nero e un gioco sempre "
+        "più rischioso nasce un'attrazione difficile da ignorare. Ma avvicinarsi significa "
+        "anche mettere a nudo segreti capaci di trasformare la loro sfida in qualcosa di "
+        "molto più personale."
+    ),
+    "deadly sins sloth": (
+        "In una storia dark romance legata al peccato dell'accidia, desiderio, ossessione "
+        "e zone d'ombra si intrecciano in un rapporto tutt'altro che semplice. I protagonisti "
+        "si ritrovano coinvolti in un legame intenso e pericoloso, dove fidarsi dell'altra "
+        "persona significa affrontare segreti, paure e conseguenze che possono cambiare "
+        "completamente le loro vite."
+    ),
+    "le bugie che rubiamo": (
+        "Tra segreti, bugie e un'attrazione che diventa sempre più difficile da controllare, "
+        "i protagonisti si ritrovano intrappolati in un rapporto intenso e complicato. "
+        "Quello che nasce tra loro mette alla prova fiducia e sentimenti, mentre le verità "
+        "nascoste iniziano a venire a galla e ogni scelta rischia di avere conseguenze "
+        "inaspettate."
+    ),
+
     # Fallback verificato per l'edizione italiana di God of Pain.
     # È una sintesi originale, non una copia della scheda dell'editore.
     "god of pain": (
