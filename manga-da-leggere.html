@@ -1346,13 +1346,13 @@ async function caricaLibri(){
 
   try{
 
-    const risposta=
-      await fetch(
-        "/api/libri",
-        {
-          cache:"no-store"
-        }
-      );
+   const risposta=
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/libri",
+    {
+      cache:"no-store"
+    }
+  );
 
 
     if(
@@ -1371,13 +1371,11 @@ async function caricaLibri(){
 
 
     const libriCloud=
-      Array.isArray(
-        dati
-      )
-      ?
-      dati
-      :
-      [];
+  Array.isArray(dati.libri)
+  ?
+  dati.libri
+  :
+  [];
 
 
     const mangaDaLeggere=
