@@ -42,9 +42,10 @@ def libro_json(riga):
         "stato": riga[3],
         "copertina": riga[4],
         "lettura_attuale": riga[5],
+        "preferito": riga[6],
         "creato_il": (
-            riga[6].isoformat()
-            if riga[6]
+            riga[7].isoformat()
+            if riga[7]
             else None
         )
     }
@@ -553,6 +554,7 @@ class LibreriaHandler(
                                 stato,
                                 copertina,
                                 lettura_attuale,
+                                preferito,
                                 creato_il
                             FROM libri
                             ORDER BY
@@ -735,6 +737,18 @@ class LibreriaHandler(
                     )
                 )
 
+                preferito_inviato = (
+                    "preferito"
+                    in dati
+                )
+
+                preferito = bool(
+                    dati.get(
+                        "preferito",
+                        False
+                    )
+                )
+
                 if not titolo:
 
                     self.invia_json({
@@ -798,31 +812,65 @@ class LibreriaHandler(
 
                         if esistente:
 
-                            cur.execute("""
-                                UPDATE libri
-                                SET
-                                    titolo = %s,
-                                    categoria = %s,
-                                    stato = %s,
-                                    copertina = %s,
-                                    lettura_attuale = %s
-                                WHERE id = %s
-                                RETURNING
-                                    id,
+                            if preferito_inviato:
+
+                                cur.execute("""
+                                    UPDATE libri
+                                    SET
+                                        titolo = %s,
+                                        categoria = %s,
+                                        stato = %s,
+                                        copertina = %s,
+                                        lettura_attuale = %s,
+                                        preferito = %s
+                                    WHERE id = %s
+                                    RETURNING
+                                        id,
+                                        titolo,
+                                        categoria,
+                                        stato,
+                                        copertina,
+                                        lettura_attuale,
+                                        preferito,
+                                        creato_il
+                                """, (
                                     titolo,
                                     categoria,
                                     stato,
                                     copertina,
                                     lettura_attuale,
-                                    creato_il
-                            """, (
-                                titolo,
-                                categoria,
-                                stato,
-                                copertina,
-                                lettura_attuale,
-                                esistente[0]
-                            ))
+                                    preferito,
+                                    esistente[0]
+                                ))
+
+                            else:
+
+                                cur.execute("""
+                                    UPDATE libri
+                                    SET
+                                        titolo = %s,
+                                        categoria = %s,
+                                        stato = %s,
+                                        copertina = %s,
+                                        lettura_attuale = %s
+                                    WHERE id = %s
+                                    RETURNING
+                                        id,
+                                        titolo,
+                                        categoria,
+                                        stato,
+                                        copertina,
+                                        lettura_attuale,
+                                        preferito,
+                                        creato_il
+                                """, (
+                                    titolo,
+                                    categoria,
+                                    stato,
+                                    copertina,
+                                    lettura_attuale,
+                                    esistente[0]
+                                ))
 
                         else:
 
@@ -832,9 +880,11 @@ class LibreriaHandler(
                                     categoria,
                                     stato,
                                     copertina,
-                                    lettura_attuale
+                                    lettura_attuale,
+                                    preferito
                                 )
                                 VALUES (
+                                    %s,
                                     %s,
                                     %s,
                                     %s,
@@ -848,13 +898,15 @@ class LibreriaHandler(
                                     stato,
                                     copertina,
                                     lettura_attuale,
+                                    preferito,
                                     creato_il
                             """, (
                                 titolo,
                                 categoria,
                                 stato,
                                 copertina,
-                                lettura_attuale
+                                lettura_attuale,
+                                preferito
                             ))
 
                         riga = (
@@ -883,6 +935,91 @@ class LibreriaHandler(
                     "ok": False,
                     "errore":
                         "Impossibile salvare il libro."
+                }, 500)
+
+            return
+
+
+        if parsed.path.startswith(
+            "/api/preferito/"
+        ):
+
+            try:
+
+                id_libro = int(
+                    parsed.path.split(
+                        "/"
+                    )[-1]
+                )
+
+                dati = self.leggi_json()
+
+                preferito = bool(
+                    dati.get(
+                        "preferito",
+                        False
+                    )
+                )
+
+                with connessione_database() as conn:
+
+                    with conn.cursor() as cur:
+
+                        cur.execute("""
+                            UPDATE libri
+                            SET
+                                preferito = %s
+                            WHERE id = %s
+                            RETURNING
+                                id,
+                                titolo,
+                                categoria,
+                                stato,
+                                copertina,
+                                lettura_attuale,
+                                preferito,
+                                creato_il
+                        """, (
+                            preferito,
+                            id_libro
+                        ))
+
+                        riga = (
+                            cur.fetchone()
+                        )
+
+                        if not riga:
+
+                            self.invia_json({
+                                "ok": False,
+                                "errore":
+                                    "Libro non trovato."
+                            }, 404)
+
+                            return
+
+                    conn.commit()
+
+                self.invia_json({
+                    "ok": True,
+                    "libro":
+                        libro_json(
+                            riga
+                        )
+                })
+
+            except Exception as errore:
+
+                print(
+                    "Errore preferito:",
+                    errore,
+                    flush=True
+                )
+
+                self.invia_json({
+                    "ok": False,
+                    "errore":
+                        "Impossibile aggiornare il preferito."
                 }, 500)
 
             return
@@ -923,6 +1060,7 @@ class LibreriaHandler(
                                 stato,
                                 copertina,
                                 lettura_attuale,
+                                preferito,
                                 creato_il
                         """, (
                             id_libro,
@@ -998,6 +1136,7 @@ class LibreriaHandler(
                                 stato,
                                 copertina,
                                 lettura_attuale,
+                                preferito,
                                 creato_il
                         """, (
                             id_libro,
@@ -1105,6 +1244,18 @@ class LibreriaHandler(
                     )
                 )
 
+                preferito_inviato = (
+                    "preferito"
+                    in dati
+                )
+
+                preferito = bool(
+                    dati.get(
+                        "preferito",
+                        False
+                    )
+                )
+
                 if not titolo:
 
                     self.invia_json({
@@ -1140,31 +1291,65 @@ class LibreriaHandler(
                                     lettura_attuale = FALSE
                             """)
 
-                        cur.execute("""
-                            UPDATE libri
-                            SET
-                                titolo = %s,
-                                categoria = %s,
-                                stato = %s,
-                                copertina = %s,
-                                lettura_attuale = %s
-                            WHERE id = %s
-                            RETURNING
-                                id,
+                        if preferito_inviato:
+
+                            cur.execute("""
+                                UPDATE libri
+                                SET
+                                    titolo = %s,
+                                    categoria = %s,
+                                    stato = %s,
+                                    copertina = %s,
+                                    lettura_attuale = %s,
+                                    preferito = %s
+                                WHERE id = %s
+                                RETURNING
+                                    id,
+                                    titolo,
+                                    categoria,
+                                    stato,
+                                    copertina,
+                                    lettura_attuale,
+                                    preferito,
+                                    creato_il
+                            """, (
                                 titolo,
                                 categoria,
                                 stato,
                                 copertina,
                                 lettura_attuale,
-                                creato_il
-                        """, (
-                            titolo,
-                            categoria,
-                            stato,
-                            copertina,
-                            lettura_attuale,
-                            id_libro
-                        ))
+                                preferito,
+                                id_libro
+                            ))
+
+                        else:
+
+                            cur.execute("""
+                                UPDATE libri
+                                SET
+                                    titolo = %s,
+                                    categoria = %s,
+                                    stato = %s,
+                                    copertina = %s,
+                                    lettura_attuale = %s
+                                WHERE id = %s
+                                RETURNING
+                                    id,
+                                    titolo,
+                                    categoria,
+                                    stato,
+                                    copertina,
+                                    lettura_attuale,
+                                    preferito,
+                                    creato_il
+                            """, (
+                                titolo,
+                                categoria,
+                                stato,
+                                copertina,
+                                lettura_attuale,
+                                id_libro
+                            ))
 
                         riga = (
                             cur.fetchone()
