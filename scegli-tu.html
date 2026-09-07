@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<link rel="manifest" href="/manifest.json">
+
+<title>Scegli tu - Martina's Virtual Library</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  min-height:100vh;
+  padding:12px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-family:Georgia,"Times New Roman",serif;
+  color:#4E3524;
+
+  background:
+    linear-gradient(
+      rgba(48,40,31,.12),
+      rgba(48,40,31,.18)
+    ),
+    url("copertine/sfondo-home.jpg")
+    center/cover fixed no-repeat;
+}
+
+
+/* =========================
+   PAGINA
+========================= */
+
+.page{
+
+  width:min(
+    900px,
+    calc(100vw - 24px)
+  );
+
+  min-height:
+    calc(100vh - 24px);
+
+  padding:24px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.30);
+
+  border-radius:28px;
+
+  background:
+    rgba(247,244,239,.24);
+
+  box-shadow:
+    0 22px 55px
+    rgba(42,34,25,.26);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+}
+
+
+/* =========================
+   TORNA ALLA HOME
+========================= */
+
+.back{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  padding:
+    8px 12px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.34);
+
+  border-radius:
+    12px;
+
+  background:
+    rgba(255,255,255,.32);
+
+  color:#4E3524;
+
+  font-size:10px;
+
+  font-weight:bold;
+
+  text-decoration:none;
+
+  transition:.22s ease;
+
+}
+
+.back:hover{
+
+  transform:
+    translateX(-3px);
+
+  background:
+    rgba(255,255,255,.48);
+
+}
+
+
+/* =========================
+   TESTATA
+========================= */
+
+.header{
+
+  margin-top:15px;
+
+  text-align:center;
+
+}
+
+.decorazione{
+
+  color:#5A3E2B;
+
+  font-size:13px;
+
+  letter-spacing:6px;
+
+}
+
+h1{
+
+  margin:
+    10px 0 4px;
+
+  font-size:
+    clamp(
+      34px,
+      6vw,
+      55px
+    );
+
+  font-weight:normal;
+
+  font-style:italic;
+
+  line-height:1;
+
+  text-shadow:
+    0 2px 4px
+    rgba(255,255,255,.75);
+
+}
+
+.sottotitolo{
+
+  margin:
+    10px auto 0;
+
+  max-width:500px;
+
+  color:#5A3E2B;
+
+  font-size:11px;
+
+  font-style:italic;
+
+  line-height:1.5;
+
+}
+
+
+/* =========================
+   LINEA
+========================= */
+
+.linea{
+
+  display:flex;
+
+  align-items:center;
+
+  width:min(
+    360px,
+    80%
+  );
+
+  margin:
+    15px auto;
+
+  gap:10px;
+
+  color:#5A3E2B;
+
+}
+
+.linea::before,
+.linea::after{
+
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:
+    rgba(
+      198,
+      139,
+      89,
+      .82
+    );
+
+}
+
+
+/* =========================
+   AREA LIBRO
+========================= */
+
+.scelta-area{
+
+  min-height:410px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+
+/* =========================
+   STATO INIZIALE
+========================= */
+
+.intro{
+
+  width:min(
+    520px,
+    100%
+  );
+
+  padding:
+    35px 25px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.36);
+
+  border-radius:
+    22px;
+
+  background:
+    rgba(255,255,255,.34);
+
+  text-align:center;
+
+  box-shadow:
+    0 12px 30px
+    rgba(67,53,39,.13);
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+}
+
+.intro-icon{
+
+  margin-bottom:
+    12px;
+
+  font-size:42px;
+
+}
+
+.intro-titolo{
+
+  margin-bottom:
+    8px;
+
+  font-size:18px;
+
+  font-weight:bold;
+
+}
+
+.intro-testo{
+
+  max-width:400px;
+
+  margin:
+    0 auto 20px;
+
+  color:#5A3E2B;
+
+  font-size:11px;
+
+  line-height:1.6;
+
+}
+
+
+/* =========================
+   SCHEDA LIBRO
+========================= */
+
+.libro-card{
+
+  width:min(
+    620px,
+    100%
+  );
+
+  display:grid;
+
+  grid-template-columns:
+    165px
+    minmax(0,1fr);
+
+  gap:25px;
+
+  align-items:center;
+
+  padding:24px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.40);
+
+  border-radius:24px;
+
+  background:
+    rgba(255,255,255,.38);
+
+  box-shadow:
+    0 15px 35px
+    rgba(67,53,39,.16);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+
+  animation:
+    comparsa
+    .45s ease;
+
+}
+
+@keyframes comparsa{
+
+  from{
+    opacity:0;
+    transform:
+      translateY(10px)
+      scale(.98);
+  }
+
+  to{
+    opacity:1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* =========================
+   COPERTINA
+========================= */
+
+.cover{
+
+  width:165px;
+
+  height:245px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.48);
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,.30);
+
+  box-shadow:
+    0 10px 22px
+    rgba(53,43,33,.22);
+
+  font-size:42px;
+
+}
+
+.cover img{
+
+  width:100%;
+
+  height:100%;
+
+  object-fit:cover;
+
+}
+
+
+/* =========================
+   INFORMAZIONI
+========================= */
+
+.etichetta{
+
+  display:inline-block;
+
+  margin-bottom:10px;
+
+  padding:
+    5px 9px;
+
+  border-radius:20px;
+
+  background:
+    rgba(122,130,103,.88);
+
+  color:white;
+
+  font-size:8px;
+
+  font-weight:bold;
+
+  letter-spacing:1px;
+
+}
+
+.titolo-libro{
+
+  margin-bottom:
+    9px;
+
+  color:#4E3524;
+
+  font-size:23px;
+
+  font-weight:bold;
+
+  line-height:1.2;
+
+}
+
+.categoria{
+
+  margin-bottom:
+    13px;
+
+  color:#5A3E2B;
+
+  font-size:11px;
+
+  font-style:italic;
+
+}
+
+.messaggio{
+
+  margin-bottom:
+    18px;
+
+  color:#5A3E2B;
+
+  font-size:11px;
+
+  line-height:1.6;
+
+}
+
+
+/* =========================
+   BOTTONI
+========================= */
+
+button{
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+}
+
+.scegli-btn{
+
+  padding:
+    11px 18px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.35);
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(122,130,103,.90);
+
+  color:white;
+
+  font-size:11px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 7px 16px
+    rgba(63,70,53,.17);
+
+  transition:
+    .22s ease;
+
+}
+
+.scegli-btn:hover{
+
+  transform:
+    translateY(-2px);
+
+  background:#6D765C;
+
+  box-shadow:
+    0 10px 20px
+    rgba(63,70,53,.22);
+
+}
+
+
+/* =========================
+   CARICAMENTO / ERRORE
+========================= */
+
+.stato{
+
+  padding:30px;
+
+  color:#5A3E2B;
+
+  text-align:center;
+
+  font-size:12px;
+
+  line-height:1.6;
+
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+
+  margin-top:10px;
+
+  text-align:center;
+
+  color:#4E3524;
+
+  font-size:13px;
+
+  font-style:italic;
+
+  text-shadow:
+    0 1px 2px
+    rgba(255,255,255,.72);
+
+}
+
+
+/* =========================
+   TELEFONO
+========================= */
+
+@media(max-width:600px){
+
+  body{
+    padding:6px;
+  }
+
+  .page{
+
+    width:100%;
+
+    min-height:
+      calc(100vh - 12px);
+
+    padding:
+      15px 12px;
+
+    border-radius:
+      22px;
+
+  }
+
+  .scelta-area{
+    min-height:430px;
+  }
+
+  .libro-card{
+
+    grid-template-columns:
+      1fr;
+
+    gap:16px;
+
+    padding:18px;
+
+    text-align:center;
+
+  }
+
+  .cover{
+
+    width:135px;
+
+    height:200px;
+
+    margin:auto;
+
+  }
+
+  .titolo-libro{
+    font-size:19px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+<a
+  class="back"
+  href="index.html"
+>
+← Home
+</a>
+
+
+<header class="header">
+
+  <div class="decorazione">
+    ❦ ✨ ❦
+  </div>
+
+  <h1>
+    Scegli tu
+  </h1>
+
+  <p class="sottotitolo">
+    Quando non sai quale storia iniziare,
+    lascia che sia la tua libreria a scegliere per te.
+  </p>
+
+  <div class="linea">
+    ♡
+  </div>
+
+</header>
+
+
+<main
+  class="scelta-area"
+  id="sceltaArea"
+>
+
+  <div class="intro">
+
+    <div class="intro-icon">
+      📖
+    </div>
+
+    <div class="intro-titolo">
+      La prossima storia ti aspetta
+    </div>
+
+    <p class="intro-testo">
+      Sceglierò casualmente uno dei libri
+      che hai ancora nella sezione
+      “Da leggere”.
+    </p>
+
+    <button
+      class="scegli-btn"
+      id="bottoneScegli"
+    >
+      ✨ Scegli per me
+    </button>
+
+  </div>
+
+</main>
+
+
+<div class="footer">
+  ❦ &nbsp; Leggi. Sogna. Vivi. &nbsp; ❦
+</div>
+
+
+</div>
+
+
+<script>
+
+
+const API_LIBRI =
+  "https://martina-virtual-library.onrender.com/api/libri";
+
+
+let libriDaLeggere = [];
+
+let ultimoLibroScelto = null;
+
+
+/* =========================
+   SICUREZZA TESTO
+========================= */
+
+function escapeHtml(testo){
+
+  return String(testo || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   CATEGORIA VISUALE
+========================= */
+
+function categoriaVisuale(categoria){
+
+  if(categoria === "Dark Romance"){
+    return "🥀 Dark Romance";
+  }
+
+  if(categoria === "Fantasy Romance"){
+    return "✦ Fantasy Romance";
+  }
+
+  if(categoria === "Romance"){
+    return "🌷 Romance";
+  }
+
+  if(categoria === "Manga"){
+    return "🌸 Manga";
+  }
+
+  return categoria || "";
+
+}
+
+
+/* =========================
+   CARICA I LIBRI
+========================= */
+
+async function caricaLibri(){
+
+  try{
+
+    const risposta =
+      await fetch(
+        API_LIBRI,
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    const dati =
+      await risposta.json();
+
+
+    if(!risposta.ok){
+
+      throw new Error(
+        dati.errore ||
+        "Errore durante il caricamento."
+      );
+
+    }
+
+
+    const tuttiLibri =
+      Array.isArray(dati.libri)
+        ? dati.libri
+        : [];
+
+
+    libriDaLeggere =
+      tuttiLibri.filter(
+        function(libro){
+
+          return (
+            libro.stato ===
+            "Da leggere"
+          );
+
+        }
+      );
+
+
+    if(
+      libriDaLeggere.length === 0
+    ){
+
+      document.getElementById(
+        "sceltaArea"
+      ).innerHTML =
+        `
+        <div class="stato">
+          📚 Non ci sono libri
+          nella sezione “Da leggere”.
+        </div>
+        `;
+
+    }
+
+  }
+
+  catch(errore){
+
+    console.error(
+      "Errore:",
+      errore
+    );
+
+
+    document.getElementById(
+      "sceltaArea"
+    ).innerHTML =
+      `
+      <div class="stato">
+        ☕ Non riesco a raggiungere
+        la libreria in questo momento.
+        <br><br>
+        Riprova tra poco.
+      </div>
+      `;
+
+  }
+
+}
+
+
+/* =========================
+   SCEGLIE UN LIBRO
+========================= */
+
+function scegliLibro(){
+
+  if(
+    libriDaLeggere.length === 0
+  ){
+
+    return;
+
+  }
+
+
+  let possibili =
+    libriDaLeggere;
+
+
+  /*
+    Se ci sono almeno due libri,
+    evita di scegliere subito
+    lo stesso libro due volte.
+  */
+
+  if(
+    libriDaLeggere.length > 1
+    &&
+    ultimoLibroScelto
+  ){
+
+    possibili =
+      libriDaLeggere.filter(
+        function(libro){
+
+          return (
+            libro.id !==
+            ultimoLibroScelto.id
+          );
+
+        }
+      );
+
+  }
+
+
+  const indice =
+    Math.floor(
+      Math.random() *
+      possibili.length
+    );
+
+
+  const libro =
+    possibili[indice];
+
+
+  ultimoLibroScelto =
+    libro;
+
+
+  mostraLibro(libro);
+
+}
+
+
+/* =========================
+   MOSTRA IL LIBRO
+========================= */
+
+function mostraLibro(libro){
+
+  const area =
+    document.getElementById(
+      "sceltaArea"
+    );
+
+
+  const copertina =
+    libro.copertina || "";
+
+
+  let immagine =
+    "📖";
+
+
+  if(copertina){
+
+    immagine =
+      `
+      <img
+        src="${escapeHtml(copertina)}"
+        alt="${escapeHtml(libro.titolo)}"
+        onerror="
+          this.parentElement.innerHTML='📖';
+        "
+      >
+      `;
+
+  }
+
+
+  area.innerHTML =
+    `
+    <div class="libro-card">
+
+      <div class="cover">
+        ${immagine}
+      </div>
+
+      <div>
+
+        <div class="etichetta">
+          ✨ LA LIBRERIA HA SCELTO
+        </div>
+
+        <div class="titolo-libro">
+          ${escapeHtml(libro.titolo)}
+        </div>
+
+        <div class="categoria">
+          ${escapeHtml(
+            categoriaVisuale(
+              libro.categoria
+            )
+          )}
+          &nbsp; · &nbsp;
+          ♡ Da leggere
+        </div>
+
+        <div class="messaggio">
+          Forse è arrivato il momento
+          di iniziare proprio questa storia. ♡
+        </div>
+
+        <button
+          class="scegli-btn"
+          id="scegliAltro"
+        >
+          ✨ Scegli un altro
+        </button>
+
+      </div>
+
+    </div>
+    `;
+
+
+  document.getElementById(
+    "scegliAltro"
+  ).addEventListener(
+    "click",
+    scegliLibro
+  );
+
+}
+
+
+/* =========================
+   PULSANTE INIZIALE
+========================= */
+
+document.getElementById(
+  "bottoneScegli"
+).addEventListener(
+  "click",
+  scegliLibro
+);
+
+
+/* =========================
+   AVVIO
+========================= */
+
+caricaLibri();
+
+
+</script>
+
+
+</body>
+
+</html>
