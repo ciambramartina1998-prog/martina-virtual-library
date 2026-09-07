@@ -207,6 +207,46 @@ def varianti_titolo_trama(titolo):
     return varianti
 
 
+def sembra_trama_inglese(trama):
+
+    testo = " " + re.sub(
+        r"[^a-zA-ZÀ-ÿ']+",
+        " ",
+        str(trama or "").lower()
+    ) + " "
+
+    # Confronto semplice e prudente tra parole molto comuni.
+    parole_inglesi = [
+        " the ", " and ", " with ", " from ", " that ", " this ",
+        " his ", " her ", " their ", " when ", " but ", " she ",
+        " he ", " they ", " into ", " love ", " life ", " has ",
+        " have ", " will ", " can ", " only ", " one "
+    ]
+
+    parole_italiane = [
+        " che ", " con ", " per ", " non ", " una ", " uno ",
+        " gli ", " delle ", " della ", " nella ", " quando ",
+        " lui ", " lei ", " loro ", " amore ", " vita ", " ma ",
+        " anche ", " come ", " suo ", " sua ", " sono "
+    ]
+
+    inglese = sum(
+        testo.count(parola)
+        for parola in parole_inglesi
+    )
+
+    italiano = sum(
+        testo.count(parola)
+        for parola in parole_italiane
+    )
+
+    return (
+        (inglese >= 3 and inglese > italiano * 2)
+        or
+        (inglese >= 5 and italiano <= 2)
+    )
+
+
 def cerca_trama_google_books(titolo):
 
     if not GOOGLE_BOOKS_API_KEY:
@@ -428,46 +468,6 @@ def cerca_trama_automatica(titolo):
     )
 
 
-def sembra_trama_inglese(trama):
-
-    testo = " " + re.sub(
-        r"[^a-zA-ZÀ-ÿ']+",
-        " ",
-        str(trama or "").lower()
-    ) + " "
-
-    # Confronto semplice e prudente tra parole molto comuni.
-    parole_inglesi = [
-        " the ", " and ", " with ", " from ", " that ", " this ",
-        " his ", " her ", " their ", " when ", " but ", " she ",
-        " he ", " they ", " into ", " love ", " life ", " has ",
-        " have ", " will ", " can ", " only ", " one "
-    ]
-
-    parole_italiane = [
-        " che ", " con ", " per ", " non ", " una ", " uno ",
-        " gli ", " delle ", " della ", " nella ", " quando ",
-        " lui ", " lei ", " loro ", " amore ", " vita ", " ma ",
-        " anche ", " come ", " suo ", " sua ", " sono "
-    ]
-
-    inglese = sum(
-        testo.count(parola)
-        for parola in parole_inglesi
-    )
-
-    italiano = sum(
-        testo.count(parola)
-        for parola in parole_italiane
-    )
-
-    return (
-        (inglese >= 3 and inglese > italiano * 2)
-        or
-        (inglese >= 5 and italiano <= 2)
-    )
-
-
 def correggi_trame_inglesi_salvate():
 
     try:
@@ -509,12 +509,24 @@ def correggi_trame_inglesi_salvate():
                 titolo
             )
 
-            # Sostituiamo soltanto quando abbiamo davvero trovato
-            # una nuova descrizione italiana. Se non la troviamo,
-            # lasciamo intatto il testo esistente per evitare perdite.
+            # Se una vecchia trama è inglese, non la lasciamo visibile.
+            # Se troviamo l'italiano la sostituiamo; altrimenti la svuotiamo.
             if not trama_italiana:
+                with connessione_database() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute("""
+                            UPDATE libri
+                            SET trama = ''
+                            WHERE id = %s
+                              AND trama = %s
+                        """, (
+                            id_libro,
+                            trama_attuale
+                        ))
+                    conn.commit()
+
                 print(
-                    "⚠️ Nessuna trama italiana trovata per:",
+                    "🧹 Trama inglese rimossa (italiana non trovata):",
                     titolo,
                     flush=True
                 )
@@ -1233,6 +1245,10 @@ class LibreriaHandler(
 
                 trama = cerca_trama_automatica(titolo
                 )
+
+                # Ultimo controllo: l'endpoint non deve mai restituire inglese.
+                if trama and sembra_trama_inglese(trama):
+                    trama = ""
 
                 self.invia_json({
                     "ok": True,
