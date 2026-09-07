@@ -175,6 +175,38 @@ def punteggio_titolo_trama(titolo_cercato, titolo_trovato):
     return 0
 
 
+def varianti_titolo_trama(titolo):
+
+    titolo = str(titolo or "").strip()
+
+    if not titolo:
+        return []
+
+    varianti = [titolo]
+
+    base = re.sub(
+        r"\s*(?:[-–—:]\s*)?(?:vol(?:ume)?\.?\s*)\d+\s*$",
+        "",
+        titolo,
+        flags=re.IGNORECASE
+    ).strip()
+
+    if base and base not in varianti:
+        varianti.append(base)
+
+    base_parentesi = re.sub(
+        r"\s*\(\s*vol(?:ume)?\.?\s*\d+\s*\)\s*$",
+        "",
+        titolo,
+        flags=re.IGNORECASE
+    ).strip()
+
+    if base_parentesi and base_parentesi not in varianti:
+        varianti.append(base_parentesi)
+
+    return varianti
+
+
 def cerca_trama_google_books(titolo):
 
     if not GOOGLE_BOOKS_API_KEY:
@@ -186,13 +218,17 @@ def cerca_trama_google_books(titolo):
         return ""
 
     # Cerchiamo SOLO edizioni italiane.
-    # Facciamo più tentativi perché alcuni titoli vengono indicizzati in modi diversi.
-    queries = [
-        'intitle:"' + titolo + '"',
-        titolo,
-        "intitle:" + titolo,
-    ]
+    # Per manga e serie proviamo anche il titolo senza "Vol. N".
+    queries = []
 
+    for variante in varianti_titolo_trama(titolo):
+        queries.extend([
+            'intitle:"' + variante + '"',
+            variante,
+            "intitle:" + variante,
+        ])
+
+    queries = list(dict.fromkeys(queries))
     candidati = []
 
     for query in queries:
@@ -242,6 +278,11 @@ def cerca_trama_google_books(titolo):
                 )
 
                 if not descrizione:
+                    continue
+
+                # Alcune schede Google marcate come italiane contengono
+                # comunque una descrizione inglese: non la usiamo.
+                if sembra_trama_inglese(descrizione):
                     continue
 
                 titolo_trovato = info.get(
@@ -420,7 +461,11 @@ def sembra_trama_inglese(trama):
         for parola in parole_italiane
     )
 
-    return inglese >= 4 and inglese > italiano * 2
+    return (
+        (inglese >= 3 and inglese > italiano * 2)
+        or
+        (inglese >= 5 and italiano <= 2)
+    )
 
 
 def correggi_trame_inglesi_salvate():
