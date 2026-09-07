@@ -1,5 +1,7 @@
 import os
 import json
+import re
+from html import unescape
 
 from urllib.parse import urlparse, parse_qs, quote_plus
 from urllib.request import Request, urlopen
@@ -75,6 +77,181 @@ def scarica_json(url):
                 "utf-8"
             )
         )
+
+
+# ==========================================
+# TRAMA AUTOMATICA DA GOOGLE BOOKS
+# ==========================================
+
+def pulisci_trama_google(trama):
+
+    if not trama:
+        return ""
+
+    testo = str(trama)
+
+    testo = re.sub(
+        r"<br\s*/?>",
+        "\n",
+        testo,
+        flags=re.IGNORECASE
+    )
+
+    testo = re.sub(
+        r"</p\s*>",
+        "\n\n",
+        testo,
+        flags=re.IGNORECASE
+    )
+
+    testo = re.sub(
+        r"<[^>]+>",
+        "",
+        testo
+    )
+
+    testo = unescape(
+        testo
+    )
+
+    testo = re.sub(
+        r"[ \t]+",
+        " ",
+        testo
+    )
+
+    testo = re.sub(
+        r"\n{3,}",
+        "\n\n",
+        testo
+    )
+
+    return testo.strip()
+
+
+def normalizza_titolo_google(titolo):
+
+    return re.sub(
+        r"[^a-z0-9]+",
+        " ",
+        str(titolo or "").lower()
+    ).strip()
+
+
+def cerca_trama_google_books(titolo):
+
+    if not GOOGLE_BOOKS_API_KEY:
+        return ""
+
+    titolo = str(
+        titolo or ""
+    ).strip()
+
+    if not titolo:
+        return ""
+
+    query = (
+        'intitle:"'
+        +
+        titolo
+        +
+        '"'
+    )
+
+    google_url = (
+        "https://www.googleapis.com/books/v1/volumes"
+        "?q="
+        +
+        quote_plus(
+            query
+        )
+        +
+        "&maxResults=10"
+        +
+        "&printType=books"
+        +
+        "&orderBy=relevance"
+        +
+        "&key="
+        +
+        quote_plus(
+            GOOGLE_BOOKS_API_KEY
+        )
+    )
+
+    dati = scarica_json(
+        google_url
+    )
+
+    titolo_cercato = normalizza_titolo_google(
+        titolo
+    )
+
+    candidati = []
+
+    for item in dati.get(
+        "items",
+        []
+    ):
+
+        info = item.get(
+            "volumeInfo",
+            {}
+        )
+
+        descrizione = pulisci_trama_google(
+            info.get(
+                "description",
+                ""
+            )
+        )
+
+        if not descrizione:
+            continue
+
+        titolo_trovato = normalizza_titolo_google(
+            info.get(
+                "title",
+                ""
+            )
+        )
+
+        punteggio = 0
+
+        if titolo_trovato == titolo_cercato:
+            punteggio = 3
+
+        elif (
+            titolo_cercato
+            and
+            titolo_cercato in titolo_trovato
+        ):
+            punteggio = 2
+
+        elif (
+            titolo_trovato
+            and
+            titolo_trovato in titolo_cercato
+        ):
+            punteggio = 1
+
+        candidati.append(
+            (
+                punteggio,
+                descrizione
+            )
+        )
+
+    if not candidati:
+        return ""
+
+    candidati.sort(
+        key=lambda elemento:
+            elemento[0],
+        reverse=True
+    )
+
+    return candidati[0][1]
 
 
 def aggiungi_risultato(
@@ -799,7 +976,9 @@ class LibreriaHandler(
                             """)
 
                         cur.execute("""
-                            SELECT id
+                            SELECT
+                                id,
+                                trama
                             FROM libri
                             WHERE
                                 LOWER(TRIM(titolo))
@@ -814,6 +993,36 @@ class LibreriaHandler(
                             cur.fetchone()
                         )
 
+                        trama_automatica = ""
+
+                        trama_esistente = (
+                            str(
+                                esistente[1] or ""
+                            ).strip()
+                            if esistente
+                            else ""
+                        )
+
+                        if not trama_esistente:
+
+                            try:
+
+                                trama_automatica = (
+                                    cerca_trama_google_books(
+                                        titolo
+                                    )
+                                )
+
+                            except Exception as errore:
+
+                                print(
+                                    "Trama automatica non disponibile:",
+                                    errore,
+                                    flush=True
+                                )
+
+                                trama_automatica = ""
+
                         if esistente:
 
                             if preferito_inviato:
@@ -826,7 +1035,12 @@ class LibreriaHandler(
                                         stato = %s,
                                         copertina = %s,
                                         lettura_attuale = %s,
-                                        preferito = %s
+                                        preferito = %s,
+                                        trama = CASE
+                                            WHEN COALESCE(TRIM(trama), '') = ''
+                                            THEN %s
+                                            ELSE trama
+                                        END
                                     WHERE id = %s
                                     RETURNING
                                         id,
@@ -846,6 +1060,7 @@ class LibreriaHandler(
                                     copertina,
                                     lettura_attuale,
                                     preferito,
+                                    trama_automatica,
                                     esistente[0]
                                 ))
 
@@ -858,7 +1073,12 @@ class LibreriaHandler(
                                         categoria = %s,
                                         stato = %s,
                                         copertina = %s,
-                                        lettura_attuale = %s
+                                        lettura_attuale = %s,
+                                        trama = CASE
+                                            WHEN COALESCE(TRIM(trama), '') = ''
+                                            THEN %s
+                                            ELSE trama
+                                        END
                                     WHERE id = %s
                                     RETURNING
                                         id,
@@ -877,6 +1097,7 @@ class LibreriaHandler(
                                     stato,
                                     copertina,
                                     lettura_attuale,
+                                    trama_automatica,
                                     esistente[0]
                                 ))
 
@@ -889,9 +1110,11 @@ class LibreriaHandler(
                                     stato,
                                     copertina,
                                     lettura_attuale,
-                                    preferito
+                                    preferito,
+                                    trama
                                 )
                                 VALUES (
+                                    %s,
                                     %s,
                                     %s,
                                     %s,
@@ -916,7 +1139,8 @@ class LibreriaHandler(
                                 stato,
                                 copertina,
                                 lettura_attuale,
-                                preferito
+                                preferito,
+                                trama_automatica
                             ))
 
                         riga = (
@@ -1747,7 +1971,6 @@ class LibreriaHandler(
             "no-store"
         )
 
-        # CORS per il nuovo sito statico
         self.send_header(
             "Access-Control-Allow-Origin",
             "https://martina-virtual-library-static.onrender.com"
