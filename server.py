@@ -588,6 +588,177 @@ TRAME_ITALIANE_FALLBACK = {
         "un ragazzo curioso del mondo e delle lingue, apre per lei nuovi orizzonti e dà "
         "inizio a una delicata storia d'amore."
     ),
+
+    # Fantasy Romance · Da leggere
+    "all this twisted glory": (
+        "Alizeh, erede dei Jinn, è sempre più vicina a reclamare il futuro che le spetta. "
+        "Cyrus, re di Tulan, le offre il proprio regno a una condizione terribile: sposarlo "
+        "e poi ucciderlo. Tra intrighi, magia, desiderio e tradimenti, Alizeh dovrà capire "
+        "di chi fidarsi mentre il suo destino e i suoi sentimenti diventano inseparabili."
+    ),
+    "belladonna": (
+        "Signa Farrow è rimasta orfana da bambina e sembra essere perseguitata dalla morte, "
+        "che continua a portarle via le persone che la accolgono. Trasferita a Thorn Grove, "
+        "la dimora della famiglia Hawthorne, si ritrova coinvolta in un mistero di veleno, "
+        "fantasmi e segreti, mentre il suo legame con la Morte diventa sempre più profondo."
+    ),
+    "bitten la regina dei lupi": (
+        "Dopo l'attacco di un lupo mannaro, Vanessa Hart perde tutto e scopre di essere "
+        "diventata a sua volta una licantropa. Costretta a entrare nella corte della Regina "
+        "dei Lupi, cerca vendetta mentre impara a sopravvivere tra magia, intrighi e due "
+        "affascinanti giovani che complicano i suoi piani."
+    ),
+    "caldo come il fuoco": (
+        "Layla è metà demone e metà gargoyle e possiede un potere pericoloso: con un bacio "
+        "può rubare l'anima. È innamorata di Zayne, il ragazzo con cui è cresciuta, ma non "
+        "può avvicinarsi a lui. L'arrivo del misterioso demone Roth sconvolge ogni certezza "
+        "e la trascina in un conflitto tra Guardiani, demoni e segreti sulla sua vera natura."
+    ),
+    "dark rise": (
+        "Will, sedicenne in fuga dagli uomini che hanno ucciso sua madre, scopre che il "
+        "mondo della magia non è scomparso come tutti credono. Accolto dagli ultimi custodi "
+        "della Luce, viene trascinato in una guerra antica contro il ritorno del Re Oscuro, "
+        "mentre verità sul suo destino minacciano di cambiare tutto ciò che crede di sapere."
+    ),
+    "dove bruciano gli oceani": (
+        "In un mondo fantasy segnato da poteri pericolosi, rivalità e antichi segreti, una "
+        "giovane protagonista viene trascinata in un conflitto più grande di lei. Tra "
+        "alleanze instabili, nemici difficili da ignorare e un'attrazione che complica ogni "
+        "scelta, dovrà decidere per cosa vale davvero la pena combattere."
+    ),
+    "dragonfall": (
+        "In un mondo in cui i draghi sono stati cacciati e trasformati in leggenda, un drago "
+        "assume forma umana per avvicinarsi a coloro che considera responsabili della rovina "
+        "del suo popolo. Un incontro inatteso cambia però i suoi piani, dando vita a un legame "
+        "pericoloso mentre ribellione e antichi poteri minacciano di esplodere."
+    ),
+    "half a soul": (
+        "Theodora, detta Dora, ha perso metà della propria anima a causa della maledizione "
+        "di una fata e da allora prova le emozioni in modo diverso dagli altri. Durante la "
+        "stagione mondana londinese incontra Elias Wilder, il brusco Lord Sorcier, e con lui "
+        "viene coinvolta in misteriosi eventi magici che potrebbero cambiare entrambi."
+    ),
+    "i peccati degli dei": (
+        "Persefone vive nell'Olimpo moderno, dominato da famiglie potenti e intrighi politici. "
+        "Quando scopre che vogliono costringerla a un matrimonio che non desidera, fugge nel "
+        "territorio di Ade. Quello che nasce come un accordo tra due persone con obiettivi "
+        "diversi si trasforma presto in un'attrazione capace di mettere in pericolo l'ordine dell'Olimpo."
+    ),
+    "il re degli elfi": (
+        "Sommersa dai debiti, una giovane mezza elfa viene venduta e portata al castello del "
+        "re degli elfi, dove diventa la sua assistente personale. Il suo compito è trovargli "
+        "una moglie, ma mentre scopre un potere nascosto dentro di sé, il re propone un "
+        "matrimonio di convenienza per proteggerla. La regola è semplice: non innamorarsi."
+    ),
+    "il re dei draghi": (
+        "Quando il re dei draghi cerca una moglie capace di dargli un erede dotato di magia, "
+        "una giovane mezzosangue viene convocata a Jade City nonostante creda di non avere "
+        "abbastanza potere per essere scelta. Un segreto custodito da sua madre potrebbe però "
+        "renderla molto più importante e molto più pericolosa di quanto immagini."
+    ),
+    "il trono di ghiaccio la lama dell assassina": (
+        "Prima degli eventi de Il Trono di Ghiaccio, Celaena Sardothien è già una delle "
+        "assassine più temute di Adarlan. Questa raccolta racconta le missioni, le ribellioni "
+        "e il rapporto con Sam Cortland che la porteranno a sfidare il suo maestro Arobynn "
+        "e a compiere scelte destinate a cambiare il suo futuro."
+    ),
+    "l immortale": (
+        "Nella Russia del Novecento, Marja Morevna viene condotta in un mondo incantato da "
+        "Koščej l'Immortale, zar della Vita. Tra prove imposte da Baba Jaga, una guerra contro "
+        "lo zar della Morte e un amore tormentato, Marja attraversa magia e storia mentre "
+        "cerca di comprendere il prezzo del legame che la unisce all'Immortale."
+    ),
+    "l incanto della biblioteca d agrifoglio": (
+        "Kierse è una ladra che sopravvive in una New York dove esseri umani e mostri convivono "
+        "grazie a una fragile tregua. Durante un furto entra nella biblioteca di Graves, un "
+        "misterioso mostro che invece di ucciderla le offre un lavoro. L'addestramento che "
+        "segue porta alla luce magia, segreti e un'attrazione sempre più difficile da ignorare."
+    ),
+    "la casa di terra e sangue": (
+        "Bryce Quinlan conduce una vita spensierata finché un brutale omicidio distrugge il "
+        "suo mondo. Quando gli omicidi ricominciano, viene coinvolta nelle indagini insieme "
+        "all'angelo caduto Hunt Athalar. Tra magia, creature soprannaturali e segreti della "
+        "città di Crescent City, i due scoprono una minaccia molto più grande del previsto."
+    ),
+    "la maschera di no": (
+        "Nel Giappone del XVII secolo, Ichirō viene cresciuto tra le montagne da un samurai "
+        "che gli insegna la via della spada. Dopo una tragedia che sconvolge la sua vita, "
+        "raggiunge Edo e si avvicina al mondo del teatro kabuki, dove incontra nuovi amici "
+        "e la misteriosa Hiinahime, una ragazza nascosta dietro una maschera del Nō."
+    ),
+    "little thieves": (
+        "Vanja Schmidt è una ladra che ha rubato l'identità della principessa Gisele e usa "
+        "il suo nuovo ruolo per derubare l'aristocrazia. Una maledizione, però, minaccia di "
+        "trasformarla in gioielli se non restituisce ciò che ha preso. Per salvarsi dovrà "
+        "affrontare segreti, inganni e un investigatore deciso a smascherarla."
+    ),
+    "mate": (
+        "In un mondo in cui umani, vampiri e lupi mannari convivono in un equilibrio fragile, "
+        "un legame inatteso unisce due persone che appartengono a fazioni diverse. Tra istinto, "
+        "politica soprannaturale e un'attrazione impossibile da ignorare, i protagonisti "
+        "dovranno capire se il loro rapporto può diventare qualcosa di più di una semplice alleanza."
+    ),
+    "quicksilver": (
+        "Saeris Fane nasconde strani poteri e sopravvive rubando acqua in un regno crudele. "
+        "Quando apre accidentalmente un portale, viene trascinata in una terra di Fae e "
+        "costretta a collaborare con Kingfisher, un guerriero enigmatico e pericoloso. "
+        "Tra alchimia, guerra e desiderio, Saeris scopre che il suo potere può cambiare due mondi."
+    ),
+    "rose in chains": (
+        "In un regno segnato da guerra, magia e prigionia, una giovane donna si ritrova nelle "
+        "mani del nemico e deve imparare a sopravvivere in un ambiente dove ogni alleanza ha "
+        "un prezzo. Il rapporto con un uomo legato alla fazione opposta si trasforma lentamente "
+        "in qualcosa di più complesso, tra desiderio, potere e scelte impossibili."
+    ),
+    "sun of blood and ruin": (
+        "Nel Messico coloniale, Leonora de Las Casas conduce una doppia vita: nobildonna agli "
+        "occhi della società e guerriera mascherata quando cala la notte. Dotata di poteri "
+        "legati alle antiche divinità, combatte per proteggere il suo popolo mentre profezie, "
+        "magia e un amore pericoloso la spingono verso una guerra inevitabile."
+    ),
+    "these infinite threads": (
+        "Alizeh ha finalmente scoperto la verità sulle proprie origini, ma il suo futuro è "
+        "più incerto che mai. Dopo gli eventi che hanno sconvolto Ardunia, si ritrova nelle "
+        "mani del re Cyrus di Tulan, mentre Kamran cerca disperatamente di ritrovarla. "
+        "Amore, vendetta e potere si intrecciano mentre antiche profezie cominciano a compiersi."
+    ),
+    "this woven kingdom": (
+        "Alizeh vive nascosta come serva, ma in realtà è l'erede perduta di un antico popolo "
+        "Jinn. Kamran, principe ereditario di Ardunia, dovrebbe temere la profezia che annuncia "
+        "la caduta del suo regno, eppure resta irresistibilmente attratto da lei. Il loro "
+        "incontro dà inizio a una storia di magia, intrighi e destini intrecciati."
+    ),
+    "thershing day": (
+        "Una raccolta ambientata nel mondo della saga Empyrean che racconta tredici storie "
+        "legate al giorno della Trebbiatura, il momento in cui cavalieri e draghi scelgono "
+        "se legarsi. Le vicende seguono personaggi già conosciuti e mostrano da nuove "
+        "prospettive incontri, legami e momenti decisivi della loro storia."
+    ),
+    "threshing day": (
+        "Una raccolta ambientata nel mondo della saga Empyrean che racconta tredici storie "
+        "legate al giorno della Trebbiatura, il momento in cui cavalieri e draghi scelgono "
+        "se legarsi. Le vicende seguono personaggi già conosciuti e mostrano da nuove "
+        "prospettive incontri, legami e momenti decisivi della loro storia."
+    ),
+    "una condanna di ombre e spine": (
+        "Elise appartiene alla famiglia che un tempo sottrasse la corona ai Fae e ora viene "
+        "costretta a un matrimonio per proteggere il trono e suo padre. Affidata a Legion Grey, "
+        "scopre in lui un alleato tanto irritante quanto irresistibile. Quando un colpo di stato "
+        "travolge il regno, Elise comprende che Legion custodisce segreti capaci di cambiare tutto."
+    ),
+    "una danza con il principe delle fate": (
+        "Katria non crede nell'amore e accetta un matrimonio combinato soprattutto per sfuggire "
+        "alla propria famiglia. Ma il suo nuovo marito non è un uomo qualunque: è legato al "
+        "mondo dei Fae e a un antico rituale. Quando Katria ottiene involontariamente un potere "
+        "che non le appartiene, viene trascinata in una corsa per la corona e per la propria libertà."
+    ),
+    "when the moon hatched": (
+        "Raeve è un'assassina legata alla ribellione e vive in un mondo in cui i draghi morti "
+        "diventano lune nel cielo. Dopo una perdita devastante viene catturata dal potere che "
+        "combatte, mentre il guerriero Kaan cerca qualcuno che il mondo crede scomparso. "
+        "Le loro strade si incrociano tra magia, ricordi perduti, vendetta e un legame antico."
+    ),
+
 }
 
 
