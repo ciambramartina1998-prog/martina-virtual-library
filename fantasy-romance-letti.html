@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fantasy Romance letti - Martina's Virtual Library</title>
+<title>Fantasy Romance - Letti | My Little Library</title>
 
 <style>
 
@@ -940,6 +940,128 @@ body{
 
 }
 
+
+/* ===== RIFINITURA FINALE FANTASY ROMANCE · LETTI ===== */
+
+.script-title{
+  font-size:clamp(40px,4.5vw,54px);
+  line-height:1;
+  letter-spacing:-1px;
+}
+
+.virtual-title{
+  margin-top:5px;
+  font-size:11px;
+  letter-spacing:3.2px;
+}
+
+.topbar{
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.search-box{
+  background:rgba(247,244,239,.46);
+  box-shadow:0 9px 21px rgba(55,48,34,.13);
+}
+
+.back{
+  transition:transform .22s ease, background .22s ease, box-shadow .22s ease;
+}
+
+.back:hover{
+  transform:translateY(-2px);
+  background:#C8CEB7;
+  box-shadow:0 10px 20px rgba(57,50,35,.18);
+}
+
+/* Card già approvate: manteniamo palette e hover */
+.book-grid{
+  gap:12px 10px;
+  align-items:stretch;
+}
+
+.book-card{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+
+.book-info{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.book-title{
+  width:100%;
+  min-height:31px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+
+.favorite-row{
+  margin-top:auto;
+}
+
+.favorite-button{
+  transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.favorite-button:hover:not(:disabled){
+  transform:translateY(-1px);
+  background:rgba(247,244,239,.62);
+  border-color:rgba(83,96,71,.40);
+  box-shadow:0 4px 10px rgba(54,58,42,.10);
+}
+
+/* Niente fascia verticale a destra */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.widget{
+  background:rgba(247,244,239,.32);
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:0 10px 24px rgba(55,55,39,.14);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:transform .22s ease, background .22s ease, box-shadow .22s ease;
+}
+
+.widget:hover{
+  transform:translateY(-3px);
+  background:rgba(247,244,239,.40);
+  box-shadow:0 14px 28px rgba(55,55,39,.18);
+}
+
+/* Modale rifinita, funzioni invariate */
+.book-modal-box{
+  box-shadow:
+    0 28px 70px rgba(37,39,28,.46),
+    0 0 24px rgba(122,130,103,.10);
+}
+
+.modal-close,
+.save-plot{
+  transition:transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.modal-close:hover{
+  transform:scale(1.06);
+  background:rgba(255,255,255,.72);
+}
+
+.save-plot:hover:not(:disabled){
+  transform:translateY(-2px);
+  background:#59644C;
+  box-shadow:0 9px 18px rgba(54,58,42,.22);
+}
+
 </style>
 </head>
 
@@ -1019,11 +1141,11 @@ Gestisci libri
 <header class="header">
 
 <h1 class="script-title">
-Martina's
+Fantasy Romance
 </h1>
 
 <div class="virtual-title">
-FANTASY ROMANCE · LETTI
+LETTI
 </div>
 
 <div class="header-line">
