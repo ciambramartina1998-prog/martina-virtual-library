@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gestisci libri - Martina's Virtual Library</title>
+<title>Gestisci libri - My Little Library</title>
 
 <style>
 
@@ -861,6 +861,158 @@ button:disabled{
 
 }
 
+
+/* ===== RIFINITURA GESTISCI LIBRI ===== */
+
+h1{
+  font-size:clamp(38px,4.4vw,52px);
+  line-height:1;
+  letter-spacing:-1px;
+}
+
+.subtitle{
+  width:min(470px,92%);
+  margin-top:7px;
+  margin-bottom:17px;
+  padding-bottom:10px;
+}
+
+/* I tre strumenti diventano più leggibili e importanti */
+.section{
+  margin-bottom:14px;
+  padding:12px;
+  border-color:rgba(255,255,255,.48);
+  background:rgba(232,214,194,.48);
+  box-shadow:0 10px 24px rgba(60,46,35,.13);
+}
+
+.section:hover{
+  background:rgba(232,214,194,.60);
+  box-shadow:0 15px 30px rgba(60,46,35,.17);
+}
+
+/* Barre principali */
+.toggle-button{
+  min-height:46px;
+  padding:11px 14px;
+  border-color:rgba(116,83,54,.26);
+  border-radius:14px;
+  background:rgba(232,214,194,.90);
+  box-shadow:0 7px 17px rgba(73,53,39,.13);
+}
+
+.toggle-button:hover{
+  transform:translateY(-3px);
+  background:rgba(239,223,206,.96);
+  box-shadow:0 12px 24px rgba(73,53,39,.18);
+}
+
+.toggle-left{
+  font-size:11px;
+  letter-spacing:.1px;
+}
+
+.toggle-right{
+  padding:4px 8px;
+  border-radius:20px;
+  background:rgba(255,255,255,.34);
+}
+
+/* Contenuto aperto */
+.collapsible.open{
+  padding:4px 2px 2px;
+}
+
+/* Campi più puliti */
+input,
+select{
+  padding:9px 10px;
+  background:rgba(255,255,255,.67);
+  box-shadow:inset 0 1px 2px rgba(78,53,36,.04);
+}
+
+input:focus,
+select:focus{
+  background:rgba(255,255,255,.86);
+  box-shadow:
+    0 0 0 2px rgba(198,139,89,.13),
+    0 6px 15px rgba(78,53,36,.07);
+}
+
+/* Pulsanti più presenti */
+button{
+  padding:9px 12px;
+}
+
+.primary,
+.gold,
+.danger,
+.secondary{
+  box-shadow:0 6px 14px rgba(73,53,39,.12);
+}
+
+/* Risultati copertine */
+.result{
+  padding:6px;
+  background:rgba(247,240,232,.65);
+  border-color:rgba(255,255,255,.52);
+  box-shadow:0 7px 16px rgba(65,49,36,.10);
+}
+
+.result:hover{
+  transform:translateY(-6px);
+  background:rgba(250,244,237,.88);
+  box-shadow:0 14px 25px rgba(65,49,36,.18);
+}
+
+.result img{
+  transition:transform .22s ease;
+}
+
+.result:hover img{
+  transform:scale(1.025);
+}
+
+/* Lista libri salvati */
+.book-list{
+  gap:9px;
+}
+
+.book-row{
+  padding:8px;
+  border-color:rgba(255,255,255,.50);
+  background:rgba(247,240,232,.62);
+  box-shadow:0 6px 14px rgba(68,51,37,.09);
+}
+
+.book-row:hover{
+  transform:translateY(-2px);
+  background:rgba(250,245,239,.83);
+  box-shadow:0 10px 20px rgba(68,51,37,.13);
+}
+
+/* Elimina la fascia verticale a destra */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.right-card{
+  background:rgba(247,244,239,.27);
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:0 11px 26px rgba(62,50,38,.14);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:transform .22s ease, background .22s ease, box-shadow .22s ease;
+}
+
+.right-card:hover{
+  transform:translateY(-3px);
+  background:rgba(247,244,239,.38);
+  box-shadow:0 14px 29px rgba(62,50,38,.17);
+}
+
 </style>
 
 </head>
@@ -875,8 +1027,8 @@ button:disabled{
 <aside class="sidebar">
 
 <div class="logo">
-📚 Martina's<br>
-VIRTUAL LIBRARY
+📚 My Little<br>
+LIBRARY
 </div>
 
 <div class="menu">
