@@ -855,6 +855,24 @@ body{
 
 }
 
+
+.book-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(54,38,43,.58);backdrop-filter:blur(8px)}
+.book-modal.open{display:flex}
+.book-modal-card{position:relative;width:min(760px,94vw);max-height:88vh;overflow:auto;display:grid;grid-template-columns:210px minmax(0,1fr);gap:26px;padding:26px;border:1px solid rgba(176,104,126,.28);border-radius:28px;background:linear-gradient(145deg,#FFF9F7,#F5E2E6);box-shadow:0 28px 70px rgba(55,34,41,.34)}
+.book-modal-close{position:absolute;top:14px;right:14px;width:38px;height:38px;border:1px solid rgba(176,104,126,.20);border-radius:50%;background:#EDCED5;color:#744B57;font:22px Georgia;cursor:pointer}
+.book-modal-cover{width:100%;aspect-ratio:2/3;overflow:hidden;border-radius:15px;background:#EDCED5;box-shadow:0 12px 28px rgba(73,43,52,.20)}
+.book-modal-cover img{width:100%;height:100%;display:block;object-fit:cover}
+.book-modal-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:18px;color:#A75B72;text-align:center;line-height:1.5}
+.book-modal-content{min-width:0;padding:8px 8px 4px 0}
+.book-modal-category{margin:0 46px 8px 0;color:#A75B72;font-size:12px;font-weight:bold;letter-spacing:2px}
+.book-modal-title{margin:0 46px 14px 0;color:#4E3524;font-size:34px;line-height:1.08}
+.book-modal-status{display:inline-block;margin-bottom:20px;padding:6px 11px;border-radius:20px;background:rgba(201,133,152,.16);color:#9C5068;font-size:12px;font-weight:bold}
+.book-modal-section-title{margin:4px 0 8px;color:#704553;font-size:16px}
+.book-modal-plot{margin:0;color:#5E4A4F;font-size:14px;line-height:1.7;white-space:pre-line}
+.book-cover{cursor:pointer}
+@media(max-width:650px){.book-modal-card{grid-template-columns:120px minmax(0,1fr);gap:16px;padding:18px}.book-modal-title{font-size:24px}.book-modal-plot{font-size:12px}}
+@media(max-width:430px){.book-modal-card{display:block}.book-modal-cover{width:135px;margin:0 auto 18px}.book-modal-content{padding:0}}
+
 </style>
 
 </head>
@@ -1029,6 +1047,21 @@ può diventare la tua preferita.”
 </div>
 
 
+
+<div class="book-modal" id="bookModal" aria-hidden="true">
+ <div class="book-modal-card" role="dialog" aria-modal="true">
+  <button class="book-modal-close" id="modalChiudi" type="button">×</button>
+  <div class="book-modal-cover" id="modalCopertina"></div>
+  <div class="book-modal-content">
+   <div class="book-modal-category">🌷 ROMANCE</div>
+   <h2 class="book-modal-title" id="modalTitolo"></h2>
+   <div class="book-modal-status">♡ Da leggere</div>
+   <h3 class="book-modal-section-title">📖 Trama</h3>
+   <p class="book-modal-plot" id="modalTrama">Cerco la trama...</p>
+  </div>
+ </div>
+</div>
+
 <script>
 
 
@@ -1122,6 +1155,11 @@ function creaCard(libro){
 
   cover.className=
     "book-cover";
+
+  cover.title="Apri la scheda del libro";
+  cover.addEventListener("click",function(){
+    apriSchedaLibro(libro);
+  });
 
 
   const placeholder=
@@ -1674,6 +1712,90 @@ document.getElementById(
 
   }
 );
+
+
+
+/* SCHEDA LIBRO ROMANCE DA LEGGERE */
+const bookModal=document.getElementById("bookModal");
+const modalTitolo=document.getElementById("modalTitolo");
+const modalCopertina=document.getElementById("modalCopertina");
+const modalTrama=document.getElementById("modalTrama");
+
+async function apriSchedaLibro(libro){
+  modalTitolo.textContent=libro.titolo||"";
+  modalCopertina.innerHTML="";
+
+  const copertina=libro.copertina||trovaCopertinaLocale(libro.titolo)||"";
+  if(copertina){
+    const img=document.createElement("img");
+    img.src=copertina;
+    img.alt=libro.titolo||"";
+    img.onerror=function(){
+      modalCopertina.innerHTML='<div class="book-modal-placeholder">♡<br>Copertina non disponibile</div>';
+    };
+    modalCopertina.appendChild(img);
+  }else{
+    modalCopertina.innerHTML='<div class="book-modal-placeholder">♡<br>Copertina non disponibile</div>';
+  }
+
+  bookModal.classList.add("open");
+  bookModal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+
+  const salvata=String(libro.trama||"").trim();
+  if(salvata){
+    modalTrama.textContent=salvata;
+    return;
+  }
+
+  modalTrama.textContent="Cerco la trama...";
+
+  try{
+    const risposta=await fetch(
+      "https://martina-virtual-library.onrender.com/api/trama-automatica?titolo="+encodeURIComponent(libro.titolo),
+      {cache:"no-store"}
+    );
+    if(!risposta.ok) throw new Error("Trama non disponibile");
+    const dati=await risposta.json();
+    const trama=String(dati.trama||"").trim();
+
+    if(!trama){
+      modalTrama.textContent="Trama non disponibile per questo libro.";
+      return;
+    }
+
+    libro.trama=trama;
+    modalTrama.textContent=trama;
+
+    if(libro.id){
+      fetch(
+        "https://martina-virtual-library.onrender.com/api/trama/"+encodeURIComponent(libro.id),
+        {
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({trama:trama})
+        }
+      ).catch(function(e){console.error("Salvataggio trama:",e);});
+    }
+  }catch(e){
+    console.error("Caricamento trama:",e);
+    modalTrama.textContent="Trama non disponibile per questo libro.";
+  }
+}
+
+function chiudiSchedaLibro(){
+  bookModal.classList.remove("open");
+  bookModal.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+
+document.getElementById("modalChiudi").addEventListener("click",chiudiSchedaLibro);
+bookModal.addEventListener("click",function(e){
+  if(e.target===bookModal) chiudiSchedaLibro();
+});
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"&&bookModal.classList.contains("open")) chiudiSchedaLibro();
+});
 
 
 /* AVVIO */
