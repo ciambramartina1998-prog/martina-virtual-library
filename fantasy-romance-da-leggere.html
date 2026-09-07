@@ -618,6 +618,81 @@ body{
 
 }
 
+
+/* MODALE DETTAGLI · FANTASY ROMANCE DA LEGGERE */
+.book-cover{cursor:pointer;}
+
+.modal-overlay{
+  position:fixed; inset:0; z-index:9999;
+  display:none; align-items:center; justify-content:center;
+  padding:18px;
+  background:rgba(31,38,28,.58);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+.modal-overlay.aperto{display:flex;}
+.modal-box{
+  position:relative;
+  width:min(720px,96vw);
+  max-height:90vh;
+  overflow:auto;
+  padding:22px;
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:24px;
+  background:rgba(242,241,230,.97);
+  box-shadow:0 24px 60px rgba(28,34,25,.35);
+}
+.modal-close{
+  position:absolute; top:10px; right:13px;
+  width:34px; height:34px;
+  border:0; border-radius:50%;
+  background:rgba(122,130,103,.18);
+  color:#46503C; font-size:21px; cursor:pointer;
+}
+.modal-content{
+  display:grid;
+  grid-template-columns:180px minmax(0,1fr);
+  gap:22px;
+}
+.modal-cover{
+  width:100%; aspect-ratio:2/3; object-fit:cover;
+  border-radius:13px;
+  box-shadow:0 10px 25px rgba(55,48,34,.22);
+}
+.modal-cover-placeholder{
+  width:100%; aspect-ratio:2/3;
+  display:flex; align-items:center; justify-content:center;
+  padding:14px; border-radius:13px;
+  background:#DCE0D0; color:#536047;
+  text-align:center; font-size:11px;
+}
+.modal-category{
+  color:#657055; font-size:10px; font-weight:bold;
+  letter-spacing:1.3px; text-transform:uppercase;
+}
+.modal-title{
+  margin:6px 0 8px; color:#4E3524;
+  font-size:25px; line-height:1.15;
+}
+.modal-status{
+  display:inline-block; margin-bottom:15px;
+  padding:5px 10px; border-radius:20px;
+  background:rgba(122,130,103,.18);
+  color:#536047; font-size:10px; font-weight:bold;
+}
+.modal-trama-title{
+  margin:4px 0 7px; color:#46503C; font-size:12px;
+}
+.modal-trama{
+  margin:0; color:#4E4437;
+  font-size:12px; line-height:1.65;
+  white-space:pre-wrap;
+}
+@media(max-width:560px){
+  .modal-content{grid-template-columns:110px minmax(0,1fr);gap:14px;}
+  .modal-title{font-size:19px;}
+}
+
 </style>
 </head>
 
@@ -788,6 +863,22 @@ Un nuovo mondo<br>
 
 </aside>
 
+</div>
+
+<div class="modal-overlay" id="modalLibro" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <button class="modal-close" id="chiudiModal" type="button" aria-label="Chiudi">×</button>
+    <div class="modal-content">
+      <div id="modalCoverBox"></div>
+      <div>
+        <div class="modal-category">✦ Fantasy Romance</div>
+        <h2 class="modal-title" id="modalTitolo"></h2>
+        <div class="modal-status">♡ Da leggere</div>
+        <h3 class="modal-trama-title">📖 Trama</h3>
+        <p class="modal-trama" id="modalTrama">Cerco la trama...</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -1010,6 +1101,11 @@ function creaScheda(libro){
 
   info.appendChild(nome);
   info.appendChild(stato);
+
+  cover.title="Apri la scheda";
+  cover.addEventListener("click",function(){
+    apriSchedaLibro(libro);
+  });
 
   scheda.appendChild(cover);
   scheda.appendChild(info);
@@ -1377,6 +1473,97 @@ document.getElementById(
 
   }
 );
+
+
+/* MODALE TRAMA */
+
+async function apriSchedaLibro(libro){
+  const modal=document.getElementById("modalLibro");
+  const box=document.getElementById("modalCoverBox");
+  const titolo=document.getElementById("modalTitolo");
+  const trama=document.getElementById("modalTrama");
+
+  titolo.textContent=libro.titolo || "";
+
+  const copertina=libro.copertina || trovaCopertinaLocale(libro.titolo) || "";
+  box.innerHTML="";
+
+  if(copertina){
+    const img=document.createElement("img");
+    img.className="modal-cover";
+    img.src=copertina;
+    img.alt=libro.titolo || "";
+    img.onerror=function(){
+      box.innerHTML='<div class="modal-cover-placeholder">✦<br>'+String(libro.titolo || "")+'</div>';
+    };
+    box.appendChild(img);
+  }else{
+    const ph=document.createElement("div");
+    ph.className="modal-cover-placeholder";
+    ph.textContent="✦ "+String(libro.titolo || "");
+    box.appendChild(ph);
+  }
+
+  modal.classList.add("aperto");
+  modal.setAttribute("aria-hidden","false");
+
+  if(String(libro.trama || "").trim()){
+    trama.textContent=libro.trama;
+    return;
+  }
+
+  trama.textContent="Cerco la trama...";
+
+  try{
+    const risposta=await fetch(
+      "https://martina-virtual-library.onrender.com/api/trama-automatica?titolo="
+      + encodeURIComponent(libro.titolo),
+      {cache:"no-store"}
+    );
+
+    if(!risposta.ok) throw new Error("Ricerca trama non riuscita.");
+
+    const dati=await risposta.json();
+    const trovata=String(dati.trama || "").trim();
+
+    if(trovata){
+      libro.trama=trovata;
+      trama.textContent=trovata;
+
+      if(libro.id){
+        fetch(
+          "https://martina-virtual-library.onrender.com/api/trama/"+libro.id,
+          {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({trama:trovata})
+          }
+        ).catch(function(){});
+      }
+    }else{
+      trama.textContent="Trama non disponibile per questo libro.";
+    }
+  }catch(errore){
+    console.error("Errore trama:",errore);
+    trama.textContent="Trama non disponibile per questo libro.";
+  }
+}
+
+function chiudiSchedaLibro(){
+  const modal=document.getElementById("modalLibro");
+  modal.classList.remove("aperto");
+  modal.setAttribute("aria-hidden","true");
+}
+
+document.getElementById("chiudiModal").addEventListener("click",chiudiSchedaLibro);
+
+document.getElementById("modalLibro").addEventListener("click",function(evento){
+  if(evento.target===this) chiudiSchedaLibro();
+});
+
+document.addEventListener("keydown",function(evento){
+  if(evento.key==="Escape") chiudiSchedaLibro();
+});
 
 
 /* AVVIO */
