@@ -509,6 +509,142 @@ body{
 }
 
 
+/* SCHEDA DETTAGLIO LIBRO */
+
+.book-cover.clickable{
+  cursor:pointer;
+}
+
+.book-cover.clickable:hover{
+  filter:brightness(1.04);
+}
+
+.book-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(32,18,20,.72);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+}
+
+.book-modal.open{
+  display:flex;
+}
+
+.book-modal-card{
+  position:relative;
+  width:min(720px,100%);
+  max-height:88vh;
+  overflow:auto;
+  padding:22px;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:24px;
+  background:linear-gradient(145deg,#F5E8E6,#DABDC1);
+  color:#4A2F2D;
+  box-shadow:0 24px 65px rgba(25,12,15,.48);
+}
+
+.book-modal-close{
+  position:absolute;
+  top:10px;
+  right:12px;
+  width:34px;
+  height:34px;
+  border:1px solid rgba(93,48,57,.22);
+  border-radius:50%;
+  background:rgba(255,255,255,.55);
+  color:#5A2D36;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.book-modal-content{
+  display:grid;
+  grid-template-columns:190px minmax(0,1fr);
+  gap:22px;
+  align-items:start;
+}
+
+.book-modal-cover{
+  width:100%;
+  aspect-ratio:2/3;
+  overflow:hidden;
+  border-radius:14px;
+  background:linear-gradient(145deg,#CFAEB2,#E5CFCE);
+  box-shadow:0 12px 28px rgba(54,34,34,.22);
+}
+
+.book-modal-cover img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+.book-modal-placeholder{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  color:#704A4D;
+  text-align:center;
+  font-size:12px;
+}
+
+.book-modal-category{
+  margin:4px 0 7px;
+  color:#87515C;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+}
+
+.book-modal-title{
+  margin:0 38px 10px 0;
+  color:#4E2F34;
+  font-size:25px;
+  line-height:1.15;
+}
+
+.book-modal-status{
+  display:inline-block;
+  margin-bottom:15px;
+  padding:5px 10px;
+  border-radius:20px;
+  background:rgba(155,91,104,.18);
+  color:#784653;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.book-modal-heading{
+  margin:4px 0 7px;
+  color:#5A2D36;
+  font-size:12px;
+}
+
+.book-modal-plot{
+  margin:0;
+  color:#523A39;
+  font-size:11px;
+  line-height:1.7;
+  white-space:pre-line;
+}
+
+.book-modal-empty{
+  color:#765B59;
+  font-style:italic;
+}
+
+
 /* RESPONSIVE */
 
 @media(max-width:1000px){
@@ -581,10 +717,36 @@ body{
 
 }
 
+@media(max-width:600px){
+
+  .book-modal-card{
+    padding:18px;
+  }
+
+  .book-modal-content{
+    grid-template-columns:120px minmax(0,1fr);
+    gap:14px;
+  }
+
+  .book-modal-title{
+    font-size:19px;
+  }
+
+}
+
 @media(max-width:430px){
 
   .book-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .book-modal-content{
+    display:block;
+  }
+
+  .book-modal-cover{
+    width:130px;
+    margin:0 auto 16px;
   }
 
 }
@@ -773,6 +935,70 @@ potrebbe essere la mia preferita.
 </div>
 
 
+<!-- SCHEDA DETTAGLIO LIBRO -->
+
+<div
+class="book-modal"
+id="bookModal"
+aria-hidden="true"
+>
+
+<div
+class="book-modal-card"
+role="dialog"
+aria-modal="true"
+aria-labelledby="modalTitolo"
+>
+
+<button
+class="book-modal-close"
+id="chiudiModal"
+type="button"
+aria-label="Chiudi"
+>
+×
+</button>
+
+<div class="book-modal-content">
+
+<div
+class="book-modal-cover"
+id="modalCopertina"
+></div>
+
+<div>
+
+<div class="book-modal-category">
+🥀 Dark Romance
+</div>
+
+<h2
+class="book-modal-title"
+id="modalTitolo"
+></h2>
+
+<div class="book-modal-status">
+♡ Da leggere
+</div>
+
+<h3 class="book-modal-heading">
+📖 Trama
+</h3>
+
+<p
+class="book-modal-plot"
+id="modalTrama"
+></p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
 <script>
 
 
@@ -947,16 +1173,20 @@ function creaScheda(libro){
 
 
   cover.className=
-    "book-cover";
+    "book-cover clickable";
 
 
-  /*
-     Per i libri del cloud usa prima
-     la copertina sincronizzata.
+  cover.addEventListener(
+    "click",
+    function(){
 
-     Se manca, usa l'eventuale
-     copertina locale dei libri base.
-  */
+      apriSchedaLibro(
+        libro
+      );
+
+    }
+  );
+
 
   const copertina=
     libro.copertina
@@ -1109,14 +1339,6 @@ function creaListaFinale(libriCloud){
     new Map();
 
 
-  /*
-     PRIMA I LIBRI BASE.
-
-     Se un libro base esiste anche
-     nel cloud, il cloud decide
-     categoria, stato e copertina.
-  */
-
   libriBase.forEach(
     function(libro){
 
@@ -1166,15 +1388,6 @@ function creaListaFinale(libriCloud){
     }
   );
 
-
-  /*
-     POI I NUOVI LIBRI DEL CLOUD.
-
-     Se sono Dark Romance e
-     Da leggere vengono aggiunti.
-
-     La Map impedisce i doppioni.
-  */
 
   cloudPerTitolo.forEach(
     function(
@@ -1275,13 +1488,14 @@ async function caricaLibri(){
 
   try{
 
-  const risposta=
-  await fetch(
-    "https://martina-virtual-library.onrender.com/api/libri",
-    {
-      cache:"no-store"
-    }
-  );
+    const risposta=
+      await fetch(
+        "https://martina-virtual-library.onrender.com/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
+
 
     if(!risposta.ok){
 
@@ -1323,11 +1537,6 @@ async function caricaLibri(){
     );
 
 
-    /*
-       Se il cloud non risponde,
-       non perdiamo i 7 libri base.
-    */
-
     const listaFinale=
       creaListaFinale(
         []
@@ -1341,6 +1550,248 @@ async function caricaLibri(){
   }
 
 }
+
+
+/* =========================
+   SCHEDA DETTAGLIO
+========================= */
+
+const bookModal=
+  document.getElementById(
+    "bookModal"
+  );
+
+const modalTitolo=
+  document.getElementById(
+    "modalTitolo"
+  );
+
+const modalCopertina=
+  document.getElementById(
+    "modalCopertina"
+  );
+
+const modalTrama=
+  document.getElementById(
+    "modalTrama"
+  );
+
+const chiudiModalBtn=
+  document.getElementById(
+    "chiudiModal"
+  );
+
+
+function apriSchedaLibro(libro){
+
+  modalTitolo.textContent=
+    libro.titolo
+    ||
+    "Senza titolo";
+
+
+  modalCopertina.innerHTML="";
+
+
+  const copertina=
+    libro.copertina
+    ||
+    trovaCopertinaLocale(
+      libro.titolo
+    )
+    ||
+    "";
+
+
+  if(copertina){
+
+    const immagine=
+      document.createElement(
+        "img"
+      );
+
+
+    immagine.src=
+      copertina;
+
+
+    immagine.alt=
+      libro.titolo
+      ||
+      "Copertina libro";
+
+
+    immagine.onerror=
+      function(){
+
+        modalCopertina.innerHTML="";
+
+
+        const placeholder=
+          document.createElement(
+            "div"
+          );
+
+
+        placeholder.className=
+          "book-modal-placeholder";
+
+
+        placeholder.textContent=
+          "🥀 "
+          +
+          (
+            libro.titolo
+            ||
+            "Copertina non disponibile"
+          );
+
+
+        modalCopertina.appendChild(
+          placeholder
+        );
+
+      };
+
+
+    modalCopertina.appendChild(
+      immagine
+    );
+
+  }
+
+  else{
+
+    const placeholder=
+      document.createElement(
+        "div"
+      );
+
+
+    placeholder.className=
+      "book-modal-placeholder";
+
+
+    placeholder.textContent=
+      "🥀 "
+      +
+      (
+        libro.titolo
+        ||
+        "Copertina non disponibile"
+      );
+
+
+    modalCopertina.appendChild(
+      placeholder
+    );
+
+  }
+
+
+  const trama=
+    String(
+      libro.trama
+      ||
+      ""
+    ).trim();
+
+
+  if(trama){
+
+    modalTrama.textContent=
+      trama;
+
+
+    modalTrama.classList.remove(
+      "book-modal-empty"
+    );
+
+  }
+
+  else{
+
+    modalTrama.textContent=
+      "Trama non disponibile per questo libro.";
+
+
+    modalTrama.classList.add(
+      "book-modal-empty"
+    );
+
+  }
+
+
+  bookModal.classList.add(
+    "open"
+  );
+
+
+  bookModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+}
+
+
+function chiudiSchedaLibro(){
+
+  bookModal.classList.remove(
+    "open"
+  );
+
+
+  bookModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+}
+
+
+chiudiModalBtn.addEventListener(
+  "click",
+  chiudiSchedaLibro
+);
+
+
+bookModal.addEventListener(
+  "click",
+  function(evento){
+
+    if(
+      evento.target ===
+      bookModal
+    ){
+
+      chiudiSchedaLibro();
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  function(evento){
+
+    if(
+      evento.key ===
+      "Escape"
+      &&
+      bookModal.classList.contains(
+        "open"
+      )
+    ){
+
+      chiudiSchedaLibro();
+
+    }
+
+  }
+);
 
 
 /* =========================
