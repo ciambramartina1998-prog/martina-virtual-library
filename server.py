@@ -490,7 +490,26 @@ class LibreriaHandler(
             )
         )
 
+def do_OPTIONS(self):
 
+    self.send_response(204)
+
+    self.send_header(
+        "Access-Control-Allow-Origin",
+        "https://martina-virtual-library-static.onrender.com"
+    )
+
+    self.send_header(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS"
+    )
+
+    self.send_header(
+        "Access-Control-Allow-Headers",
+        "Content-Type"
+    )
+
+    self.end_headers()
     def do_GET(self):
 
         parsed = urlparse(
@@ -1402,7 +1421,15 @@ class LibreriaHandler(
     "Access-Control-Allow-Origin",
     "https://martina-virtual-library-static.onrender.com"
        )
+self.send_header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+)
 
+self.send_header(
+    "Access-Control-Allow-Headers",
+    "Content-Type"
+)
         self.end_headers()
 
 
