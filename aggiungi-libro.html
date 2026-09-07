@@ -1847,13 +1847,13 @@ async function caricaLibri(){
 
   try{
 
-    const risposta =
-      await fetch(
-        "/api/libri",
-        {
-          cache:"no-store"
-        }
-      );
+  const risposta =
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/libri",
+    {
+      cache:"no-store"
+    }
+  );
 
 
     const dati =
@@ -1918,11 +1918,10 @@ async function caricaLibri(){
 
 async function creaLibro(libro){
 
-  const risposta =
-    await fetch(
-      "/api/libri",
-      {
-
+const risposta =
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/libri",
+    {
         method:"POST",
 
         headers:{
@@ -1969,12 +1968,11 @@ async function modificaLibroCloud(
 ){
 
   const risposta =
-    await fetch(
-      "/api/libri/"
-      +
-      id,
-      {
-
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/libri/"
+    +
+    id,
+    {
         method:"PUT",
 
         headers:{
@@ -2017,16 +2015,15 @@ async function modificaLibroCloud(
 
 async function eliminaLibroCloud(id){
 
-  const risposta =
-    await fetch(
-      "/api/libri/"
-      +
-      id,
-      {
-        method:"DELETE"
-      }
-    );
-
+const risposta =
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/libri/"
+    +
+    id,
+    {
+      method:"DELETE"
+    }
+  );
 
   const dati =
     await risposta.json();
@@ -2093,12 +2090,11 @@ async function cercaOnline(
 
 
   const risposta =
-    await fetch(
-      "/api/copertine?"
-      +
-      params.toString()
-    );
-
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/copertine?"
+    +
+    params.toString()
+  );
 
   const dati =
     await risposta.json();
@@ -3227,15 +3223,15 @@ async function impostaLettura(id){
 
   try{
 
-    const risposta =
-      await fetch(
-        "/api/lettura-attuale/"
-        +
-        id,
-        {
-          method:"POST"
-        }
-      );
+  const risposta =
+  await fetch(
+    "https://martina-virtual-library.onrender.com/api/lettura-attuale/"
+    +
+    id,
+    {
+      method:"POST"
+    }
+  );
 
 
     const dati =
