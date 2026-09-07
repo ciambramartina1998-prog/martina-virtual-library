@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Romance Letti - Martina's Virtual Library</title>
+<title>Romance - Letti | My Little Library</title>
 
 <style>
 
@@ -1219,6 +1219,92 @@ body{
 
 }
 
+
+/* ===== RIFINITURA FINALE ROMANCE · LETTI ===== */
+.script-title{
+  font-size:clamp(40px,4.5vw,54px);
+  line-height:1;
+  letter-spacing:-1px;
+}
+.virtual-title{
+  margin-top:5px;
+  font-size:11px;
+  letter-spacing:3.2px;
+}
+.topbar{gap:10px;margin-bottom:14px;}
+.search{
+  background:rgba(255,247,248,.47);
+  box-shadow:0 9px 21px rgba(82,47,57,.13);
+}
+.back-button{
+  transition:transform .22s ease,background .22s ease,box-shadow .22s ease;
+}
+.back-button:hover{
+  transform:translateY(-2px);
+  background:#E5B9C6;
+  box-shadow:0 10px 20px rgba(91,55,65,.18);
+}
+.book-grid{gap:12px 10px;align-items:stretch;}
+.book-card{height:100%;display:flex;flex-direction:column;}
+.book-info{flex:1;display:flex;flex-direction:column;align-items:center;}
+.book-title{
+  width:100%;
+  min-height:31px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+.favorite-row{margin-top:auto;}
+.favorite-button{
+  transition:transform .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.favorite-button:hover:not(:disabled){
+  transform:translateY(-1px);
+  background:rgba(255,247,248,.70);
+  border-color:rgba(176,104,126,.40);
+  box-shadow:0 4px 10px rgba(91,44,60,.10);
+}
+
+/* niente fascia verticale destra */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.widget{
+  background:rgba(255,247,248,.29);
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:0 10px 24px rgba(75,48,56,.14);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.widget:hover{
+  transform:translateY(-3px);
+  background:rgba(255,247,248,.41);
+  box-shadow:0 14px 28px rgba(75,48,56,.18);
+}
+
+/* scheda libro rifinita, funzioni invariate */
+.book-modal-box{
+  box-shadow:
+    0 28px 70px rgba(65,36,45,.47),
+    0 0 24px rgba(201,133,152,.11);
+}
+.modal-close,
+.save-plot{
+  transition:transform .18s ease,background .18s ease,box-shadow .18s ease;
+}
+.modal-close:hover{
+  transform:scale(1.06);
+  background:rgba(255,255,255,.76);
+  box-shadow:0 6px 14px rgba(91,44,60,.13);
+}
+.save-plot:hover:not(:disabled){
+  transform:translateY(-2px);
+  background:#A75B72;
+  box-shadow:0 9px 18px rgba(91,44,60,.20);
+}
+
 </style>
 
 </head>
@@ -1295,11 +1381,11 @@ Gestisci libri
 <header class="header">
 
 <h1 class="script-title">
-Martina's
+Romance
 </h1>
 
 <div class="virtual-title">
-ROMANCE · LETTI
+LETTI
 </div>
 
 <div class="header-decoration">
