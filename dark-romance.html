@@ -1102,6 +1102,68 @@ body{
   -webkit-backdrop-filter:blur(8px);
 }
 
+
+/* ===== ULTIME MODIFICHE DARK ROMANCE ===== */
+
+/* Titolo unico */
+.script-title{
+  font-size:clamp(40px,4.5vw,54px);
+  line-height:1;
+  letter-spacing:-1px;
+}
+
+/* Nessun bordo/fascia verticale a destra */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* Widget destri lasciati sospesi sullo sfondo */
+.rightbar .widget{
+  background:rgba(255,245,241,.17);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 11px 26px rgba(56,35,32,.18);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+/* Citazione finale un po' più curata */
+.footer{
+  width:min(430px,92%);
+  margin:14px auto 0;
+  padding:10px 14px;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:14px;
+  background:rgba(255,245,241,.14);
+  box-shadow:0 8px 20px rgba(56,35,32,.10);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
+/* Card principali più presenti */
+.cards{
+  gap:12px;
+}
+
+.card{
+  min-height:142px;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  box-shadow:
+    0 23px 40px rgba(56,35,32,.29),
+    0 0 20px rgba(157,85,99,.15);
+}
+
+/* Totale collezione più compatto */
+.total-card{
+  width:min(390px,88%);
+  margin-left:auto;
+  margin-right:auto;
+}
+
 </style>
 
 </head>
@@ -1182,12 +1244,8 @@ Gestisci libri
 <header class="header">
 
 <h1 class="script-title">
-Martina's
+Dark Romance
 </h1>
-
-<div class="virtual-title">
-DARK ROMANCE
-</div>
 
 <div class="header-decoration">
 🖤
