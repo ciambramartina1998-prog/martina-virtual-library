@@ -534,7 +534,7 @@ body{
 /* INFO */
 
 .book-info{
-  min-height:43px;
+  min-height:60px;
 
   padding:6px 2px 2px;
 
@@ -567,6 +567,59 @@ body{
   font-size:7px;
 
   font-weight:bold;
+}
+
+
+/* PREFERITO */
+
+.favorite-row{
+  margin-top:4px;
+  text-align:center;
+}
+
+.favorite-button{
+  padding:2px 7px;
+
+  border:1px solid rgba(169,137,112,.30);
+  border-radius:20px;
+
+  background:rgba(247,244,239,.46);
+
+  color:#7A5A43;
+
+  font-family:Georgia,"Times New Roman",serif;
+
+  font-size:7px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    color .18s ease,
+    box-shadow .18s ease;
+}
+
+.favorite-button:hover{
+  transform:translateY(-1px);
+
+  background:rgba(247,244,239,.72);
+}
+
+.favorite-button.active{
+  background:rgba(169,137,112,.22);
+
+  color:#684A35;
+
+  border-color:rgba(122,90,67,.40);
+
+  box-shadow:0 3px 8px rgba(84,64,46,.12);
+}
+
+.favorite-button:disabled{
+  opacity:.65;
+  cursor:default;
 }
 
 
@@ -1083,6 +1136,170 @@ libriBase.push(
 
 
 /* =========================
+   PREFERITO
+========================= */
+
+function aggiornaAspettoPreferito(
+  bottone,
+  preferito
+){
+
+  if(preferito){
+
+    bottone.classList.add(
+      "active"
+    );
+
+    bottone.textContent=
+      "♥ Preferito";
+
+  }
+
+  else{
+
+    bottone.classList.remove(
+      "active"
+    );
+
+    bottone.textContent=
+      "♡ Preferito";
+
+  }
+
+}
+
+
+async function salvaPreferito(
+  libro,
+  bottone
+){
+
+  if(!libro.id){
+    return;
+  }
+
+
+  const valorePrecedente=
+    Boolean(
+      libro.preferito
+    );
+
+
+  const nuovoValore=
+    !valorePrecedente;
+
+
+  libro.preferito=
+    nuovoValore;
+
+
+  aggiornaAspettoPreferito(
+    bottone,
+    nuovoValore
+  );
+
+
+  bottone.disabled=
+    true;
+
+
+  try{
+
+    const risposta=
+      await fetch(
+        "https://martina-virtual-library.onrender.com/api/preferito/"
+        +
+        libro.id,
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              preferito:
+                nuovoValore
+            })
+        }
+      );
+
+
+    if(!risposta.ok){
+
+      throw new Error(
+        "Errore nel salvataggio del preferito."
+      );
+
+    }
+
+
+    const dati=
+      await risposta.json();
+
+
+    if(
+      !dati.ok
+      ||
+      !dati.libro
+    ){
+
+      throw new Error(
+        "Risposta del server non valida."
+      );
+
+    }
+
+
+    libro.preferito=
+      Boolean(
+        dati.libro.preferito
+      );
+
+
+    aggiornaAspettoPreferito(
+      bottone,
+      libro.preferito
+    );
+
+  }
+
+  catch(errore){
+
+    console.error(
+      errore
+    );
+
+
+    libro.preferito=
+      valorePrecedente;
+
+
+    aggiornaAspettoPreferito(
+      bottone,
+      valorePrecedente
+    );
+
+
+    alert(
+      "Non sono riuscita a salvare il preferito. Riprova tra qualche secondo."
+    );
+
+  }
+
+  finally{
+
+    bottone.disabled=
+      false;
+
+  }
+
+}
+
+
+/* =========================
    CREA CARD
 ========================= */
 
@@ -1229,6 +1446,71 @@ function creaScheda(libro){
   );
 
 
+  /*
+    Il pulsante compare soltanto
+    se il manga esiste nel database
+    e quindi possiede un ID.
+  */
+
+  if(libro.id){
+
+    const favoriteRow=
+      document.createElement(
+        "div"
+      );
+
+
+    favoriteRow.className=
+      "favorite-row";
+
+
+    const favoriteButton=
+      document.createElement(
+        "button"
+      );
+
+
+    favoriteButton.type=
+      "button";
+
+
+    favoriteButton.className=
+      "favorite-button";
+
+
+    aggiornaAspettoPreferito(
+      favoriteButton,
+      Boolean(
+        libro.preferito
+      )
+    );
+
+
+    favoriteButton.addEventListener(
+      "click",
+      function(){
+
+        salvaPreferito(
+          libro,
+          favoriteButton
+        );
+
+      }
+    );
+
+
+    favoriteRow.appendChild(
+      favoriteButton
+    );
+
+
+    info.appendChild(
+      favoriteRow
+    );
+
+  }
+
+
   scheda.appendChild(
     cover
   );
@@ -1364,6 +1646,9 @@ function creaListaFinale(libriCloud){
           "",
 
         lettura_attuale:
+          false,
+
+        preferito:
           false
 
       });
@@ -1588,6 +1873,9 @@ async function caricaLibri(){
               "",
 
             lettura_attuale:
+              false,
+
+            preferito:
               false
 
           };
