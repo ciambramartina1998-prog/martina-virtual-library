@@ -176,7 +176,6 @@ def cerca_google_books(
                 autore
             )
 
-
     google_url = (
         "https://www.googleapis.com/books/v1/volumes"
         "?q="
@@ -196,11 +195,9 @@ def cerca_google_books(
         )
     )
 
-
     dati = scarica_json(
         google_url
     )
-
 
     for item in dati.get(
         "items",
@@ -218,31 +215,18 @@ def cerca_google_books(
         )
 
         copertina = (
-            immagini.get(
-                "extraLarge"
-            )
+            immagini.get("extraLarge")
             or
-            immagini.get(
-                "large"
-            )
+            immagini.get("large")
             or
-            immagini.get(
-                "medium"
-            )
+            immagini.get("medium")
             or
-            immagini.get(
-                "small"
-            )
+            immagini.get("small")
             or
-            immagini.get(
-                "thumbnail"
-            )
+            immagini.get("thumbnail")
             or
-            immagini.get(
-                "smallThumbnail"
-            )
+            immagini.get("smallThumbnail")
         )
-
 
         identificatori = info.get(
             "industryIdentifiers",
@@ -254,9 +238,7 @@ def cerca_google_books(
         for identificatore in identificatori:
 
             if (
-                identificatore.get(
-                    "type"
-                )
+                identificatore.get("type")
                 ==
                 "ISBN_13"
             ):
@@ -269,7 +251,6 @@ def cerca_google_books(
                 )
 
                 break
-
 
         aggiungi_risultato(
             risultati,
@@ -310,7 +291,6 @@ def cerca_open_library(
 
     parametri = []
 
-
     if isbn:
 
         parametri.append(
@@ -341,7 +321,6 @@ def cerca_open_library(
                 )
             )
 
-
     parametri.append(
         "limit=40"
     )
@@ -349,7 +328,6 @@ def cerca_open_library(
     parametri.append(
         "fields=key,title,author_name,cover_i,first_publish_year,isbn,language,publisher"
     )
-
 
     open_library_url = (
         "https://openlibrary.org/search.json?"
@@ -359,11 +337,9 @@ def cerca_open_library(
         )
     )
 
-
     dati = scarica_json(
         open_library_url
     )
-
 
     for documento in dati.get(
         "docs",
@@ -377,7 +353,6 @@ def cerca_open_library(
         if not cover_id:
             continue
 
-
         copertina = (
             "https://covers.openlibrary.org/b/id/"
             +
@@ -387,7 +362,6 @@ def cerca_open_library(
             +
             "-L.jpg"
         )
-
 
         lista_isbn = documento.get(
             "isbn",
@@ -405,7 +379,6 @@ def cerca_open_library(
                 lista_isbn[0]
             )
 
-
         editori = documento.get(
             "publisher",
             []
@@ -422,7 +395,6 @@ def cerca_open_library(
                 editori[0]
             )
 
-
         lingue = documento.get(
             "language",
             []
@@ -438,7 +410,6 @@ def cerca_open_library(
             lingua = str(
                 lingue[0]
             )
-
 
         aggiungi_risultato(
             risultati,
@@ -467,7 +438,6 @@ class LibreriaHandler(
     SimpleHTTPRequestHandler
 ):
 
-
     def leggi_json(self):
 
         lunghezza = int(
@@ -490,32 +460,43 @@ class LibreriaHandler(
             )
         )
 
-def do_OPTIONS(self):
 
-    self.send_response(204)
+    # ==========================================
+    # CORS - RICHIESTE PREFLIGHT DEL BROWSER
+    # ==========================================
 
-    self.send_header(
-        "Access-Control-Allow-Origin",
-        "https://martina-virtual-library-static.onrender.com"
-    )
+    def do_OPTIONS(self):
 
-    self.send_header(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, OPTIONS"
-    )
+        self.send_response(204)
 
-    self.send_header(
-        "Access-Control-Allow-Headers",
-        "Content-Type"
-    )
+        self.send_header(
+            "Access-Control-Allow-Origin",
+            "https://martina-virtual-library-static.onrender.com"
+        )
 
-    self.end_headers()
+        self.send_header(
+            "Access-Control-Allow-Methods",
+            "GET, POST, PUT, DELETE, OPTIONS"
+        )
+
+        self.send_header(
+            "Access-Control-Allow-Headers",
+            "Content-Type"
+        )
+
+        self.send_header(
+            "Access-Control-Max-Age",
+            "86400"
+        )
+
+        self.end_headers()
+
+
     def do_GET(self):
 
         parsed = urlparse(
             self.path
         )
-
 
         if parsed.path == "/api/database-test":
 
@@ -533,13 +514,11 @@ def do_OPTIONS(self):
                             cur.fetchone()
                         )
 
-
                 self.invia_json({
                     "ok": True,
                     "database":
                         risultato[0]
                 })
-
 
             except Exception as errore:
 
@@ -585,7 +564,6 @@ def do_OPTIONS(self):
                             cur.fetchall()
                         )
 
-
                 libri = [
                     libro_json(
                         riga
@@ -593,13 +571,11 @@ def do_OPTIONS(self):
                     for riga in righe
                 ]
 
-
                 self.invia_json({
                     "ok": True,
                     "libri":
                         libri
                 })
-
 
             except Exception as errore:
 
@@ -639,7 +615,6 @@ def do_OPTIONS(self):
                 [""]
             )[0].strip()
 
-
             if not titolo and not isbn:
 
                 self.invia_json({
@@ -649,11 +624,8 @@ def do_OPTIONS(self):
 
                 return
 
-
             risultati = []
-
             viste = set()
-
 
             try:
 
@@ -675,7 +647,6 @@ def do_OPTIONS(self):
                         flush=True
                     )
 
-
                 try:
 
                     cerca_open_library(
@@ -694,12 +665,10 @@ def do_OPTIONS(self):
                         flush=True
                     )
 
-
                 self.invia_json({
                     "risultati":
                         risultati[:60]
                 })
-
 
             except Exception as errore:
 
@@ -714,9 +683,7 @@ def do_OPTIONS(self):
                         "Errore nella ricerca delle copertine."
                 }, 500)
 
-
             return
-
 
         super().do_GET()
 
@@ -726,7 +693,6 @@ def do_OPTIONS(self):
         parsed = urlparse(
             self.path
         )
-
 
         if parsed.path == "/api/libri":
 
@@ -769,7 +735,6 @@ def do_OPTIONS(self):
                     )
                 )
 
-
                 if not titolo:
 
                     self.invia_json({
@@ -780,7 +745,6 @@ def do_OPTIONS(self):
 
                     return
 
-
                 if not categoria:
 
                     self.invia_json({
@@ -790,7 +754,6 @@ def do_OPTIONS(self):
                     }, 400)
 
                     return
-
 
                 if stato not in [
                     "Letto",
@@ -805,11 +768,9 @@ def do_OPTIONS(self):
 
                     return
 
-
                 with connessione_database() as conn:
 
                     with conn.cursor() as cur:
-
 
                         if lettura_attuale:
 
@@ -818,7 +779,6 @@ def do_OPTIONS(self):
                                 SET
                                     lettura_attuale = FALSE
                             """)
-
 
                         cur.execute("""
                             SELECT id
@@ -832,11 +792,9 @@ def do_OPTIONS(self):
                             titolo,
                         ))
 
-
                         esistente = (
                             cur.fetchone()
                         )
-
 
                         if esistente:
 
@@ -865,7 +823,6 @@ def do_OPTIONS(self):
                                 lettura_attuale,
                                 esistente[0]
                             ))
-
 
                         else:
 
@@ -900,14 +857,11 @@ def do_OPTIONS(self):
                                 lettura_attuale
                             ))
 
-
                         riga = (
                             cur.fetchone()
                         )
 
-
                     conn.commit()
-
 
                 self.invia_json({
                     "ok": True,
@@ -916,7 +870,6 @@ def do_OPTIONS(self):
                             riga
                         )
                 }, 201)
-
 
             except Exception as errore:
 
@@ -947,18 +900,15 @@ def do_OPTIONS(self):
                     )[-1]
                 )
 
-
                 with connessione_database() as conn:
 
                     with conn.cursor() as cur:
-
 
                         cur.execute("""
                             UPDATE libri
                             SET
                                 lettura_attuale = FALSE
                         """)
-
 
                         cur.execute("""
                             UPDATE libri
@@ -978,11 +928,9 @@ def do_OPTIONS(self):
                             id_libro,
                         ))
 
-
                         riga = (
                             cur.fetchone()
                         )
-
 
                         if not riga:
 
@@ -994,9 +942,7 @@ def do_OPTIONS(self):
 
                             return
 
-
                     conn.commit()
-
 
                 self.invia_json({
                     "ok": True,
@@ -1005,7 +951,6 @@ def do_OPTIONS(self):
                             riga
                         )
                 })
-
 
             except Exception as errore:
 
@@ -1036,11 +981,9 @@ def do_OPTIONS(self):
                     )[-1]
                 )
 
-
                 with connessione_database() as conn:
 
                     with conn.cursor() as cur:
-
 
                         cur.execute("""
                             UPDATE libri
@@ -1060,11 +1003,9 @@ def do_OPTIONS(self):
                             id_libro,
                         ))
 
-
                         riga = (
                             cur.fetchone()
                         )
-
 
                         if not riga:
 
@@ -1076,9 +1017,7 @@ def do_OPTIONS(self):
 
                             return
 
-
                     conn.commit()
-
 
                 self.invia_json({
                     "ok": True,
@@ -1087,7 +1026,6 @@ def do_OPTIONS(self):
                             riga
                         )
                 })
-
 
             except Exception as errore:
 
@@ -1105,7 +1043,6 @@ def do_OPTIONS(self):
 
             return
 
-
         self.invia_json({
             "ok": False,
             "errore":
@@ -1119,7 +1056,6 @@ def do_OPTIONS(self):
             self.path
         )
 
-
         if parsed.path.startswith(
             "/api/libri/"
         ):
@@ -1132,9 +1068,7 @@ def do_OPTIONS(self):
                     )[-1]
                 )
 
-
                 dati = self.leggi_json()
-
 
                 titolo = str(
                     dati.get(
@@ -1143,14 +1077,12 @@ def do_OPTIONS(self):
                     )
                 ).strip()
 
-
                 categoria = str(
                     dati.get(
                         "categoria",
                         ""
                     )
                 ).strip()
-
 
                 stato = str(
                     dati.get(
@@ -1159,7 +1091,6 @@ def do_OPTIONS(self):
                     )
                 ).strip()
 
-
                 copertina = str(
                     dati.get(
                         "copertina",
@@ -1167,14 +1098,12 @@ def do_OPTIONS(self):
                     )
                 ).strip()
 
-
                 lettura_attuale = bool(
                     dati.get(
                         "lettura_attuale",
                         False
                     )
                 )
-
 
                 if not titolo:
 
@@ -1185,7 +1114,6 @@ def do_OPTIONS(self):
                     }, 400)
 
                     return
-
 
                 if stato not in [
                     "Letto",
@@ -1200,11 +1128,9 @@ def do_OPTIONS(self):
 
                     return
 
-
                 with connessione_database() as conn:
 
                     with conn.cursor() as cur:
-
 
                         if lettura_attuale:
 
@@ -1213,7 +1139,6 @@ def do_OPTIONS(self):
                                 SET
                                     lettura_attuale = FALSE
                             """)
-
 
                         cur.execute("""
                             UPDATE libri
@@ -1241,11 +1166,9 @@ def do_OPTIONS(self):
                             id_libro
                         ))
 
-
                         riga = (
                             cur.fetchone()
                         )
-
 
                         if not riga:
 
@@ -1257,9 +1180,7 @@ def do_OPTIONS(self):
 
                             return
 
-
                     conn.commit()
-
 
                 self.invia_json({
                     "ok": True,
@@ -1268,7 +1189,6 @@ def do_OPTIONS(self):
                             riga
                         )
                 })
-
 
             except Exception as errore:
 
@@ -1286,7 +1206,6 @@ def do_OPTIONS(self):
 
             return
 
-
         self.invia_json({
             "ok": False,
             "errore":
@@ -1300,7 +1219,6 @@ def do_OPTIONS(self):
             self.path
         )
 
-
         if parsed.path.startswith(
             "/api/libri/"
         ):
@@ -1313,11 +1231,9 @@ def do_OPTIONS(self):
                     )[-1]
                 )
 
-
                 with connessione_database() as conn:
 
                     with conn.cursor() as cur:
-
 
                         cur.execute("""
                             DELETE FROM libri
@@ -1327,11 +1243,9 @@ def do_OPTIONS(self):
                             id_libro,
                         ))
 
-
                         eliminato = (
                             cur.fetchone()
                         )
-
 
                         if not eliminato:
 
@@ -1343,16 +1257,13 @@ def do_OPTIONS(self):
 
                             return
 
-
                     conn.commit()
-
 
                 self.invia_json({
                     "ok": True,
                     "id":
                         id_libro
                 })
-
 
             except Exception as errore:
 
@@ -1369,7 +1280,6 @@ def do_OPTIONS(self):
                 }, 500)
 
             return
-
 
         self.invia_json({
             "ok": False,
@@ -1391,17 +1301,14 @@ def do_OPTIONS(self):
             "utf-8"
         )
 
-
         self.send_response(
             codice
         )
-
 
         self.send_header(
             "Content-Type",
             "application/json; charset=utf-8"
         )
-
 
         self.send_header(
             "Content-Length",
@@ -1412,26 +1319,28 @@ def do_OPTIONS(self):
             )
         )
 
-
         self.send_header(
             "Cache-Control",
             "no-store"
         )
+
+        # CORS per il nuovo sito statico
         self.send_header(
-    "Access-Control-Allow-Origin",
-    "https://martina-virtual-library-static.onrender.com"
-       )
-self.send_header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-)
+            "Access-Control-Allow-Origin",
+            "https://martina-virtual-library-static.onrender.com"
+        )
 
-self.send_header(
-    "Access-Control-Allow-Headers",
-    "Content-Type"
-)
+        self.send_header(
+            "Access-Control-Allow-Methods",
+            "GET, POST, PUT, DELETE, OPTIONS"
+        )
+
+        self.send_header(
+            "Access-Control-Allow-Headers",
+            "Content-Type"
+        )
+
         self.end_headers()
-
 
         self.wfile.write(
             contenuto
@@ -1506,6 +1415,5 @@ except KeyboardInterrupt:
     print(
         "\nServer chiuso."
     )
-
 
     server.server_close()
