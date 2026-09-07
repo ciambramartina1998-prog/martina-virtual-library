@@ -1398,7 +1398,10 @@ class LibreriaHandler(
             "Cache-Control",
             "no-store"
         )
-
+        self.send_header(
+    "Access-Control-Allow-Origin",
+    "https://martina-virtual-library-static.onrender.com"
+       )
 
         self.end_headers()
 
