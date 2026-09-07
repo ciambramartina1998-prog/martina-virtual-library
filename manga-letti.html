@@ -295,9 +295,8 @@ body{
 /* BARRA SUPERIORE */
 
 .top-row{
-  width:min(720px,100%);
-
-  margin:0 auto 10px;
+  width:100%;
+  margin:0 0 12px;
 
   display:flex;
   align-items:center;
@@ -354,16 +353,10 @@ body{
 }
 
 
-/* CONTATORE */
+/* PULSANTE TORNA A MANGA */
 
-.counter-box{
-  position:relative;
-
-  min-width:82px;
-
-  overflow:hidden;
-
-  padding:7px 10px;
+.back-button{
+  padding:8px 11px;
 
   border:1px solid rgba(169,137,112,.28);
   border-radius:14px;
@@ -372,19 +365,24 @@ body{
 
   color:#6B4D38;
 
-  text-align:center;
+  font-size:9px;
+  font-weight:bold;
 
-  font-size:8px;
+  text-decoration:none;
+  white-space:nowrap;
 
-  box-shadow:0 7px 17px rgba(84,64,46,.12);
+  box-shadow:0 6px 15px rgba(84,64,46,.12);
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    filter .22s ease;
 }
 
-.counter-box strong{
-  display:block;
-
-  color:#6B4D38;
-
-  font-size:18px;
+.back-button:hover{
+  transform:translateY(-2px);
+  background:#F2ECE5;
+  box-shadow:0 10px 22px rgba(84,64,46,.18);
 }
 
 
@@ -899,16 +897,9 @@ placeholder="Cerca un manga..."
 
 </div>
 
-
-<div class="counter-box">
-
-<strong id="numeroLibri">
-0
-</strong>
-
-letti
-
-</div>
+<a href="manga.html" class="back-button">
+← Manga
+</a>
 
 </div>
 
@@ -1480,12 +1471,6 @@ function mostraLibri(libri){
 
 
   document.getElementById(
-    "numeroLibri"
-  ).textContent=
-    totale;
-
-
-  document.getElementById(
     "numeroManga"
   ).textContent=
     totale;
@@ -1524,13 +1509,13 @@ async function caricaLibri(){
 
   try{
 
-  const risposta=
-  await fetch(
-    "https://martina-virtual-library.onrender.com/api/libri",
-    {
-      cache:"no-store"
-    }
-  );
+    const risposta=
+      await fetch(
+        "https://martina-virtual-library.onrender.com/api/libri",
+        {
+          cache:"no-store"
+        }
+      );
 
 
     if(
@@ -1549,11 +1534,11 @@ async function caricaLibri(){
 
 
     const libriCloud=
-  Array.isArray(dati.libri)
-  ?
-  dati.libri
-  :
-  [];
+      Array.isArray(dati.libri)
+      ?
+      dati.libri
+      :
+      [];
 
 
     const listaFinale=
