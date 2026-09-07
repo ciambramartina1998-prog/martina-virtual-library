@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>I miei libri - Martina's Virtual Library</title>
+<title>I miei libri - My Little Library</title>
 
 <style>
 
@@ -1033,6 +1033,115 @@ body{
 
 }
 
+
+/* ===== RIFINITURA I MIEI LIBRI / LETTI ===== */
+
+/* Titolo unico */
+.script-title{
+  font-size:clamp(40px,4.5vw,54px);
+  line-height:1;
+  letter-spacing:-1px;
+}
+
+/* Ricerca e contatore un po' più presenti */
+.top-row{
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.search-box{
+  background:rgba(255,255,255,.43);
+  box-shadow:0 9px 21px rgba(68,52,39,.12);
+}
+
+.counter-box{
+  min-width:92px;
+  padding:8px 11px;
+  box-shadow:0 9px 21px rgba(83,60,40,.16);
+}
+
+/* Griglia più ordinata */
+.book-grid{
+  gap:12px 10px;
+  align-items:stretch;
+}
+
+/* Card uniformi */
+.book-card{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  padding:7px;
+  background:rgba(232,214,194,.58);
+  border-color:rgba(255,255,255,.48);
+  box-shadow:0 10px 23px rgba(60,46,35,.14);
+}
+
+.book-card:hover{
+  transform:translateY(-9px);
+  background:rgba(232,214,194,.78);
+  border-color:rgba(255,255,255,.72);
+  box-shadow:
+    0 22px 36px rgba(75,54,38,.25),
+    0 0 20px rgba(198,139,89,.15);
+}
+
+.book-cover{
+  flex:0 0 auto;
+  transition:transform .22s ease;
+}
+
+.book-card:hover .book-cover{
+  transform:scale(1.045);
+}
+
+.book-info{
+  flex:1;
+  min-height:58px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:7px 2px 3px;
+}
+
+.book-title{
+  width:100%;
+  min-height:31px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  line-height:1.28;
+}
+
+.book-status{
+  margin-top:auto;
+}
+
+/* Colonna destra senza fascia verticale */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.rightbar .widget{
+  background:rgba(247,244,239,.27);
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:0 11px 26px rgba(62,50,38,.14);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.footer-note{
+  width:min(170px,100%);
+  margin:12px auto 0;
+  padding:7px 8px;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:12px;
+  background:rgba(247,244,239,.20);
+  box-shadow:0 7px 17px rgba(62,50,38,.09);
+}
+
 </style>
 </head>
 
@@ -1112,12 +1221,8 @@ Gestisci libri
 <header class="header">
 
 <h1 class="script-title">
-Martina's
+I miei libri
 </h1>
-
-<div class="virtual-title">
-I MIEI LIBRI
-</div>
 
 <div class="header-decoration">
 ♡
@@ -1241,7 +1346,7 @@ racconta un piccolo viaggio.
 
 
 <div class="footer-note">
-❦ Martina's Virtual Library ❦
+❦ My Little Library ❦
 </div>
 
 
