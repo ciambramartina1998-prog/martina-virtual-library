@@ -821,6 +821,376 @@ button,input{
   }
 }
 
+
+/* =========================================================
+   HOME RIFINITA — SOLO ESTETICA
+   Sfondo, palette e funzioni originali preservati
+========================================================= */
+
+/* Titolo più protagonista */
+.header{
+  padding:7px 0 11px;
+}
+
+.script-title{
+  font-size:clamp(38px,4.5vw,54px);
+  letter-spacing:-1.3px;
+  text-shadow:
+    0 2px 4px rgba(255,255,255,.82),
+    0 7px 18px rgba(78,53,36,.10);
+}
+
+.virtual-title{
+  margin-top:5px;
+  font-size:13px;
+  letter-spacing:6px;
+}
+
+.header-line{
+  width:min(350px,82%);
+  margin:9px auto 5px;
+}
+
+.subtitle{
+  font-size:9.5px;
+  letter-spacing:.2px;
+}
+
+/* Sto leggendo più importante */
+.coffee-table{
+  grid-template-columns:minmax(0,1fr) 122px;
+  gap:12px;
+  margin:12px 0;
+}
+
+.current-reading-main{
+  min-height:124px;
+  padding:14px 16px;
+  border-radius:20px;
+  background:rgba(255,255,255,.43);
+  box-shadow:
+    0 12px 28px rgba(67,53,39,.15),
+    inset 0 1px 0 rgba(255,255,255,.38);
+}
+
+.current-reading-main:hover{
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.53);
+  border-color:rgba(255,255,255,.62);
+  box-shadow:
+    0 19px 36px rgba(83,60,40,.20),
+    0 0 22px rgba(198,139,89,.11);
+}
+
+.section-label{
+  margin-bottom:9px;
+  font-size:8.5px;
+  letter-spacing:1.45px;
+}
+
+.current-book-row{
+  gap:13px;
+}
+
+.current-cover{
+  width:58px;
+  height:84px;
+  border-radius:9px;
+  box-shadow:0 7px 14px rgba(53,43,33,.23);
+  transition:transform .22s ease;
+}
+
+.current-reading-main:hover .current-cover{
+  transform:scale(1.035);
+}
+
+.current-title{
+  font-size:11px;
+  line-height:1.3;
+}
+
+.current-category{
+  margin-bottom:7px;
+  font-size:7.5px;
+}
+
+.finish-reading{
+  padding:6px 10px;
+  border-radius:9px;
+  transition:.22s ease;
+}
+
+.finish-reading:hover{
+  transform:translateY(-1px);
+  box-shadow:0 5px 12px rgba(63,70,53,.18);
+}
+
+.coffee-deco{
+  min-height:124px;
+  border-radius:20px;
+  background:rgba(222,226,207,.43);
+  box-shadow:
+    0 12px 27px rgba(67,53,39,.12),
+    inset 0 1px 0 rgba(255,255,255,.34);
+  transition:.25s ease;
+}
+
+.coffee-deco:hover{
+  transform:translateY(-4px);
+  background:rgba(222,226,207,.53);
+  box-shadow:0 17px 31px rgba(67,53,39,.16);
+}
+
+.coffee-deco .plant{
+  font-size:28px;
+}
+
+/* Ricerca più elegante */
+.search{
+  margin:9px auto 13px;
+  padding:5px;
+  border-radius:24px;
+  background:rgba(255,255,255,.41);
+  box-shadow:
+    0 9px 22px rgba(70,56,42,.12),
+    inset 0 1px 0 rgba(255,255,255,.32);
+  transition:.22s ease;
+}
+
+.search:focus-within{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.53);
+  border-color:rgba(255,255,255,.62);
+  box-shadow:0 13px 27px rgba(70,56,42,.16);
+}
+
+.search button{
+  width:33px;
+  height:33px;
+  transition:.22s ease;
+}
+
+.search button:hover{
+  transform:scale(1.06);
+}
+
+/* Contatori coordinati alle nuove card */
+.summary-row{
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.summary-card{
+  min-height:72px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:10px 8px;
+  border-radius:17px;
+  background:rgba(255,255,255,.42);
+  box-shadow:
+    0 10px 24px rgba(64,52,39,.13),
+    inset 0 1px 0 rgba(255,255,255,.34);
+}
+
+.summary-card:hover{
+  transform:translateY(-7px);
+  background:rgba(255,255,255,.55);
+  border-color:rgba(255,255,255,.72);
+  box-shadow:
+    0 18px 33px rgba(105,79,52,.20),
+    0 0 18px rgba(198,139,89,.10);
+}
+
+.summary-icon{
+  font-size:18px;
+}
+
+.summary-number{
+  margin-top:3px;
+  font-size:20px;
+}
+
+.summary-title{
+  margin-top:1px;
+  font-size:7.3px;
+  letter-spacing:.85px;
+}
+
+/* Grandi scaffali: più presenti senza cambiare i colori */
+.shelves-title{
+  margin:5px 0 10px;
+  font-size:9.5px;
+  letter-spacing:1.25px;
+}
+
+.shelves{
+  gap:11px;
+}
+
+.shelf{
+  min-height:132px;
+  gap:9px;
+  padding:17px 10px;
+  border-radius:20px;
+  border-color:rgba(111,76,48,.30);
+  box-shadow:
+    0 11px 24px rgba(83,60,40,.18),
+    inset 0 1px 0 rgba(255,255,255,.40);
+}
+
+.shelf:hover{
+  transform:translateY(-9px);
+  border-color:rgba(111,76,48,.44);
+  box-shadow:
+    0 22px 37px rgba(83,60,40,.27),
+    0 0 20px rgba(198,139,89,.12),
+    inset 0 0 24px rgba(255,246,218,.20);
+  filter:brightness(1.045);
+}
+
+.shelf-top{
+  font-size:31px;
+  transition:transform .25s ease;
+}
+
+.shelf:hover .shelf-top{
+  transform:scale(1.10);
+}
+
+.shelf-name{
+  padding:8px 10px;
+  border-radius:10px;
+  background:rgba(255,248,239,.36);
+  font-size:9.2px;
+  letter-spacing:.9px;
+}
+
+/* Citazione */
+.quote-section{
+  margin-top:13px;
+  padding:14px 42px;
+  border-radius:18px;
+  background:rgba(255,255,255,.35);
+  box-shadow:0 10px 24px rgba(57,47,36,.11);
+}
+
+.quote-main{
+  font-size:13.5px;
+}
+
+/* Gestisci libreria come pulsante principale */
+.manage-card{
+  min-height:48px;
+  margin-top:11px;
+  border-radius:15px;
+  background:rgba(198,139,89,.51);
+  font-size:8.3px;
+  box-shadow:
+    0 9px 21px rgba(91,64,43,.14),
+    inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+.manage-card:hover{
+  transform:translateY(-5px);
+  background:rgba(211,154,102,.64);
+  border-color:rgba(255,255,255,.56);
+  box-shadow:
+    0 17px 30px rgba(91,64,43,.21),
+    0 0 18px rgba(198,139,89,.13);
+}
+
+/* Sidebar più rifinita, stessa palette */
+.sidebar{
+  padding:19px 12px;
+}
+
+.nav a{
+  padding:8.5px 9px;
+  transition:.24s ease;
+}
+
+.nav a:hover{
+  transform:translateX(5px);
+  background:rgba(255,255,255,.47);
+  border-color:rgba(255,255,255,.56);
+  box-shadow:0 7px 16px rgba(92,65,42,.13);
+}
+
+/* Colonna destra più uniforme */
+.rightbar{
+  padding:14px 10px;
+}
+
+.widget{
+  margin-bottom:11px;
+  padding:13px 10px;
+  border-radius:18px;
+  background:rgba(255,255,255,.40);
+  box-shadow:
+    0 10px 24px rgba(62,51,39,.13),
+    inset 0 1px 0 rgba(255,255,255,.32);
+}
+
+.widget:hover{
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.51);
+  border-color:rgba(255,255,255,.60);
+  box-shadow:
+    0 17px 31px rgba(93,69,47,.19),
+    0 0 16px rgba(198,139,89,.09);
+}
+
+.widget h3{
+  margin-bottom:9px;
+  letter-spacing:1px;
+}
+
+.progress{
+  height:9px;
+}
+
+/* Entrata delicata della parte centrale */
+@keyframes homeSoftIn{
+  from{opacity:0; transform:translateY(7px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+.main > *{
+  animation:homeSoftIn .42s ease both;
+}
+
+.main > *:nth-child(2){animation-delay:.04s}
+.main > *:nth-child(3){animation-delay:.07s}
+.main > *:nth-child(4){animation-delay:.10s}
+.main > *:nth-child(5){animation-delay:.13s}
+.main > *:nth-child(6){animation-delay:.16s}
+.main > *:nth-child(7){animation-delay:.19s}
+
+/* Su mobile manteniamo tutto ordinato */
+@media(max-width:720px){
+  .script-title{
+    font-size:40px;
+  }
+
+  .virtual-title{
+    letter-spacing:5px;
+  }
+
+  .current-reading-main,
+  .coffee-deco{
+    min-height:116px;
+  }
+
+  .summary-row{
+    gap:6px;
+  }
+
+  .shelf{
+    min-height:124px;
+  }
+}
+
 </style>
 </head>
 
