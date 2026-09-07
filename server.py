@@ -516,6 +516,32 @@ def cerca_trama_open_library(titolo):
 
 
 TRAME_ITALIANE_FALLBACK = {
+    # Romance: trame italiane di riserva per i titoli che Google Books non trova.
+    "cinder ella": (
+        "Ella ha diciotto anni e ama cinema e libri. Sul suo blog conosce Cinder, "
+        "un ragazzo di cui ignora la vera identità, che diventa il suo migliore amico. "
+        "Dopo un grave incidente in cui perde la madre e riporta profonde ustioni, Ella "
+        "deve ricominciare da capo a Los Angeles, nella casa del padre che l'aveva "
+        "abbandonata. Tra una nuova famiglia, difficoltà a scuola e il bisogno di ritrovare "
+        "se stessa, decide di ricontattare Cinder, senza sapere che dietro quel nome si "
+        "nasconde qualcuno molto più vicino al mondo di Hollywood di quanto immagini."
+    ),
+    "delay of game": (
+        "John Whitman è il portiere dei Denver Pioneers e da anni è innamorato di Brooke "
+        "Delgado, che invece sembra non sopportarlo. John non conosce il motivo del suo "
+        "astio e vuole finalmente scoprire cosa si nasconde tra loro. Brooke, però, ha le "
+        "sue ragioni per tenerlo a distanza e considera i giocatori di hockey arroganti e "
+        "inaffidabili. Tra scontri, vecchi segreti e un'attrazione sempre più difficile da "
+        "ignorare, i due saranno costretti ad affrontare ciò che li divide."
+    ),
+    "fireflies lullabies": (
+        "Haley Rae Jackson arriva nella tranquilla Faraway Oaks con l'intenzione di tenere "
+        "un profilo basso, lavorare e lasciarsi il passato alle spalle. La cittadina del "
+        "Connecticut sembra il rifugio perfetto, lontano da Nashville e da ciò da cui sta "
+        "scappando. I suoi piani cambiano quando torna in paese una celebre star del country, "
+        "legata proprio al ranch dove Haley lavora in cambio di un alloggio. Un'estate, un "
+        "patto e due vite segnate da scelte difficili potrebbero trasformare il loro futuro."
+    ),
     "butcher blackbird": (
         "Sloane e Rowan condividono un segreto decisamente fuori dal comune: entrambi "
         "danno la caccia a persone pericolose che sono riuscite a sfuggire alla giustizia. "
