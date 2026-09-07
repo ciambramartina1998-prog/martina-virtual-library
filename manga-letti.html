@@ -466,6 +466,8 @@ body{
   font-size:8px;
 
   opacity:.80;
+
+  pointer-events:none;
 }
 
 .book-card:hover{
@@ -513,6 +515,10 @@ body{
   font-size:22px;
 
   box-shadow:0 4px 10px rgba(64,45,36,.12);
+}
+
+.book-cover.clickable{
+  cursor:pointer;
 }
 
 .book-cover img{
@@ -619,6 +625,354 @@ body{
 
 .favorite-button:disabled{
   opacity:.65;
+  cursor:default;
+}
+
+
+/* SCHEDA MANGA */
+
+.book-modal{
+  position:fixed;
+  inset:0;
+
+  z-index:1000;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:18px;
+
+  background:rgba(62,48,37,.66);
+
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+}
+
+.book-modal.open{
+  display:flex;
+}
+
+.book-modal-box{
+  position:relative;
+
+  width:min(720px,95vw);
+  max-height:90vh;
+
+  overflow:auto;
+
+  padding:24px;
+
+  border:1px solid rgba(255,255,255,.50);
+  border-radius:25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(250,247,242,.98),
+      rgba(229,218,207,.98)
+    );
+
+  box-shadow:
+    0 25px 65px rgba(62,46,35,.42);
+
+  animation:apriScheda .22s ease;
+}
+
+@keyframes apriScheda{
+
+  from{
+    opacity:0;
+    transform:translateY(12px) scale(.98);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+
+}
+
+.modal-close{
+  position:absolute;
+
+  top:11px;
+  right:13px;
+
+  width:32px;
+  height:32px;
+
+  border:1px solid rgba(169,137,112,.30);
+  border-radius:50%;
+
+  background:rgba(255,255,255,.55);
+
+  color:#7A5A43;
+
+  font-size:18px;
+
+  cursor:pointer;
+}
+
+.modal-content{
+  display:grid;
+
+  grid-template-columns:190px minmax(0,1fr);
+
+  gap:24px;
+}
+
+.modal-cover{
+  width:190px;
+
+  aspect-ratio:2/3;
+
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:1px solid rgba(169,137,112,.22);
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #E8E1D8,
+      #F2ECE5
+    );
+
+  color:#A98970;
+
+  box-shadow:
+    0 12px 26px rgba(84,64,46,.20);
+}
+
+.modal-cover img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.modal-placeholder{
+  padding:15px;
+
+  text-align:center;
+
+  color:#7A5A43;
+
+  font-size:11px;
+
+  line-height:1.5;
+}
+
+.modal-details{
+  min-width:0;
+}
+
+.modal-category{
+  margin-bottom:5px;
+
+  color:#8D6C53;
+
+  font-size:9px;
+
+  font-weight:bold;
+
+  letter-spacing:1.5px;
+
+  text-transform:uppercase;
+}
+
+.modal-title{
+  margin:0 35px 8px 0;
+
+  color:#684A35;
+
+  font-size:25px;
+
+  line-height:1.15;
+
+  font-weight:normal;
+
+  font-style:italic;
+}
+
+.modal-divider{
+  width:100%;
+  height:1px;
+
+  margin:11px 0 15px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(169,137,112,.60),
+      transparent
+    );
+}
+
+.modal-status{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:7px;
+
+  margin-bottom:17px;
+}
+
+.modal-badge{
+  padding:5px 9px;
+
+  border-radius:20px;
+
+  background:rgba(169,137,112,.17);
+
+  color:#7A5A43;
+
+  font-size:9px;
+
+  font-weight:bold;
+}
+
+.modal-section-title{
+  margin:15px 0 7px;
+
+  color:#684A35;
+
+  font-size:11px;
+
+  font-weight:bold;
+
+  letter-spacing:.4px;
+}
+
+
+/* STELLE */
+
+.stars{
+  display:flex;
+
+  gap:4px;
+
+  margin-bottom:4px;
+}
+
+.star-button{
+  padding:0;
+
+  border:none;
+
+  background:transparent;
+
+  color:#CBB5A1;
+
+  font-size:30px;
+
+  line-height:1;
+
+  cursor:pointer;
+
+  transition:
+    transform .15s ease,
+    color .15s ease;
+}
+
+.star-button:hover{
+  transform:scale(1.13);
+}
+
+.star-button.selected{
+  color:#9A765B;
+}
+
+.star-button:disabled{
+  opacity:.6;
+
+  cursor:default;
+}
+
+.rating-message,
+.plot-message{
+  min-height:16px;
+
+  margin-top:4px;
+
+  color:#806550;
+
+  font-size:9px;
+
+  font-style:italic;
+}
+
+
+/* TRAMA */
+
+.plot-text{
+  width:100%;
+
+  min-height:145px;
+
+  resize:vertical;
+
+  padding:11px 12px;
+
+  border:1px solid rgba(169,137,112,.30);
+  border-radius:13px;
+
+  outline:none;
+
+  background:rgba(255,255,255,.52);
+
+  color:#5A493D;
+
+  font-family:Georgia,"Times New Roman",serif;
+
+  font-size:11px;
+
+  line-height:1.55;
+}
+
+.plot-text:focus{
+  border-color:rgba(122,90,67,.55);
+
+  background:rgba(255,255,255,.72);
+}
+
+.save-plot{
+  margin-top:8px;
+
+  padding:7px 12px;
+
+  border:1px solid rgba(122,90,67,.30);
+  border-radius:15px;
+
+  background:#8F6C52;
+
+  color:#FFFDF8;
+
+  font-family:Georgia,"Times New Roman",serif;
+
+  font-size:9px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 5px 13px rgba(84,64,46,.17);
+}
+
+.save-plot:hover{
+  background:#7A5A43;
+}
+
+.save-plot:disabled{
+  opacity:.65;
+
   cursor:default;
 }
 
@@ -829,12 +1183,40 @@ body{
     margin-bottom:8px;
   }
 
+  .modal-content{
+    grid-template-columns:1fr;
+  }
+
+  .modal-cover{
+    width:145px;
+
+    margin:0 auto;
+  }
+
+  .modal-title,
+  .modal-category{
+    text-align:center;
+  }
+
+  .modal-title{
+    margin-right:0;
+  }
+
+  .modal-status,
+  .stars{
+    justify-content:center;
+  }
+
 }
 
 @media(max-width:430px){
 
   .book-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .book-modal-box{
+    padding:18px;
   }
 
 }
@@ -1009,6 +1391,115 @@ Ogni volume<br>
 </div>
 
 
+<!-- SCHEDA MANGA -->
+
+<div
+class="book-modal"
+id="bookModal"
+>
+
+<div class="book-modal-box">
+
+<button
+type="button"
+class="modal-close"
+id="modalClose"
+aria-label="Chiudi"
+>
+×
+</button>
+
+
+<div class="modal-content">
+
+
+<div>
+
+<div
+class="modal-cover"
+id="modalCover"
+></div>
+
+</div>
+
+
+<div class="modal-details">
+
+<div class="modal-category">
+🌸 Manga
+</div>
+
+<h2
+class="modal-title"
+id="modalTitle"
+></h2>
+
+<div class="modal-divider"></div>
+
+
+<div class="modal-status">
+
+<span class="modal-badge">
+✓ Letto
+</span>
+
+<span
+class="modal-badge"
+id="modalFavorite"
+>
+♡ Preferito
+</span>
+
+</div>
+
+
+<div class="modal-section-title">
+⭐ Il mio voto
+</div>
+
+<div
+class="stars"
+id="stars"
+></div>
+
+<div
+class="rating-message"
+id="ratingMessage"
+></div>
+
+
+<div class="modal-section-title">
+📖 Trama
+</div>
+
+<textarea
+class="plot-text"
+id="plotText"
+placeholder="Scrivi qui la trama del manga..."
+></textarea>
+
+<button
+type="button"
+class="save-plot"
+id="savePlot"
+>
+Salva trama
+</button>
+
+<div
+class="plot-message"
+id="plotMessage"
+></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
 <script>
 
 
@@ -1045,7 +1536,7 @@ function trovaCopertinaLocale(titolo){
 
 
 /* =========================
-   74 MANGA BASE
+   MANGA BASE
 ========================= */
 
 const libriBase=[];
@@ -1300,6 +1791,533 @@ async function salvaPreferito(
 
 
 /* =========================
+   SCHEDA MANGA
+========================= */
+
+let libroAperto=
+  null;
+
+
+function creaStelle(){
+
+  const contenitore=
+    document.getElementById(
+      "stars"
+    );
+
+
+  contenitore.innerHTML=
+    "";
+
+
+  for(
+    let numero=1;
+    numero<=5;
+    numero++
+  ){
+
+    const stella=
+      document.createElement(
+        "button"
+      );
+
+
+    stella.type=
+      "button";
+
+
+    stella.className=
+      "star-button";
+
+
+    stella.dataset.value=
+      numero;
+
+
+    stella.textContent=
+      "☆";
+
+
+    stella.setAttribute(
+      "aria-label",
+      numero + " stelle"
+    );
+
+
+    stella.addEventListener(
+      "click",
+      function(){
+
+        salvaVoto(
+          numero
+        );
+
+      }
+    );
+
+
+    contenitore.appendChild(
+      stella
+    );
+
+  }
+
+}
+
+
+function aggiornaStelle(voto){
+
+  const valore=
+    Number(voto) || 0;
+
+
+  document
+    .querySelectorAll(
+      ".star-button"
+    )
+    .forEach(
+      function(stella){
+
+        const numero=
+          Number(
+            stella.dataset.value
+          );
+
+
+        if(numero<=valore){
+
+          stella.textContent=
+            "★";
+
+
+          stella.classList.add(
+            "selected"
+          );
+
+        }
+
+        else{
+
+          stella.textContent=
+            "☆";
+
+
+          stella.classList.remove(
+            "selected"
+          );
+
+        }
+
+      }
+    );
+
+}
+
+
+async function salvaVoto(voto){
+
+  if(
+    !libroAperto
+    ||
+    !libroAperto.id
+  ){
+
+    return;
+
+  }
+
+
+  const messaggio=
+    document.getElementById(
+      "ratingMessage"
+    );
+
+
+  const stelle=
+    document.querySelectorAll(
+      ".star-button"
+    );
+
+
+  stelle.forEach(
+    function(stella){
+
+      stella.disabled=
+        true;
+
+    }
+  );
+
+
+  messaggio.textContent=
+    "Salvataggio...";
+
+
+  try{
+
+    const risposta=
+      await fetch(
+        "https://martina-virtual-library.onrender.com/api/voto/"
+        +
+        libroAperto.id,
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              voto:voto
+            })
+        }
+      );
+
+
+    if(!risposta.ok){
+
+      throw new Error(
+        "Errore salvataggio voto."
+      );
+
+    }
+
+
+    const dati=
+      await risposta.json();
+
+
+    if(
+      !dati.ok
+      ||
+      !dati.libro
+    ){
+
+      throw new Error(
+        "Risposta server non valida."
+      );
+
+    }
+
+
+    libroAperto.voto=
+      dati.libro.voto;
+
+
+    aggiornaStelle(
+      libroAperto.voto
+    );
+
+
+    messaggio.textContent=
+      "✓ Voto salvato";
+
+  }
+
+  catch(errore){
+
+    console.error(
+      errore
+    );
+
+
+    messaggio.textContent=
+      "Non sono riuscita a salvare il voto.";
+
+  }
+
+  finally{
+
+    stelle.forEach(
+      function(stella){
+
+        stella.disabled=
+          false;
+
+      }
+    );
+
+  }
+
+}
+
+
+async function salvaTrama(){
+
+  if(
+    !libroAperto
+    ||
+    !libroAperto.id
+  ){
+
+    return;
+
+  }
+
+
+  const textarea=
+    document.getElementById(
+      "plotText"
+    );
+
+
+  const bottone=
+    document.getElementById(
+      "savePlot"
+    );
+
+
+  const messaggio=
+    document.getElementById(
+      "plotMessage"
+    );
+
+
+  bottone.disabled=
+    true;
+
+
+  messaggio.textContent=
+    "Salvataggio...";
+
+
+  try{
+
+    const risposta=
+      await fetch(
+        "https://martina-virtual-library.onrender.com/api/trama/"
+        +
+        libroAperto.id,
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              trama:
+                textarea.value
+            })
+        }
+      );
+
+
+    if(!risposta.ok){
+
+      throw new Error(
+        "Errore salvataggio trama."
+      );
+
+    }
+
+
+    const dati=
+      await risposta.json();
+
+
+    if(
+      !dati.ok
+      ||
+      !dati.libro
+    ){
+
+      throw new Error(
+        "Risposta server non valida."
+      );
+
+    }
+
+
+    libroAperto.trama=
+      dati.libro.trama || "";
+
+
+    textarea.value=
+      libroAperto.trama;
+
+
+    messaggio.textContent=
+      "✓ Trama salvata";
+
+  }
+
+  catch(errore){
+
+    console.error(
+      errore
+    );
+
+
+    messaggio.textContent=
+      "Non sono riuscita a salvare la trama.";
+
+  }
+
+  finally{
+
+    bottone.disabled=
+      false;
+
+  }
+
+}
+
+
+function apriSchedaLibro(libro){
+
+  if(!libro.id){
+    return;
+  }
+
+
+  libroAperto=
+    libro;
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent=
+    libro.titolo;
+
+
+  document.getElementById(
+    "modalFavorite"
+  ).textContent=
+    libro.preferito
+      ?
+      "♥ Preferito"
+      :
+      "♡ Preferito";
+
+
+  document.getElementById(
+    "plotText"
+  ).value=
+    libro.trama || "";
+
+
+  document.getElementById(
+    "ratingMessage"
+  ).textContent=
+    "";
+
+
+  document.getElementById(
+    "plotMessage"
+  ).textContent=
+    "";
+
+
+  const modalCover=
+    document.getElementById(
+      "modalCover"
+    );
+
+
+  modalCover.innerHTML=
+    "";
+
+
+  const copertina=
+    libro.copertina
+    ||
+    trovaCopertinaLocale(
+      libro.titolo
+    )
+    ||
+    "";
+
+
+  if(copertina){
+
+    const img=
+      document.createElement(
+        "img"
+      );
+
+
+    img.src=
+      copertina;
+
+
+    img.alt=
+      libro.titolo;
+
+
+    img.onerror=
+      function(){
+
+        modalCover.innerHTML=
+          '<div class="modal-placeholder">'
+          +
+          '🌸<br>Copertina non disponibile'
+          +
+          '</div>';
+
+      };
+
+
+    modalCover.appendChild(
+      img
+    );
+
+  }
+
+  else{
+
+    modalCover.innerHTML=
+      '<div class="modal-placeholder">'
+      +
+      '🌸<br>Copertina non ancora scelta'
+      +
+      '</div>';
+
+  }
+
+
+  aggiornaStelle(
+    libro.voto
+  );
+
+
+  document.getElementById(
+    "bookModal"
+  ).classList.add(
+    "open"
+  );
+
+
+  document.body.style.overflow=
+    "hidden";
+
+}
+
+
+function chiudiSchedaLibro(){
+
+  document.getElementById(
+    "bookModal"
+  ).classList.remove(
+    "open"
+  );
+
+
+  document.body.style.overflow=
+    "";
+
+
+  libroAperto=
+    null;
+
+}
+
+
+/* =========================
    CREA CARD
 ========================= */
 
@@ -1308,14 +2326,6 @@ function creaScheda(libro){
   const titolo=
     libro.titolo;
 
-
-  /*
-    Prima usa la copertina
-    sincronizzata nel CLOUD.
-
-    Se non c'è, prova quella
-    locale del dispositivo.
-  */
 
   const copertina=
     libro.copertina
@@ -1398,6 +2408,27 @@ function creaScheda(libro){
   }
 
 
+  if(libro.id){
+
+    cover.classList.add(
+      "clickable"
+    );
+
+
+    cover.addEventListener(
+      "click",
+      function(){
+
+        apriSchedaLibro(
+          libro
+        );
+
+      }
+    );
+
+  }
+
+
   const info=
     document.createElement(
       "div"
@@ -1445,12 +2476,6 @@ function creaScheda(libro){
     stato
   );
 
-
-  /*
-    Il pulsante compare soltanto
-    se il manga esiste nel database
-    e quindi possiede un ID.
-  */
 
   if(libro.id){
 
@@ -1567,19 +2592,6 @@ function creaListaFinale(libriCloud){
     new Set();
 
 
-  /*
-    MANGA BASE
-
-    Se lo stesso titolo esiste
-    nel cloud, è la versione
-    cloud a decidere categoria,
-    stato e copertina.
-
-    Quindi se un manga viene
-    spostato in "Da leggere"
-    non rimane duplicato qui.
-  */
-
   libriBase.forEach(
     function(titoloBase){
 
@@ -1649,7 +2661,13 @@ function creaListaFinale(libriCloud){
           false,
 
         preferito:
-          false
+          false,
+
+        voto:
+          null,
+
+        trama:
+          ""
 
       });
 
@@ -1661,11 +2679,6 @@ function creaListaFinale(libriCloud){
     }
   );
 
-
-  /*
-    NUOVI MANGA LETTI
-    PRESENTI SOLO NEL CLOUD
-  */
 
   libriCloud.forEach(
     function(libro){
@@ -1846,12 +2859,6 @@ async function caricaLibri(){
     );
 
 
-    /*
-      Se il cloud non risponde,
-      mostra comunque i
-      74 manga base.
-    */
-
     const libriEmergenza=
       libriBase.map(
         function(titolo){
@@ -1876,7 +2883,13 @@ async function caricaLibri(){
               false,
 
             preferito:
-              false
+              false,
+
+            voto:
+              null,
+
+            trama:
+              ""
 
           };
 
@@ -1934,7 +2947,61 @@ input.addEventListener(
 );
 
 
+/* EVENTI SCHEDA */
+
+document.getElementById(
+  "modalClose"
+).addEventListener(
+  "click",
+  chiudiSchedaLibro
+);
+
+
+document.getElementById(
+  "bookModal"
+).addEventListener(
+  "click",
+  function(evento){
+
+    if(
+      evento.target===this
+    ){
+
+      chiudiSchedaLibro();
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  function(evento){
+
+    if(
+      evento.key==="Escape"
+    ){
+
+      chiudiSchedaLibro();
+
+    }
+
+  }
+);
+
+
+document.getElementById(
+  "savePlot"
+).addEventListener(
+  "click",
+  salvaTrama
+);
+
+
 /* AVVIO */
+
+creaStelle();
 
 caricaLibri();
 
