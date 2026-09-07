@@ -43,9 +43,11 @@ def libro_json(riga):
         "copertina": riga[4],
         "lettura_attuale": riga[5],
         "preferito": riga[6],
+        "voto": riga[7],
+        "trama": riga[8] or "",
         "creato_il": (
-            riga[7].isoformat()
-            if riga[7]
+            riga[9].isoformat()
+            if riga[9]
             else None
         )
     }
@@ -555,6 +557,8 @@ class LibreriaHandler(
                                 copertina,
                                 lettura_attuale,
                                 preferito,
+                                voto,
+                                trama,
                                 creato_il
                             FROM libri
                             ORDER BY
@@ -832,6 +836,8 @@ class LibreriaHandler(
                                         copertina,
                                         lettura_attuale,
                                         preferito,
+                                        voto,
+                                        trama,
                                         creato_il
                                 """, (
                                     titolo,
@@ -862,6 +868,8 @@ class LibreriaHandler(
                                         copertina,
                                         lettura_attuale,
                                         preferito,
+                                        voto,
+                                        trama,
                                         creato_il
                                 """, (
                                     titolo,
@@ -899,6 +907,8 @@ class LibreriaHandler(
                                     copertina,
                                     lettura_attuale,
                                     preferito,
+                                    voto,
+                                    trama,
                                     creato_il
                             """, (
                                 titolo,
@@ -978,6 +988,8 @@ class LibreriaHandler(
                                 copertina,
                                 lettura_attuale,
                                 preferito,
+                                voto,
+                                trama,
                                 creato_il
                         """, (
                             preferito,
@@ -1026,6 +1038,224 @@ class LibreriaHandler(
 
 
         if parsed.path.startswith(
+            "/api/voto/"
+        ):
+
+            try:
+
+                id_libro = int(
+                    parsed.path.split(
+                        "/"
+                    )[-1]
+                )
+
+                dati = self.leggi_json()
+
+                voto = dati.get(
+                    "voto",
+                    None
+                )
+
+                if voto in [
+                    "",
+                    0,
+                    "0",
+                    None
+                ]:
+
+                    voto = None
+
+                else:
+
+                    try:
+
+                        voto = int(
+                            voto
+                        )
+
+                    except (
+                        TypeError,
+                        ValueError
+                    ):
+
+                        self.invia_json({
+                            "ok": False,
+                            "errore":
+                                "Il voto deve essere da 1 a 5 stelle."
+                        }, 400)
+
+                        return
+
+                    if voto not in [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ]:
+
+                        self.invia_json({
+                            "ok": False,
+                            "errore":
+                                "Il voto deve essere da 1 a 5 stelle."
+                        }, 400)
+
+                        return
+
+                with connessione_database() as conn:
+
+                    with conn.cursor() as cur:
+
+                        cur.execute("""
+                            UPDATE libri
+                            SET
+                                voto = %s
+                            WHERE id = %s
+                            RETURNING
+                                id,
+                                titolo,
+                                categoria,
+                                stato,
+                                copertina,
+                                lettura_attuale,
+                                preferito,
+                                voto,
+                                trama,
+                                creato_il
+                        """, (
+                            voto,
+                            id_libro
+                        ))
+
+                        riga = (
+                            cur.fetchone()
+                        )
+
+                        if not riga:
+
+                            self.invia_json({
+                                "ok": False,
+                                "errore":
+                                    "Libro non trovato."
+                            }, 404)
+
+                            return
+
+                    conn.commit()
+
+                self.invia_json({
+                    "ok": True,
+                    "libro":
+                        libro_json(
+                            riga
+                        )
+                })
+
+            except Exception as errore:
+
+                print(
+                    "Errore voto:",
+                    errore,
+                    flush=True
+                )
+
+                self.invia_json({
+                    "ok": False,
+                    "errore":
+                        "Impossibile aggiornare il voto."
+                }, 500)
+
+            return
+
+
+        if parsed.path.startswith(
+            "/api/trama/"
+        ):
+
+            try:
+
+                id_libro = int(
+                    parsed.path.split(
+                        "/"
+                    )[-1]
+                )
+
+                dati = self.leggi_json()
+
+                trama = str(
+                    dati.get(
+                        "trama",
+                        ""
+                    )
+                ).strip()
+
+                with connessione_database() as conn:
+
+                    with conn.cursor() as cur:
+
+                        cur.execute("""
+                            UPDATE libri
+                            SET
+                                trama = %s
+                            WHERE id = %s
+                            RETURNING
+                                id,
+                                titolo,
+                                categoria,
+                                stato,
+                                copertina,
+                                lettura_attuale,
+                                preferito,
+                                voto,
+                                trama,
+                                creato_il
+                        """, (
+                            trama,
+                            id_libro
+                        ))
+
+                        riga = (
+                            cur.fetchone()
+                        )
+
+                        if not riga:
+
+                            self.invia_json({
+                                "ok": False,
+                                "errore":
+                                    "Libro non trovato."
+                            }, 404)
+
+                            return
+
+                    conn.commit()
+
+                self.invia_json({
+                    "ok": True,
+                    "libro":
+                        libro_json(
+                            riga
+                        )
+                })
+
+            except Exception as errore:
+
+                print(
+                    "Errore trama:",
+                    errore,
+                    flush=True
+                )
+
+                self.invia_json({
+                    "ok": False,
+                    "errore":
+                        "Impossibile aggiornare la trama."
+                }, 500)
+
+            return
+
+
+        if parsed.path.startswith(
             "/api/lettura-attuale/"
         ):
 
@@ -1061,6 +1291,8 @@ class LibreriaHandler(
                                 copertina,
                                 lettura_attuale,
                                 preferito,
+                                voto,
+                                trama,
                                 creato_il
                         """, (
                             id_libro,
@@ -1137,6 +1369,8 @@ class LibreriaHandler(
                                 copertina,
                                 lettura_attuale,
                                 preferito,
+                                voto,
+                                trama,
                                 creato_il
                         """, (
                             id_libro,
@@ -1311,6 +1545,8 @@ class LibreriaHandler(
                                     copertina,
                                     lettura_attuale,
                                     preferito,
+                                    voto,
+                                    trama,
                                     creato_il
                             """, (
                                 titolo,
@@ -1341,6 +1577,8 @@ class LibreriaHandler(
                                     copertina,
                                     lettura_attuale,
                                     preferito,
+                                    voto,
+                                    trama,
                                     creato_il
                             """, (
                                 titolo,
