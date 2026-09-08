@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/manifest.json">
+<title>Statistiche · Martina's Virtual Library</title>
+<style>
+
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  padding:12px;
+  font-family:Georgia,"Times New Roman",serif;
+  color:#4E3524;
+  background:
+    linear-gradient(rgba(48,40,31,.12),rgba(48,40,31,.18)),
+    url("copertine/sfondo-home.jpg") center/cover fixed no-repeat;
+}
+
+button,input{
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+.library-app{
+  width:min(1180px,calc(100vw - 24px));
+  min-height:calc(100vh - 24px);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:175px minmax(0,1fr) 190px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:28px;
+  background:rgba(255,255,255,.08);
+  box-shadow:0 22px 55px rgba(42,34,25,.26);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+
+.sidebar{
+  padding:17px 12px;
+  background:rgba(247,244,239,.34);
+  border-right:1px solid rgba(255,255,255,.30);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.sidebar-title{
+  text-align:center;
+  margin-bottom:13px;
+  color:#4E3524;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:1.4px;
+  text-shadow:0 1px 2px rgba(255,255,255,.72);
+}
+
+.sidebar-title::after{
+  content:"── ❦ ──";
+  display:block;
+  margin-top:8px;
+  color:#5A3E2B;
+  font-size:8px;
+  font-weight:normal;
+}
+
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:5px;
+  padding:8px 9px;
+  border:1px solid transparent;
+  border-radius:12px;
+  color:#4E3524;
+  font-size:10px;
+  text-decoration:none;
+  transition:.22s ease;
+}
+
+.nav a:hover{
+  transform:translateX(3px);
+  background:rgba(255,255,255,.40);
+  border-color:rgba(255,255,255,.48);
+  box-shadow:0 5px 14px rgba(92,65,42,.10);
+}
+
+.nav a.active{
+  color:white;
+  background:rgba(122,130,103,.82);
+  border-color:rgba(255,255,255,.34);
+  box-shadow:0 5px 12px rgba(63,70,53,.17);
+}
+
+.nav-icon{
+  width:18px;
+  text-align:center;
+}
+
+.sidebar-divider{
+  height:1px;
+  margin:11px 5px;
+  background:linear-gradient(90deg,transparent,rgba(198,139,89,.86),transparent);
+}
+
+.sidebar-decoration{
+  margin-top:17px;
+  text-align:center;
+  color:#5A3E2B;
+  font-size:14px;
+  letter-spacing:5px;
+}
+
+.main{
+  min-width:0;
+  padding:14px 15px 13px;
+  background:rgba(247,244,239,.16);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+
+.header{
+  position:relative;
+  text-align:center;
+  padding:3px 0 8px;
+}
+
+.header::before,
+.header::after{
+  content:"❦";
+  position:absolute;
+  top:9px;
+  color:#5A3E2B;
+  opacity:.80;
+}
+
+.header::before{left:3px}
+
+.header::after{
+  right:3px;
+  transform:scaleX(-1);
+}
+
+.script-title{
+  margin:0;
+  color:#4E3524;
+  font-size:clamp(33px,4vw,48px);
+  line-height:1;
+  font-weight:normal;
+  font-style:italic;
+  letter-spacing:-1px;
+  text-shadow:0 2px 4px rgba(255,255,255,.78);
+}
+
+.virtual-title{
+  margin-top:4px;
+  color:#4E3524;
+  font-size:14px;
+  font-weight:bold;
+  letter-spacing:5px;
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
+}
+
+.header-line{
+  display:flex;
+  align-items:center;
+  width:min(320px,80%);
+  margin:7px auto 4px;
+  gap:8px;
+  color:#5A3E2B;
+}
+
+.header-line::before,
+.header-line::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:rgba(198,139,89,.82);
+}
+
+.subtitle{
+  margin:0;
+  color:#5A3E2B;
+  font-size:13px;
+  font-style:italic;
+  font-weight:600;
+  text-shadow:0 1px 2px rgba(255,255,255,.80);
+}
+
+.coffee-table{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 115px;
+  gap:10px;
+  margin:10px 0;
+}
+
+.current-reading-main{
+  position:relative;
+  min-height:106px;
+  padding:11px 13px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.34);
+  border-radius:18px;
+  background:rgba(255,255,255,.35);
+  box-shadow:0 8px 22px rgba(67,53,39,.12);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:.25s ease;
+}
+
+.current-reading-main:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.44);
+  box-shadow:0 13px 30px rgba(100,74,48,.17);
+}
+
+.current-reading-main::before{
+  content:"☕";
+  position:absolute;
+  right:12px;
+  bottom:7px;
+  font-size:28px;
+  opacity:.14;
+}
+
+.section-label{
+  margin-bottom:7px;
+  color:#5A3E2B;
+  font-size:8px;
+  font-weight:bold;
+  letter-spacing:1.2px;
+}
+
+.current-empty{
+  color:#5A3E2B;
+  font-size:9px;
+  font-weight:600;
+  line-height:1.5;
+}
+
+.current-empty-icon{
+  margin-right:5px;
+  font-size:17px;
+}
+
+.current-book-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.current-cover{
+  width:50px;
+  height:73px;
+  flex:none;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(255,255,255,.40);
+  border-radius:7px;
+  background:rgba(255,255,255,.30);
+  box-shadow:0 4px 8px rgba(53,43,33,.18);
+}
+
+.current-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.current-info{
+  min-width:0;
+  flex:1;
+}
+
+.current-label{
+  display:inline-block;
+  padding:3px 6px;
+  margin-bottom:4px;
+  border-radius:20px;
+  background:rgba(122,130,103,.88);
+  color:white;
+  font-size:6px;
+  letter-spacing:.8px;
+}
+
+.current-title{
+  margin-bottom:3px;
+  color:#4E3524;
+  font-size:10px;
+  font-weight:bold;
+  line-height:1.25;
+}
+
+.current-category{
+  margin-bottom:6px;
+  color:#5A3E2B;
+  font-size:7px;
+  font-weight:600;
+}
+
+.finish-reading{
+  padding:5px 8px;
+  border:1px solid rgba(255,255,255,.30);
+  border-radius:8px;
+  background:rgba(122,130,103,.88);
+  color:white;
+  font-size:7px;
+  cursor:pointer;
+}
+
+.finish-reading:hover{
+  background:#6D765C;
+}
+
+.coffee-deco{
+  min-height:106px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:8px;
+  border:1px solid rgba(255,255,255,.32);
+  border-radius:18px;
+  background:rgba(222,226,207,.34);
+  text-align:center;
+  color:#4E3524;
+  box-shadow:0 8px 22px rgba(67,53,39,.10);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.coffee-deco .plant{font-size:24px}
+
+.coffee-deco span{
+  margin-top:5px;
+  color:#5A3E2B;
+  font-size:7px;
+  font-weight:600;
+  font-style:italic;
+  line-height:1.4;
+}
+
+.search{
+  width:min(500px,100%);
+  margin:7px auto 11px;
+  display:flex;
+  padding:4px;
+  border:1px solid rgba(255,255,255,.36);
+  border-radius:22px;
+  background:rgba(255,255,255,.34);
+  box-shadow:0 7px 19px rgba(70,56,42,.10);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.search:focus-within{
+  background:rgba(255,255,255,.48);
+}
+
+.search input{
+  flex:1;
+  min-width:0;
+  padding:8px 11px;
+  border:none;
+  outline:none;
+  background:transparent;
+  color:#4E3524;
+  font-size:9px;
+  font-weight:600;
+}
+
+.search input::placeholder{
+  color:#5A3E2B;
+  opacity:.80;
+}
+
+.search button{
+  width:31px;
+  height:31px;
+  border:none;
+  border-radius:50%;
+  background:rgba(122,130,103,.86);
+  color:white;
+  cursor:pointer;
+}
+
+.search button:hover{
+  background:#6D765C;
+}
+
+#risultatoRicerca{
+  width:min(500px,100%);
+  margin:0 auto 8px;
+}
+
+.risultato{
+  margin-bottom:5px;
+  padding:8px 10px;
+  border:1px solid rgba(255,255,255,.36);
+  border-radius:11px;
+  background:rgba(255,255,255,.42);
+  color:#4E3524;
+  text-align:center;
+  font-size:9px;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.risultato p{
+  margin:4px 0;
+  color:#5A3E2B;
+}
+
+.risultato a{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  background:rgba(198,139,89,.55);
+  color:#4E3524;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.summary-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:11px;
+}
+
+.summary-card{
+  position:relative;
+  overflow:hidden;
+  padding:8px 7px;
+  border:1px solid rgba(255,255,255,.34);
+  border-radius:15px;
+  background:rgba(255,255,255,.35);
+  text-align:center;
+  box-shadow:0 8px 22px rgba(64,52,39,.10);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:.25s ease;
+}
+
+.summary-card::before{
+  content:"";
+  position:absolute;
+  width:70px;
+  height:110px;
+  top:-35px;
+  left:-95px;
+  transform:rotate(25deg);
+  background:linear-gradient(90deg,transparent,rgba(255,247,215,.34),transparent);
+  transition:left .55s ease;
+}
+
+.summary-card:hover{
+  transform:translateY(-4px);
+  background:rgba(255,255,255,.50);
+  border-color:rgba(255,255,255,.65);
+  box-shadow:
+    0 13px 29px rgba(105,79,52,.18),
+    inset 0 0 24px rgba(255,244,214,.18);
+}
+
+.summary-card:hover::before{
+  left:120%;
+}
+
+.summary-icon{
+  position:relative;
+  z-index:2;
+  font-size:16px;
+}
+
+.summary-number{
+  position:relative;
+  z-index:2;
+  margin-top:2px;
+  color:#4E3524;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.summary-title{
+  position:relative;
+  z-index:2;
+  color:#5A3E2B;
+  font-size:7px;
+  font-weight:bold;
+  letter-spacing:.7px;
+}
+
+.shelves-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:3px 0 8px;
+  color:#4E3524;
+  font-size:9px;
+  font-weight:bold;
+  letter-spacing:1px;
+  text-shadow:0 1px 2px rgba(255,255,255,.78);
+}
+
+.shelves-title::before,
+.shelves-title::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(198,139,89,.86));
+}
+
+.shelves-title::after{
+  background:linear-gradient(90deg,rgba(198,139,89,.86),transparent);
+}
+
+.shelves{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+}
+
+.shelf{
+  position:relative;
+  min-height:118px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:15px 10px;
+  border:1px solid rgba(111,76,48,.26);
+  border-radius:18px;
+  color:#4E3524;
+  text-align:center;
+  text-decoration:none;
+  box-shadow:
+    0 8px 18px rgba(83,60,40,.15),
+    inset 0 1px 0 rgba(255,255,255,.35);
+  transition:.25s ease;
+}
+
+.shelf::before{
+  content:"";
+  position:absolute;
+  width:85px;
+  height:170px;
+  top:-40px;
+  left:-120px;
+  transform:rotate(25deg);
+  background:linear-gradient(90deg,transparent,rgba(255,250,225,.36),transparent);
+  transition:left .65s ease;
+}
+
+.shelf:hover{
+  transform:translateY(-5px);
+  border-color:rgba(111,76,48,.38);
+  box-shadow:
+    0 14px 28px rgba(83,60,40,.22),
+    inset 0 0 24px rgba(255,246,218,.18);
+  filter:brightness(1.035);
+}
+
+.shelf:hover::before{left:135%}
+
+.shelf-top{
+  position:relative;
+  z-index:2;
+  font-size:27px;
+  line-height:1;
+}
+
+.shelf-name{
+  position:relative;
+  z-index:2;
+  padding:7px 9px;
+  border-radius:9px;
+  background:rgba(255,248,239,.30);
+  color:#4E3524;
+  font-size:9px;
+  font-weight:bold;
+  letter-spacing:.8px;
+  line-height:1.25;
+  text-transform:uppercase;
+}
+
+.shelf-dark{background:#D7C6B5}
+.shelf-fantasy{background:#DDD8B8}
+.shelf-romance{background:#E7C9C0}
+.shelf-manga{background:#E3D7CB}
+
+.quote-section{
+  position:relative;
+  margin-top:10px;
+  padding:13px 42px;
+  border:1px solid rgba(255,255,255,.34);
+  border-radius:16px;
+  background:rgba(255,255,255,.30);
+  text-align:center;
+  color:#4E3524;
+  box-shadow:0 8px 21px rgba(57,47,36,.09);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.quote-section::before{
+  content:"🌿";
+  position:absolute;
+  left:13px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.quote-section::after{
+  content:"🌿";
+  position:absolute;
+  right:13px;
+  top:50%;
+  transform:translateY(-50%) scaleX(-1);
+}
+
+.quote-main{
+  margin:0;
+  color:#4E3524;
+  font-size:13px;
+  font-style:italic;
+  line-height:1.4;
+}
+
+.quote-small{
+  margin-top:4px;
+  color:#5A3E2B;
+  font-size:7px;
+  font-weight:600;
+}
+
+.manage-card{
+  min-height:43px;
+  margin-top:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:8px 10px;
+  border:1px solid rgba(255,255,255,.32);
+  border-radius:13px;
+  background:rgba(198,139,89,.44);
+  color:#4E3524;
+  font-size:8px;
+  font-weight:bold;
+  letter-spacing:.5px;
+  text-decoration:none;
+  transition:.22s ease;
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+}
+
+.manage-card:hover{
+  transform:translateY(-3px);
+  background:rgba(211,154,102,.57);
+  box-shadow:0 11px 24px rgba(91,64,43,.17);
+}
+
+.rightbar{
+  padding:13px 10px;
+  border-left:1px solid rgba(255,255,255,.30);
+  background:rgba(247,244,239,.28);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+.widget{
+  position:relative;
+  margin-bottom:9px;
+  padding:11px 9px;
+  border:1px solid rgba(255,255,255,.34);
+  border-radius:16px;
+  background:rgba(255,255,255,.35);
+  text-align:center;
+  box-shadow:0 8px 22px rgba(62,51,39,.11);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:.25s ease;
+}
+
+.widget:hover{
+  transform:translateY(-3px);
+  background:rgba(255,255,255,.47);
+  box-shadow:0 12px 27px rgba(93,69,47,.16);
+}
+
+.widget h3{
+  margin:0 0 7px;
+  color:#4E3524;
+  font-size:8px;
+  font-weight:bold;
+  letter-spacing:.9px;
+}
+
+.widget-icon{font-size:20px}
+
+.small-text{
+  color:#5A3E2B;
+  font-size:8px;
+  font-weight:600;
+}
+
+.big-number{
+  margin:4px 0;
+  color:#4E3524;
+  font-size:27px;
+  font-weight:bold;
+}
+
+.progress{
+  height:8px;
+  margin-top:8px;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(255,255,255,.34);
+}
+
+.progress-inner{
+  width:0%;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#7A8267,#9da489,#C68B59);
+}
+
+.progress-percent{
+  margin-top:4px;
+  color:#5A3E2B;
+  font-size:7px;
+  font-weight:bold;
+}
+
+.diary-text{
+  margin:6px 0;
+  color:#5A3E2B;
+ font-size:11px;
+  font-weight:600;
+  font-style:italic;
+  line-height:1.5;
+}
+
+.mini-total{
+  color:#4E3524;
+  font-size:24px;
+  font-weight:bold;
+}
+
+.footer{
+  margin-top:8px;
+  text-align:center;
+  color:#4E3524;
+  font-size:13px;
+  font-style:italic;
+  text-shadow:0 1px 2px rgba(255,255,255,.72);
+}
+
+@media(max-width:1000px){
+
+  .library-app{
+    grid-template-columns:155px 1fr;
+  }
+
+  .rightbar{
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    border-left:none;
+    border-top:1px solid rgba(255,255,255,.30);
+  }
+
+  .widget{margin:0}
+}
+
+@media(max-width:720px){
+
+  body{padding:6px}
+
+  .library-app{
+    width:100%;
+    display:block;
+  }
+
+  .sidebar{border-right:none}
+
+  .nav{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:4px;
+  }
+
+  .nav a{margin:0}
+
+  .coffee-table{
+    grid-template-columns:1fr;
+  }
+
+  .shelves{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .rightbar{display:block}
+
+  .widget{
+    margin-bottom:8px;
+  }
+}
+
+
+/* =========================================================
+   HOME RIFINITA — SOLO ESTETICA
+   Sfondo, palette e funzioni originali preservati
+========================================================= */
+
+/* Titolo più protagonista */
+.header{
+  padding:7px 0 11px;
+}
+
+.script-title{
+  font-size:clamp(38px,4.5vw,54px);
+  letter-spacing:-1.3px;
+  text-shadow:
+    0 2px 4px rgba(255,255,255,.82),
+    0 7px 18px rgba(78,53,36,.10);
+}
+
+.virtual-title{
+  margin-top:5px;
+  font-size:13px;
+  letter-spacing:6px;
+}
+
+.header-line{
+  width:min(350px,82%);
+  margin:9px auto 5px;
+}
+
+.subtitle{
+  font-size:12px;
+  letter-spacing:.2px;
+}
+
+/* Sto leggendo più importante */
+.coffee-table{
+  grid-template-columns:minmax(0,1fr) 122px;
+  gap:12px;
+  margin:12px 0;
+}
+
+.current-reading-main{
+  min-height:124px;
+  padding:14px 16px;
+  border-radius:20px;
+  background:rgba(255,255,255,.43);
+  box-shadow:
+    0 12px 28px rgba(67,53,39,.15),
+    inset 0 1px 0 rgba(255,255,255,.38);
+}
+
+.current-reading-main:hover{
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.53);
+  border-color:rgba(255,255,255,.62);
+  box-shadow:
+    0 19px 36px rgba(83,60,40,.20),
+    0 0 22px rgba(198,139,89,.11);
+}
+
+.section-label{
+  margin-bottom:9px;
+  font-size:8.5px;
+  letter-spacing:1.45px;
+}
+
+.current-book-row{
+  gap:13px;
+}
+
+.current-cover{
+  width:58px;
+  height:84px;
+  border-radius:9px;
+  box-shadow:0 7px 14px rgba(53,43,33,.23);
+  transition:transform .22s ease;
+}
+
+.current-reading-main:hover .current-cover{
+  transform:scale(1.035);
+}
+
+.current-title{
+  font-size:11px;
+  line-height:1.3;
+}
+
+.current-category{
+  margin-bottom:7px;
+  font-size:7.5px;
+}
+
+.finish-reading{
+  padding:6px 10px;
+  border-radius:9px;
+  transition:.22s ease;
+}
+
+.finish-reading:hover{
+  transform:translateY(-1px);
+  box-shadow:0 5px 12px rgba(63,70,53,.18);
+}
+
+.coffee-deco{
+  min-height:124px;
+  border-radius:20px;
+  background:rgba(222,226,207,.43);
+  box-shadow:
+    0 12px 27px rgba(67,53,39,.12),
+    inset 0 1px 0 rgba(255,255,255,.34);
+  transition:.25s ease;
+}
+
+.coffee-deco:hover{
+  transform:translateY(-4px);
+  background:rgba(222,226,207,.53);
+  box-shadow:0 17px 31px rgba(67,53,39,.16);
+}
+
+.coffee-deco .plant{
+  font-size:28px;
+}
+
+/* Ricerca più elegante */
+.search{
+  margin:9px auto 13px;
+  padding:5px;
+  border-radius:24px;
+  background:rgba(255,255,255,.41);
+  box-shadow:
+    0 9px 22px rgba(70,56,42,.12),
+    inset 0 1px 0 rgba(255,255,255,.32);
+  transition:.22s ease;
+}
+
+.search:focus-within{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.53);
+  border-color:rgba(255,255,255,.62);
+  box-shadow:0 13px 27px rgba(70,56,42,.16);
+}
+
+.search button{
+  width:33px;
+  height:33px;
+  transition:.22s ease;
+}
+
+.search button:hover{
+  transform:scale(1.06);
+}
+
+/* Contatori coordinati alle nuove card */
+.summary-row{
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.summary-card{
+  min-height:72px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:10px 8px;
+  border-radius:17px;
+  background:rgba(255,255,255,.42);
+  box-shadow:
+    0 10px 24px rgba(64,52,39,.13),
+    inset 0 1px 0 rgba(255,255,255,.34);
+}
+
+.summary-card:hover{
+  transform:translateY(-7px);
+  background:rgba(255,255,255,.55);
+  border-color:rgba(255,255,255,.72);
+  box-shadow:
+    0 18px 33px rgba(105,79,52,.20),
+    0 0 18px rgba(198,139,89,.10);
+}
+
+.summary-icon{
+  font-size:18px;
+}
+
+.summary-number{
+  margin-top:3px;
+  font-size:20px;
+}
+
+.summary-title{
+  margin-top:1px;
+  font-size:7.3px;
+  letter-spacing:.85px;
+}
+
+/* Grandi scaffali: più presenti senza cambiare i colori */
+.shelves-title{
+  margin:5px 0 10px;
+  font-size:9.5px;
+  letter-spacing:1.25px;
+}
+
+.shelves{
+  gap:11px;
+}
+
+.shelf{
+  min-height:132px;
+  gap:9px;
+  padding:17px 10px;
+  border-radius:20px;
+  border-color:rgba(111,76,48,.30);
+  box-shadow:
+    0 11px 24px rgba(83,60,40,.18),
+    inset 0 1px 0 rgba(255,255,255,.40);
+}
+
+.shelf:hover{
+  transform:translateY(-9px);
+  border-color:rgba(111,76,48,.44);
+  box-shadow:
+    0 22px 37px rgba(83,60,40,.27),
+    0 0 20px rgba(198,139,89,.12),
+    inset 0 0 24px rgba(255,246,218,.20);
+  filter:brightness(1.045);
+}
+
+.shelf-top{
+  font-size:31px;
+  transition:transform .25s ease;
+}
+
+.shelf:hover .shelf-top{
+  transform:scale(1.10);
+}
+
+.shelf-name{
+  padding:8px 10px;
+  border-radius:10px;
+  background:rgba(255,248,239,.36);
+  font-size:9.2px;
+  letter-spacing:.9px;
+}
+
+/* Citazione */
+.quote-section{
+  margin-top:13px;
+  padding:14px 42px;
+  border-radius:18px;
+  background:rgba(255,255,255,.35);
+  box-shadow:0 10px 24px rgba(57,47,36,.11);
+}
+
+.quote-main{
+  font-size:13.5px;
+}
+
+/* Gestisci libreria come pulsante principale */
+.manage-card{
+  min-height:48px;
+  margin-top:11px;
+  border-radius:15px;
+  background:rgba(198,139,89,.51);
+  font-size:8.3px;
+  box-shadow:
+    0 9px 21px rgba(91,64,43,.14),
+    inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+.manage-card:hover{
+  transform:translateY(-5px);
+  background:rgba(211,154,102,.64);
+  border-color:rgba(255,255,255,.56);
+  box-shadow:
+    0 17px 30px rgba(91,64,43,.21),
+    0 0 18px rgba(198,139,89,.13);
+}
+
+/* Sidebar più rifinita, stessa palette */
+.sidebar{
+  padding:19px 12px;
+}
+
+.nav a{
+  padding:8.5px 9px;
+  transition:.24s ease;
+}
+
+.nav a:hover{
+  transform:translateX(5px);
+  background:rgba(255,255,255,.47);
+  border-color:rgba(255,255,255,.56);
+  box-shadow:0 7px 16px rgba(92,65,42,.13);
+}
+
+/* Colonna destra più uniforme */
+.rightbar{
+  padding:14px 10px;
+}
+
+.widget{
+  margin-bottom:11px;
+  padding:13px 10px;
+  border-radius:18px;
+  background:rgba(255,255,255,.40);
+  box-shadow:
+    0 10px 24px rgba(62,51,39,.13),
+    inset 0 1px 0 rgba(255,255,255,.32);
+}
+
+.widget:hover{
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.51);
+  border-color:rgba(255,255,255,.60);
+  box-shadow:
+    0 17px 31px rgba(93,69,47,.19),
+    0 0 16px rgba(198,139,89,.09);
+}
+
+.widget h3{
+  margin-bottom:9px;
+  letter-spacing:1px;
+}
+
+.progress{
+  height:9px;
+}
+
+/* Entrata delicata della parte centrale */
+@keyframes homeSoftIn{
+  from{opacity:0; transform:translateY(7px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+.main > *{
+  animation:homeSoftIn .42s ease both;
+}
+
+.main > *:nth-child(2){animation-delay:.04s}
+.main > *:nth-child(3){animation-delay:.07s}
+.main > *:nth-child(4){animation-delay:.10s}
+.main > *:nth-child(5){animation-delay:.13s}
+.main > *:nth-child(6){animation-delay:.16s}
+.main > *:nth-child(7){animation-delay:.19s}
+
+/* Su mobile manteniamo tutto ordinato */
+@media(max-width:720px){
+  .script-title{
+    font-size:40px;
+  }
+
+  .virtual-title{
+    letter-spacing:5px;
+  }
+
+  .current-reading-main,
+  .coffee-deco{
+    min-height:116px;
+  }
+
+  .summary-row{
+    gap:6px;
+  }
+
+  .shelf{
+    min-height:124px;
+  }
+}
+
+
+/* =========================================================
+   ULTIME RIFINITURE HOME
+   Più leggibile + spazi più armoniosi
+========================================================= */
+
+/* 1. TESTI PIÙ LEGGIBILI */
+.main,
+.sidebar,
+.rightbar{
+  color:#432F22;
+}
+
+.section-label,
+.current-empty,
+.current-category,
+.summary-title,
+.small-text,
+.progress-percent,
+.quote-small{
+  color:#493426;
+}
+
+.subtitle,
+.diary-text{
+  color:#493426;
+  text-shadow:0 1px 3px rgba(255,255,255,.88);
+}
+
+.current-reading-main,
+.summary-card,
+.widget,
+.quote-section{
+  background:rgba(255,255,255,.48);
+}
+
+/* 2. MENU LATERALE PIÙ LEGGIBILE */
+.sidebar{
+  background:rgba(247,244,239,.48);
+}
+
+.nav a{
+  color:#432F22;
+  font-weight:600;
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
+}
+
+.nav a:not(.active):hover{
+  background:rgba(255,255,255,.60);
+}
+
+.nav a.active{
+  color:#fff;
+  text-shadow:none;
+}
+
+/* 3. PIÙ RESPIRO TRA LE SEZIONI */
+.coffee-table{
+  margin:14px 0 16px;
+}
+
+.search{
+  margin:10px auto 16px;
+}
+
+.summary-row{
+  margin-bottom:17px;
+}
+
+.shelves-title{
+  margin:8px 0 12px;
+}
+
+.shelves{
+  gap:12px;
+}
+
+.quote-section{
+  margin-top:16px;
+}
+
+.manage-card{
+  margin-top:13px;
+}
+
+.footer{
+  margin-top:11px;
+}
+
+/* 4. COLONNA DESTRA PIÙ NITIDA */
+.rightbar{
+  background:rgba(247,244,239,.40);
+}
+
+.widget{
+  margin-bottom:12px;
+}
+
+/* 5. TITOLI E NUMERI PIÙ DEFINITI */
+.summary-number,
+.big-number,
+.mini-total{
+  color:#3F2C20;
+  text-shadow:0 1px 2px rgba(255,255,255,.65);
+}
+
+.widget h3,
+.shelves-title,
+.sidebar-title{
+  color:#432F22;
+}
+
+/* Mantiene tutto ordinato sugli schermi piccoli */
+@media(max-width:720px){
+  .coffee-table{
+    margin:11px 0 13px;
+  }
+
+  .summary-row{
+    margin-bottom:13px;
+  }
+
+  .shelves{
+    gap:8px;
+  }
+}
+
+
+
+/* =========================
+   PAGINA STATISTICHE
+========================= */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin:14px 0 17px;
+}
+.stat-card{
+  min-height:105px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:13px 8px;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:18px;
+  background:rgba(255,255,255,.48);
+  box-shadow:0 10px 24px rgba(64,52,39,.13), inset 0 1px 0 rgba(255,255,255,.34);
+  text-align:center;
+  transition:.25s ease;
+}
+.stat-card:hover{
+  transform:translateY(-6px);
+  background:rgba(255,255,255,.58);
+  box-shadow:0 18px 33px rgba(105,79,52,.19);
+}
+.stat-icon{font-size:22px;margin-bottom:4px}
+.stat-number{font-size:23px;font-weight:bold;color:#3F2C20}
+.stat-label{margin-top:3px;font-size:7.5px;font-weight:bold;letter-spacing:.8px;color:#493426}
+
+.stats-section{
+  margin-top:14px;
+  padding:15px;
+  border:1px solid rgba(255,255,255,.38);
+  border-radius:20px;
+  background:rgba(255,255,255,.46);
+  box-shadow:0 10px 25px rgba(64,52,39,.12);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.stats-section-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:13px;
+  color:#432F22;
+  font-size:9px;
+  font-weight:bold;
+  letter-spacing:1.1px;
+}
+.stats-section-title::before,.stats-section-title::after{
+  content:""; flex:1; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(198,139,89,.86));
+}
+.stats-section-title::after{
+  background:linear-gradient(90deg,rgba(198,139,89,.86),transparent);
+}
+.category-row{margin:10px 0}
+.category-head{
+  display:flex;justify-content:space-between;gap:8px;
+  margin-bottom:5px;font-size:9px;font-weight:bold;color:#493426;
+}
+.category-track{
+  height:11px;overflow:hidden;border-radius:20px;background:rgba(255,255,255,.60);
+  border:1px solid rgba(78,53,36,.08);
+}
+.category-fill{height:100%;width:0;border-radius:20px;transition:width .5s ease}
+.fill-dark{background:#BFA79A}
+.fill-fantasy{background:#AAB08F}
+.fill-romance{background:#D6A9A5}
+.fill-manga{background:#C9B8C7}
+
+.reading-split{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.split-card{
+  padding:13px;border-radius:16px;background:rgba(255,255,255,.42);
+  text-align:center;border:1px solid rgba(255,255,255,.38);
+}
+.split-big{font-size:25px;font-weight:bold;color:#3F2C20}
+.split-label{font-size:8px;font-weight:bold;color:#493426;margin-top:3px}
+.split-bar{height:9px;margin-top:8px;border-radius:20px;background:rgba(255,255,255,.55);overflow:hidden}
+.split-bar > div{height:100%;border-radius:20px;background:linear-gradient(90deg,#7A8267,#9da489,#C68B59)}
+
+.loading-note{
+  margin-top:13px;text-align:center;color:#493426;font-size:8px;font-style:italic;
+}
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:7px}
+  .reading-split{grid-template-columns:1fr}
+  .stats-section{padding:11px}
+}
+
+</style>
+</head>
+<body>
+<div class="library-app">
+
+<aside class="sidebar">
+  <div class="sidebar-title">☰ LA MIA LIBRERIA</div>
+  <nav class="nav">
+    <a href="index.html"><span class="nav-icon">⌂</span>Home</a>
+    <a href="letti.html"><span class="nav-icon">📚</span>I miei libri</a>
+    <a href="da-leggere.html"><span class="nav-icon">♡</span>Da leggere</a>
+    <a href="preferiti.html"><span class="nav-icon">♥</span>Preferiti</a>
+    <a href="statistiche.html" class="active"><span class="nav-icon">▥</span>Statistiche</a>
+    <a href="scegli-tu.html"><span class="nav-icon">✨</span>Scegli tu</a>
+    <div class="sidebar-divider"></div>
+    <a href="dark-romance.html"><span class="nav-icon">🥀</span>Dark Romance</a>
+    <a href="fantasy-romance.html"><span class="nav-icon">✦</span>Fantasy Romance</a>
+    <a href="romance.html"><span class="nav-icon">🌷</span>Romance</a>
+    <a href="manga.html"><span class="nav-icon">🌸</span>Manga</a>
+    <div class="sidebar-divider"></div>
+    <a href="aggiungi-libro.html"><span class="nav-icon">✎</span>Gestisci libri</a>
+  </nav>
+  <div class="sidebar-decoration">❦ 🌿 ❦</div>
+</aside>
+
+<main class="main">
+  <header class="header">
+    <h1 class="script-title">Le mie</h1>
+    <div class="virtual-title">STATISTICHE</div>
+    <div class="header-line">♡</div>
+    <p class="subtitle">Tutte le mie storie, raccontate dai numeri.</p>
+  </header>
+
+  <section class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-number" id="totale">0</div><div class="stat-label">LIBRI TOTALI</div></div>
+    <div class="stat-card"><div class="stat-icon">✓</div><div class="stat-number" id="letti">0</div><div class="stat-label">LIBRI LETTI</div></div>
+    <div class="stat-card"><div class="stat-icon">♡</div><div class="stat-number" id="daLeggere">0</div><div class="stat-label">DA LEGGERE</div></div>
+    <div class="stat-card"><div class="stat-icon">♥</div><div class="stat-number" id="preferiti">0</div><div class="stat-label">PREFERITI</div></div>
+  </section>
+
+  <section class="stats-section">
+    <div class="stats-section-title">I MIEI SCAFFALI</div>
+    <div id="categorie"></div>
+  </section>
+
+  <section class="stats-section">
+    <div class="stats-section-title">PROGRESSO DI LETTURA</div>
+    <div class="reading-split">
+      <div class="split-card">
+        <div class="split-big" id="percentLetti">0%</div>
+        <div class="split-label">DELLA LIBRERIA LETTA</div>
+        <div class="split-bar"><div id="barraLetti" style="width:0%"></div></div>
+      </div>
+      <div class="split-card">
+        <div class="split-big" id="percentDaLeggere">0%</div>
+        <div class="split-label">ANCORA DA LEGGERE</div>
+        <div class="split-bar"><div id="barraDaLeggere" style="width:0%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="stats-section-title">LE MIE VALUTAZIONI</div>
+    <div class="reading-split">
+      <div class="split-card">
+        <div class="split-big" id="votoMedio">—</div>
+        <div class="split-label">★ VOTO MEDIO</div>
+      </div>
+      <div class="split-card">
+        <div class="split-big" id="libriVotati">0</div>
+        <div class="split-label">LIBRI VALUTATI</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="loading-note" id="statoCaricamento">Caricamento statistiche...</div>
+  <div class="footer">❦ &nbsp; Ogni libro lascia un piccolo segno. &nbsp; ❦</div>
+</main>
+
+<aside class="rightbar">
+  <div class="widget">
+    <h3>LA MIA COLLEZIONE</h3>
+    <div class="widget-icon">📖</div>
+    <div class="big-number" id="totaleDestra">0</div>
+    <div class="small-text">libri nella libreria</div>
+  </div>
+  <div class="widget">
+    <h3>IL MIO PROGRESSO</h3>
+    <div class="big-number" id="progressoDestra">0%</div>
+    <div class="progress"><div class="progress-inner" id="barraDestra"></div></div>
+    <div class="small-text" id="testoDestra">0 letti su 0</div>
+  </div>
+  <div class="widget">
+    <h3>♥ I MIEI PREFERITI</h3>
+    <div class="mini-total" id="preferitiDestra">0</div>
+    <div class="small-text">storie del cuore</div>
+  </div>
+</aside>
+
+</div>
+
+<script>
+const API_LIBRI = "https://martina-virtual-library.onrender.com/api/libri";
+
+function numeroVoto(libro){
+  const possibili = [libro.voto, libro.rating, libro.valutazione, libro.stelle];
+  for(const valore of possibili){
+    const n = Number(valore);
+    if(Number.isFinite(n) && n > 0) return n;
+  }
+  return 0;
+}
+
+function aggiornaStatistiche(libri){
+  const lista = Array.isArray(libri) ? libri : [];
+  const totale = lista.length;
+  const letti = lista.filter(l => l.stato === "Letto").length;
+  const daLeggere = lista.filter(l => l.stato === "Da leggere").length;
+  const preferiti = lista.filter(l => Boolean(l.preferito)).length;
+
+  const pLetti = totale ? Math.round((letti/totale)*100) : 0;
+  const pDa = totale ? Math.round((daLeggere/totale)*100) : 0;
+
+  document.getElementById("totale").textContent = totale;
+  document.getElementById("letti").textContent = letti;
+  document.getElementById("daLeggere").textContent = daLeggere;
+  document.getElementById("preferiti").textContent = preferiti;
+  document.getElementById("totaleDestra").textContent = totale;
+  document.getElementById("preferitiDestra").textContent = preferiti;
+
+  document.getElementById("percentLetti").textContent = pLetti + "%";
+  document.getElementById("percentDaLeggere").textContent = pDa + "%";
+  document.getElementById("barraLetti").style.width = pLetti + "%";
+  document.getElementById("barraDaLeggere").style.width = pDa + "%";
+  document.getElementById("progressoDestra").textContent = pLetti + "%";
+  document.getElementById("barraDestra").style.width = pLetti + "%";
+  document.getElementById("testoDestra").textContent = letti + " letti su " + totale;
+
+  const categorie = [
+    ["Dark Romance","🥀","fill-dark"],
+    ["Fantasy Romance","✦","fill-fantasy"],
+    ["Romance","🌷","fill-romance"],
+    ["Manga","🌸","fill-manga"]
+  ];
+
+  const contenitore = document.getElementById("categorie");
+  contenitore.innerHTML = "";
+  categorie.forEach(([nome,icona,classe]) => {
+    const quanti = lista.filter(l => l.categoria === nome).length;
+    const percent = totale ? (quanti/totale)*100 : 0;
+    const riga = document.createElement("div");
+    riga.className = "category-row";
+    riga.innerHTML = `
+      <div class="category-head"><span>${icona} ${nome}</span><span>${quanti} libri</span></div>
+      <div class="category-track"><div class="category-fill ${classe}" style="width:${percent}%"></div></div>`;
+    contenitore.appendChild(riga);
+  });
+
+  const voti = lista.map(numeroVoto).filter(v => v > 0);
+  const media = voti.length ? (voti.reduce((a,b)=>a+b,0)/voti.length) : 0;
+  document.getElementById("votoMedio").textContent = voti.length ? media.toFixed(1) + " ★" : "—";
+  document.getElementById("libriVotati").textContent = voti.length;
+}
+
+async function caricaStatistiche(){
+  const stato = document.getElementById("statoCaricamento");
+  try{
+    const risposta = await fetch(API_LIBRI, {cache:"no-store"});
+    const dati = await risposta.json();
+    if(!risposta.ok) throw new Error(dati.errore || "Errore database");
+    const libri = Array.isArray(dati.libri) ? dati.libri : [];
+    aggiornaStatistiche(libri);
+    stato.textContent = "Statistiche aggiornate automaticamente dalla tua libreria ♡";
+  }catch(errore){
+    console.error(errore);
+    stato.textContent = "Non riesco a caricare le statistiche in questo momento.";
+  }
+}
+
+caricaStatistiche();
+</script>
+</body>
+</html>
