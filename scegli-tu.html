@@ -574,6 +574,18 @@ button{
 }
 
 
+
+.inizia-btn{
+  margin-right:8px;
+  background:rgba(198,139,89,.92);
+  box-shadow:0 7px 16px rgba(105,72,45,.18);
+}
+
+.inizia-btn:hover{
+  background:#B97D4D;
+  box-shadow:0 10px 20px rgba(105,72,45,.23);
+}
+
 /* =========================
    CARICAMENTO / ERRORE
 ========================= */
@@ -1134,6 +1146,13 @@ function mostraLibro(libro){
         </div>
 
         <button
+          class="scegli-btn inizia-btn"
+          id="iniziaLettura"
+        >
+          📖 Inizia lettura
+        </button>
+
+        <button
           class="scegli-btn"
           id="scegliAltro"
         >
@@ -1147,11 +1166,106 @@ function mostraLibro(libro){
 
 
   document.getElementById(
+    "iniziaLettura"
+  ).addEventListener(
+    "click",
+    function(){
+      impostaLettura(libro);
+    }
+  );
+
+
+  document.getElementById(
     "scegliAltro"
   ).addEventListener(
     "click",
     scegliLibro
   );
+
+}
+
+
+
+/* =========================
+   INIZIA LETTURA
+========================= */
+
+async function impostaLettura(libro){
+
+  if(
+    !libro ||
+    !libro.id
+  ){
+
+    alert(
+      "⚠️ Non riesco a identificare questo libro."
+    );
+
+    return;
+
+  }
+
+
+  const conferma =
+    confirm(
+      'Vuoi iniziare a leggere "' +
+      libro.titolo +
+      '"?'
+    );
+
+
+  if(!conferma){
+
+    return;
+
+  }
+
+
+  try{
+
+    const risposta =
+      await fetch(
+        "https://martina-virtual-library.onrender.com/api/lettura-attuale/" +
+        libro.id,
+        {
+          method:"POST"
+        }
+      );
+
+
+    const dati =
+      await risposta.json();
+
+
+    if(!risposta.ok){
+
+      throw new Error(
+        dati.errore ||
+        "Impossibile impostare la lettura."
+      );
+
+    }
+
+
+    await caricaLibri();
+
+
+    alert(
+      '📖 Ora stai leggendo "' +
+      libro.titolo +
+      '".'
+    );
+
+  }
+
+  catch(errore){
+
+    alert(
+      "⚠️ " +
+      errore.message
+    );
+
+  }
 
 }
 
