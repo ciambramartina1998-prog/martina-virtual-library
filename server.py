@@ -111,6 +111,105 @@ def scarica_json(url):
         )
 
 
+
+
+def scarica_testo(url):
+    richiesta = Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (compatible; MartinaVirtualLibrary/1.0)",
+            "Accept": "text/html,application/xhtml+xml"
+        }
+    )
+    with urlopen(richiesta, timeout=20) as risposta:
+        return risposta.read().decode("utf-8", errors="ignore")
+
+
+def _meta_html(html, nome):
+    patterns = [
+        rf'<meta[^>]+property=["\']{re.escape(nome)}["\'][^>]+content=["\']([^"\']+)["\']',
+        rf'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']{re.escape(nome)}["\']',
+        rf'<meta[^>]+name=["\']{re.escape(nome)}["\'][^>]+content=["\']([^"\']+)["\']',
+        rf'<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']{re.escape(nome)}["\']',
+    ]
+    for pattern in patterns:
+        m = re.search(pattern, html, flags=re.IGNORECASE)
+        if m:
+            return unescape(m.group(1)).strip()
+    return ""
+
+
+def cerca_google_books_html(titolo):
+    """Fallback senza API: usa le pagine pubbliche di Google Books."""
+    titolo = str(titolo or "").strip()
+    if not titolo:
+        return {}
+
+    try:
+        ricerca_url = (
+            "https://books.google.com/books?q="
+            + quote_plus('intitle:"' + titolo + '"')
+            + "&hl=it"
+        )
+        html = scarica_testo(ricerca_url)
+    except Exception as errore:
+        print("Google Books HTML ricerca non disponibile:", errore, flush=True)
+        return {}
+
+    ids = []
+    for pattern in [
+        r'/books\?id=([A-Za-z0-9_-]+)',
+        r'[?&]id=([A-Za-z0-9_-]{6,})',
+    ]:
+        for book_id in re.findall(pattern, html):
+            if book_id not in ids:
+                ids.append(book_id)
+
+    candidati = []
+    for book_id in ids[:8]:
+        try:
+            pagina = scarica_testo(
+                "https://books.google.com/books?id=" + quote_plus(book_id) + "&hl=it"
+            )
+        except Exception:
+            continue
+
+        titolo_trovato = _meta_html(pagina, "og:title")
+        if not titolo_trovato:
+            m = re.search(r'<title>(.*?)</title>', pagina, flags=re.I | re.S)
+            titolo_trovato = unescape(re.sub(r'<[^>]+>', '', m.group(1))).strip() if m else ""
+
+        punteggio = punteggio_titolo_trama(titolo, titolo_trovato)
+        if punteggio <= 0:
+            continue
+
+        copertina = _meta_html(pagina, "og:image")
+        trama = _meta_html(pagina, "description") or _meta_html(pagina, "og:description")
+        trama = pulisci_trama_google(trama)
+        if sembra_trama_inglese(trama):
+            trama = ""
+
+        if copertina:
+            punteggio += 15
+        if trama:
+            punteggio += 20
+
+        candidati.append((punteggio, {
+            "titolo": titolo_trovato,
+            "copertina": copertina,
+            "trama": trama,
+            "autori": [],
+            "lingua": "it",
+            "fonte": "Google Books HTML"
+        }))
+
+    if not candidati:
+        return {}
+
+    candidati.sort(key=lambda x: x[0], reverse=True)
+    return dict(candidati[0][1])
+
+
 def scarica_json_google(url):
     """Scarica JSON da Google Books rispettando il cooldown dopo un 429."""
     if not google_books_disponibile():
@@ -1107,18 +1206,14 @@ def cerca_metadati_open_library(titolo):
 
 
 def cerca_metadati_automatici(titolo):
-    """Google -> Open Library -> Internet Archive."""
+    """Google API -> Google Books HTML -> Open Library -> Internet Archive."""
     metadati = cerca_metadati_google_books(titolo)
     if metadati.get("copertina") or metadati.get("trama"):
-        if not metadati.get("copertina"):
-            ol = cerca_metadati_open_library(titolo)
-            if ol.get("copertina"):
-                metadati["copertina"] = ol["copertina"]
-            else:
-                ia = cerca_metadati_internet_archive(titolo)
-                if ia.get("copertina"):
-                    metadati["copertina"] = ia["copertina"]
         return metadati
+
+    html = cerca_google_books_html(titolo)
+    if html.get("copertina") or html.get("trama"):
+        return html
 
     ol = cerca_metadati_open_library(titolo)
     if ol.get("copertina") or ol.get("trama"):
@@ -1143,12 +1238,18 @@ def cerca_trama_automatica(titolo):
     if trama and not sembra_trama_inglese(trama):
         return trama
 
-    # Seconda risorsa: Open Library. Se la descrizione è inglese la scartiamo.
+    # Seconda risorsa: pagina pubblica Google Books, senza API.
+    html = cerca_google_books_html(titolo)
+    trama = str(html.get("trama", "") or "").strip()
+    if trama and not sembra_trama_inglese(trama):
+        return trama
+
+    # Terza risorsa: Open Library. Se la descrizione è inglese la scartiamo.
     trama = cerca_trama_open_library(titolo)
     if trama and not sembra_trama_inglese(trama):
         return trama
 
-    # Terza risorsa: Internet Archive.
+    # Quarta risorsa: Internet Archive.
     trama = cerca_trama_internet_archive(titolo)
     if trama and not sembra_trama_inglese(trama):
         return trama
@@ -2006,6 +2107,19 @@ class LibreriaHandler(
                         errore,
                         flush=True
                     )
+
+                try:
+                    html_meta = cerca_google_books_html(titolo)
+                    if html_meta.get("copertina"):
+                        aggiungi_risultato(
+                            risultati, viste,
+                            html_meta.get("titolo", titolo),
+                            html_meta.get("autori", []),
+                            html_meta.get("copertina", ""),
+                            "Google Books HTML"
+                        )
+                except Exception as errore:
+                    print("Google Books HTML non disponibile:", errore, flush=True)
 
                 try:
 
