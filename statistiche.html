@@ -525,7 +525,7 @@ button,input{
 
 .shelves{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:9px;
 }
 
@@ -1418,6 +1418,16 @@ button,input{
   .stats-section{padding:11px}
 }
 
+
+#categoriaPiuLetta,
+#scaffaleGrande{
+  font-size:clamp(13px,1.8vw,18px);
+  line-height:1.2;
+}
+@media(max-width:720px){
+  .stats-grid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -1448,14 +1458,27 @@ button,input{
     <h1 class="script-title">Le mie</h1>
     <div class="virtual-title">STATISTICHE</div>
     <div class="header-line">♡</div>
-    <p class="subtitle">Tutte le mie storie, raccontate dai numeri.</p>
+    <p class="subtitle">Curiosità e abitudini della mia libreria.</p>
   </header>
 
   <section class="stats-grid">
-    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-number" id="totale">0</div><div class="stat-label">LIBRI TOTALI</div></div>
-    <div class="stat-card"><div class="stat-icon">✓</div><div class="stat-number" id="letti">0</div><div class="stat-label">LIBRI LETTI</div></div>
-    <div class="stat-card"><div class="stat-icon">♡</div><div class="stat-number" id="daLeggere">0</div><div class="stat-label">DA LEGGERE</div></div>
-    <div class="stat-card"><div class="stat-icon">♥</div><div class="stat-number" id="preferiti">0</div><div class="stat-label">PREFERITI</div></div>
+    <div class="stat-card">
+      <div class="stat-icon">♥</div>
+      <div class="stat-number" id="preferiti">0</div>
+      <div class="stat-label">STORIE DEL CUORE</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon" id="iconaCategoriaLetta">🏆</div>
+      <div class="stat-number" id="categoriaPiuLetta">—</div>
+      <div class="stat-label">CATEGORIA PIÙ LETTA</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">★</div>
+      <div class="stat-number" id="votoPiuUsato">—</div>
+      <div class="stat-label">VOTO PIÙ USATO</div>
+    </div>
   </section>
 
   <section class="stats-section">
@@ -1499,21 +1522,24 @@ button,input{
 
 <aside class="rightbar">
   <div class="widget">
-    <h3>LA MIA COLLEZIONE</h3>
-    <div class="widget-icon">📖</div>
-    <div class="big-number" id="totaleDestra">0</div>
-    <div class="small-text">libri nella libreria</div>
+    <h3>SCAFFALE PIÙ GRANDE</h3>
+    <div class="widget-icon" id="iconaScaffaleGrande">📚</div>
+    <div class="big-number" id="scaffaleGrande">—</div>
+    <div class="small-text" id="scaffaleGrandeTesto">categoria con più libri</div>
   </div>
+
   <div class="widget">
-    <h3>IL MIO PROGRESSO</h3>
-    <div class="big-number" id="progressoDestra">0%</div>
-    <div class="progress"><div class="progress-inner" id="barraDestra"></div></div>
-    <div class="small-text" id="testoDestra">0 letti su 0</div>
+    <h3>MEDIA DELLE MIE STELLE</h3>
+    <div class="widget-icon">★</div>
+    <div class="big-number" id="mediaDestra">—</div>
+    <div class="small-text">media dei libri valutati</div>
   </div>
+
   <div class="widget">
-    <h3>♥ I MIEI PREFERITI</h3>
-    <div class="mini-total" id="preferitiDestra">0</div>
-    <div class="small-text">storie del cuore</div>
+    <h3>LIBRI VALUTATI</h3>
+    <div class="widget-icon">✎</div>
+    <div class="mini-total" id="votatiDestra">0</div>
+    <div class="small-text">libri a cui hai dato un voto</div>
   </div>
 </aside>
 
@@ -1541,20 +1567,12 @@ function aggiornaStatistiche(libri){
   const pLetti = totale ? Math.round((letti/totale)*100) : 0;
   const pDa = totale ? Math.round((daLeggere/totale)*100) : 0;
 
-  document.getElementById("totale").textContent = totale;
-  document.getElementById("letti").textContent = letti;
-  document.getElementById("daLeggere").textContent = daLeggere;
   document.getElementById("preferiti").textContent = preferiti;
-  document.getElementById("totaleDestra").textContent = totale;
-  document.getElementById("preferitiDestra").textContent = preferiti;
 
   document.getElementById("percentLetti").textContent = pLetti + "%";
   document.getElementById("percentDaLeggere").textContent = pDa + "%";
   document.getElementById("barraLetti").style.width = pLetti + "%";
   document.getElementById("barraDaLeggere").style.width = pDa + "%";
-  document.getElementById("progressoDestra").textContent = pLetti + "%";
-  document.getElementById("barraDestra").style.width = pLetti + "%";
-  document.getElementById("testoDestra").textContent = letti + " letti su " + totale;
 
   const categorie = [
     ["Dark Romance","🥀","fill-dark"],
@@ -1565,21 +1583,114 @@ function aggiornaStatistiche(libri){
 
   const contenitore = document.getElementById("categorie");
   contenitore.innerHTML = "";
+
+  let scaffalePiuGrande = null;
+  let categoriaPiuLetta = null;
+
   categorie.forEach(([nome,icona,classe]) => {
     const quanti = lista.filter(l => l.categoria === nome).length;
+    const lettiCategoria = lista.filter(
+      l => l.categoria === nome && l.stato === "Letto"
+    ).length;
+
     const percent = totale ? (quanti/totale)*100 : 0;
+
+    if(
+      !scaffalePiuGrande ||
+      quanti > scaffalePiuGrande.quanti
+    ){
+      scaffalePiuGrande = {nome,icona,quanti};
+    }
+
+    if(
+      !categoriaPiuLetta ||
+      lettiCategoria > categoriaPiuLetta.quanti
+    ){
+      categoriaPiuLetta = {nome,icona,quanti:lettiCategoria};
+    }
+
     const riga = document.createElement("div");
     riga.className = "category-row";
     riga.innerHTML = `
-      <div class="category-head"><span>${icona} ${nome}</span><span>${quanti} libri</span></div>
-      <div class="category-track"><div class="category-fill ${classe}" style="width:${percent}%"></div></div>`;
+      <div class="category-head">
+        <span>${icona} ${nome}</span>
+        <span>${quanti} libri</span>
+      </div>
+      <div class="category-track">
+        <div class="category-fill ${classe}" style="width:${percent}%"></div>
+      </div>`;
     contenitore.appendChild(riga);
   });
 
+  if(categoriaPiuLetta && categoriaPiuLetta.quanti > 0){
+    document.getElementById("categoriaPiuLetta").textContent =
+      categoriaPiuLetta.nome;
+    document.getElementById("iconaCategoriaLetta").textContent =
+      categoriaPiuLetta.icona;
+  }else{
+    document.getElementById("categoriaPiuLetta").textContent = "—";
+    document.getElementById("iconaCategoriaLetta").textContent = "🏆";
+  }
+
+  if(scaffalePiuGrande && scaffalePiuGrande.quanti > 0){
+    document.getElementById("scaffaleGrande").textContent =
+      scaffalePiuGrande.nome;
+    document.getElementById("iconaScaffaleGrande").textContent =
+      scaffalePiuGrande.icona;
+    document.getElementById("scaffaleGrandeTesto").textContent =
+      scaffalePiuGrande.quanti + " libri in questa categoria";
+  }else{
+    document.getElementById("scaffaleGrande").textContent = "—";
+    document.getElementById("iconaScaffaleGrande").textContent = "📚";
+    document.getElementById("scaffaleGrandeTesto").textContent =
+      "categoria con più libri";
+  }
+
   const voti = lista.map(numeroVoto).filter(v => v > 0);
-  const media = voti.length ? (voti.reduce((a,b)=>a+b,0)/voti.length) : 0;
-  document.getElementById("votoMedio").textContent = voti.length ? media.toFixed(1) + " ★" : "—";
-  document.getElementById("libriVotati").textContent = voti.length;
+  const media = voti.length
+    ? (voti.reduce((a,b)=>a+b,0)/voti.length)
+    : 0;
+
+  document.getElementById("votoMedio").textContent =
+    voti.length ? media.toFixed(1) + " ★" : "—";
+
+  document.getElementById("libriVotati").textContent =
+    voti.length;
+
+  document.getElementById("mediaDestra").textContent =
+    voti.length ? media.toFixed(1) + " ★" : "—";
+
+  document.getElementById("votatiDestra").textContent =
+    voti.length;
+
+  if(voti.length){
+    const frequenze = {};
+    voti.forEach(v => {
+      const chiave = String(v);
+      frequenze[chiave] = (frequenze[chiave] || 0) + 1;
+    });
+
+    let votoPiuUsato = null;
+    let maxFrequenza = 0;
+
+    Object.entries(frequenze).forEach(([voto,frequenza]) => {
+      if(
+        frequenza > maxFrequenza ||
+        (
+          frequenza === maxFrequenza &&
+          Number(voto) > Number(votoPiuUsato)
+        )
+      ){
+        votoPiuUsato = voto;
+        maxFrequenza = frequenza;
+      }
+    });
+
+    document.getElementById("votoPiuUsato").textContent =
+      votoPiuUsato + " ★";
+  }else{
+    document.getElementById("votoPiuUsato").textContent = "—";
+  }
 }
 
 async function caricaStatistiche(){
