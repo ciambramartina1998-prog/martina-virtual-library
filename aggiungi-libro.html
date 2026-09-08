@@ -1013,6 +1013,129 @@ button{
   box-shadow:0 14px 29px rgba(62,50,38,.17);
 }
 
+
+/* ===== COERENZA FINALE — GESTISCI LIBRI ===== */
+
+/* Pagina neutra e calda: deve coordinarsi con tutte le categorie */
+.sidebar{
+  background:rgba(82,64,52,.48);
+}
+.logo{
+  color:#FFF8F0;
+  text-shadow:0 1px 2px rgba(0,0,0,.22);
+}
+.logo::after{color:#E7D5C2;}
+
+.menu a{
+  color:#F7EEE5;
+  font-weight:600;
+  text-shadow:0 1px 2px rgba(0,0,0,.20);
+}
+.menu a:hover{
+  background:rgba(255,255,255,.14);
+}
+.menu .active{
+  color:#FFFDF8;
+  background:rgba(122,130,103,.94);
+  text-shadow:none;
+}
+
+/* Titolo e pannelli centrali */
+h1{
+  color:#493426;
+  text-shadow:0 2px 5px rgba(255,255,255,.70);
+}
+.subtitle{
+  color:#5B4434;
+  border-bottom-color:rgba(198,139,89,.58);
+  text-shadow:0 1px 2px rgba(255,255,255,.65);
+}
+
+.section{
+  background:rgba(232,214,194,.58);
+  border-color:rgba(255,255,255,.48);
+  box-shadow:
+    0 10px 24px rgba(60,46,35,.15),
+    inset 0 1px 0 rgba(255,255,255,.20);
+}
+.section:hover{
+  background:rgba(232,214,194,.68);
+}
+
+.toggle-button{
+  background:rgba(235,218,199,.94);
+  border-color:rgba(116,83,54,.27);
+  color:#493426;
+}
+.toggle-button:hover{
+  background:rgba(242,228,211,.98);
+}
+.toggle-right{
+  background:rgba(255,255,255,.40);
+  color:#5A4332;
+}
+
+/* Campi */
+input,
+select{
+  background:rgba(255,252,248,.74);
+  border-color:rgba(111,76,48,.25);
+  color:#493426;
+}
+input:focus,
+select:focus{
+  background:rgba(255,253,250,.92);
+  border-color:rgba(198,139,89,.72);
+}
+
+/* Risultati e libri salvati */
+.result,
+.book-row{
+  background:rgba(249,242,234,.72);
+  border-color:rgba(255,255,255,.54);
+}
+.result:hover,
+.book-row:hover{
+  background:rgba(253,248,242,.90);
+}
+.book-placeholder{background:rgba(232,214,194,.92);}
+
+/* Colonna destra sospesa come nel resto della libreria */
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.right-card{
+  background:rgba(82,64,52,.46);
+  border-color:rgba(255,255,255,.30);
+  color:#F2E7DB;
+  box-shadow:
+    0 12px 28px rgba(42,31,24,.22),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.right-card:hover{
+  background:rgba(82,64,52,.56);
+}
+.right-card strong{
+  color:#FFF0DE;
+  text-shadow:0 1px 3px rgba(0,0,0,.18);
+}
+.right-title{
+  color:#FFF5E9;
+  text-shadow:0 1px 2px rgba(0,0,0,.18);
+}
+.right-icon{
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.14));
+}
+
+/* Messaggi */
+.message{
+  background:rgba(249,240,230,.82);
+  border-color:rgba(255,255,255,.48);
+  color:#493426;
+}
+
 </style>
 
 </head>
