@@ -1068,6 +1068,149 @@ body{
   box-shadow:0 7px 17px rgba(62,50,38,.09);
 }
 
+
+/* =========================================================
+   ULTIME RIFINITURE — DA LEGGERE
+   Coordinata con Home e I miei libri
+========================================================= */
+
+.main,
+.sidebar,
+.rightbar{
+  color:#432F22;
+}
+
+.subtitle,
+.small-text,
+.quote,
+.footer-note{
+  color:#493426;
+  text-shadow:0 1px 3px rgba(255,255,255,.82);
+}
+
+/* Menu laterale più leggibile */
+.sidebar{
+  background:rgba(247,244,239,.48);
+}
+
+.nav a{
+  color:#432F22;
+  font-weight:600;
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
+}
+
+.nav a:not(.active):hover{
+  background:rgba(255,255,255,.60);
+}
+
+.nav a.active{
+  color:#fff;
+  text-shadow:none;
+}
+
+/* Barra di ricerca */
+.search-box{
+  background:rgba(255,255,255,.48);
+}
+
+.search-box input{
+  color:#432F22;
+}
+
+.search-box input::placeholder{
+  color:#493426;
+  opacity:.86;
+}
+
+/* Card libri più definite */
+.book-card{
+  background:rgba(244,236,226,.68);
+  border-color:rgba(255,255,255,.58);
+  box-shadow:
+    0 11px 24px rgba(60,46,35,.16),
+    inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+.book-card:hover{
+  background:rgba(247,240,231,.84);
+  box-shadow:
+    0 22px 38px rgba(75,54,38,.25),
+    0 0 18px rgba(198,139,89,.13);
+}
+
+/* Copertine */
+.book-cover{
+  box-shadow:
+    0 7px 15px rgba(54,40,30,.18),
+    0 1px 0 rgba(255,255,255,.30);
+}
+
+/* Titoli più leggibili */
+.book-title{
+  color:#3F2C20;
+  font-size:8.4px;
+  font-weight:700;
+  line-height:1.32;
+  text-shadow:0 1px 1px rgba(255,255,255,.55);
+}
+
+/* Etichetta Da leggere */
+.book-status{
+  background:rgba(198,139,89,.24);
+  color:#70482F;
+  border:1px solid rgba(198,139,89,.14);
+}
+
+/* Contatore */
+.counter-box{
+  color:#3F2C20;
+  box-shadow:
+    0 10px 22px rgba(83,60,40,.18),
+    inset 0 1px 0 rgba(255,255,255,.30);
+}
+
+.counter-box strong{
+  color:#3F2C20;
+}
+
+/* Colonna destra */
+.rightbar .widget{
+  background:rgba(247,244,239,.39);
+  border-color:rgba(255,255,255,.46);
+}
+
+.widget h3,
+.big-number{
+  color:#3F2C20;
+}
+
+/* Spazi */
+.header{
+  margin-bottom:14px;
+}
+
+.top-row{
+  margin-bottom:16px;
+}
+
+.book-grid{
+  gap:14px 11px;
+}
+
+.footer-note{
+  margin-top:14px;
+}
+
+@media(max-width:650px){
+  .book-grid{
+    gap:10px 8px;
+  }
+
+  .book-title{
+    font-size:8px;
+  }
+}
+
 </style>
 </head>
 
