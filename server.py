@@ -25,6 +25,15 @@ DATABASE_URL = os.environ.get(
 )
 
 
+def parametro_chiave_google():
+    """Google Books funziona anche senza API key.
+    Se la key è configurata la usiamo, altrimenti usiamo la modalità pubblica.
+    """
+    if GOOGLE_BOOKS_API_KEY:
+        return "&key=" + quote_plus(GOOGLE_BOOKS_API_KEY)
+    return ""
+
+
 def connessione_database():
 
     if not DATABASE_URL:
@@ -272,9 +281,6 @@ def edizione_italiana_trama(titolo):
 
 def cerca_trama_google_books(titolo):
 
-    if not GOOGLE_BOOKS_API_KEY:
-        return ""
-
     titolo = str(titolo or "").strip()
 
     if not titolo:
@@ -291,7 +297,7 @@ def cerca_trama_google_books(titolo):
                 "?q=" + quote_plus("isbn:" + edizione["isbn"])
                 + "&maxResults=10"
                 + "&printType=books"
-                + "&key=" + quote_plus(GOOGLE_BOOKS_API_KEY)
+                + parametro_chiave_google()
             )
 
             dati_isbn = scarica_json(google_url_isbn)
@@ -339,7 +345,7 @@ def cerca_trama_google_books(titolo):
                 + "&printType=books"
                 + "&orderBy=relevance"
                 + "&langRestrict=it"
-                + "&key=" + quote_plus(GOOGLE_BOOKS_API_KEY)
+                + parametro_chiave_google()
             )
 
             dati = scarica_json(
@@ -1129,9 +1135,6 @@ def cerca_google_books(
     viste
 ):
 
-    if not GOOGLE_BOOKS_API_KEY:
-        return
-
     if isbn:
 
         query = (
@@ -1164,11 +1167,7 @@ def cerca_google_books(
         +
         "&printType=books"
         +
-        "&key="
-        +
-        quote_plus(
-            GOOGLE_BOOKS_API_KEY
-        )
+        parametro_chiave_google()
     )
 
     dati = scarica_json(
@@ -2864,7 +2863,7 @@ if GOOGLE_BOOKS_API_KEY:
 else:
 
     print(
-        "⚠️ GOOGLE_BOOKS_API_KEY non trovata"
+        "✅ Google Books API attiva senza chiave (modalità pubblica)"
     )
 
 
