@@ -26,11 +26,7 @@ DATABASE_URL = os.environ.get(
 
 
 def parametro_chiave_google():
-    """Google Books funziona anche senza API key.
-    Se la key è configurata la usiamo, altrimenti usiamo la modalità pubblica.
-    """
-    if GOOGLE_BOOKS_API_KEY:
-        return "&key=" + quote_plus(GOOGLE_BOOKS_API_KEY)
+    """Usa Google Books in modalità pubblica, senza dipendere dalla key di Render."""
     return ""
 
 
@@ -814,16 +810,103 @@ def cerca_trama_fallback_italiana(titolo):
     return ""
 
 
+def cerca_metadati_google_books(titolo):
+    """Cerca insieme copertina e trama italiana della migliore edizione."""
+    titolo = str(titolo or "").strip()
+    if not titolo:
+        return {}
+
+    queries = []
+    for variante in varianti_titolo_trama(titolo):
+        queries.extend([
+            'intitle:"' + variante + '"',
+            variante,
+            "intitle:" + variante,
+        ])
+    queries = list(dict.fromkeys(queries))
+    candidati = []
+
+    for query in queries:
+        try:
+            url = (
+                "https://www.googleapis.com/books/v1/volumes"
+                "?q=" + quote_plus(query)
+                + "&maxResults=40&printType=books&orderBy=relevance"
+            )
+            dati = scarica_json(url)
+
+            for item in dati.get("items", []):
+                info = item.get("volumeInfo", {})
+                trovato = str(info.get("title", "")).strip()
+                if not trovato:
+                    continue
+
+                punteggio = punteggio_titolo_trama(titolo, trovato)
+                if punteggio <= 0:
+                    continue
+
+                lingua = str(info.get("language", "")).lower().strip()
+                if lingua == "it":
+                    punteggio += 80
+
+                immagini = info.get("imageLinks", {}) or {}
+                copertina = (
+                    immagini.get("extraLarge") or immagini.get("large")
+                    or immagini.get("medium") or immagini.get("small")
+                    or immagini.get("thumbnail") or immagini.get("smallThumbnail")
+                    or ""
+                )
+                if copertina:
+                    copertina = copertina.replace("http://", "https://")
+                    punteggio += 15
+
+                trama = pulisci_trama_google(info.get("description", ""))
+                if trama and not sembra_trama_inglese(trama):
+                    punteggio += 20
+                else:
+                    trama = ""
+
+                candidati.append((punteggio, {
+                    "titolo": trovato,
+                    "copertina": copertina,
+                    "trama": trama,
+                    "autori": info.get("authors", []) or [],
+                    "lingua": lingua,
+                    "fonte": "Google Books"
+                }))
+        except Exception as errore:
+            print("Ricerca metadati Google non disponibile:", errore, flush=True)
+
+    if not candidati:
+        return {}
+
+    candidati.sort(key=lambda x: x[0], reverse=True)
+    migliore = dict(candidati[0][1])
+
+    for _, candidato in candidati[1:]:
+        if not migliore.get("copertina") and candidato.get("copertina"):
+            migliore["copertina"] = candidato["copertina"]
+        if not migliore.get("trama") and candidato.get("trama"):
+            migliore["trama"] = candidato["trama"]
+        if migliore.get("copertina") and migliore.get("trama"):
+            break
+
+    return migliore
+
+
 def cerca_trama_automatica(titolo):
 
-    # 1) Prova Google Books, ma accetta soltanto una trama italiana.
+    metadati = cerca_metadati_google_books(titolo)
+    trama = str(metadati.get("trama", "") or "").strip()
+
+    if trama and not sembra_trama_inglese(trama):
+        return trama
+
     trama = cerca_trama_google_books(titolo)
 
     if trama and not sembra_trama_inglese(trama):
         return trama
 
-    # 2) Se Google non la fornisce, usa il fallback italiano verificato.
-    # In questo modo non mostriamo mai automaticamente una trama inglese.
     return cerca_trama_fallback_italiana(titolo)
 
 
@@ -1778,6 +1861,17 @@ class LibreriaHandler(
                     )
                 )
 
+                metadati_automatici = {}
+                try:
+                    metadati_automatici = cerca_metadati_google_books(titolo)
+                except Exception as errore:
+                    print("Metadati automatici non disponibili:", errore, flush=True)
+
+                if not copertina:
+                    copertina = str(
+                        metadati_automatici.get("copertina", "") or ""
+                    ).strip()
+
                 if not titolo:
 
                     self.invia_json({
@@ -1841,7 +1935,9 @@ class LibreriaHandler(
                             cur.fetchone()
                         )
 
-                        trama_automatica = ""
+                        trama_automatica = str(
+                            metadati_automatici.get("trama", "") or ""
+                        ).strip()
 
                         trama_esistente = (
                             str(
@@ -1851,7 +1947,7 @@ class LibreriaHandler(
                             else ""
                         )
 
-                        if not trama_esistente:
+                        if not trama_esistente and not trama_automatica:
 
                             try:
 
