@@ -1058,6 +1058,117 @@ body{
   -webkit-backdrop-filter:blur(8px);
 }
 
+
+/* ===== COERENZA FINALE — ROMANCE PRINCIPALE ===== */
+
+.sidebar{
+  background:rgba(116,72,86,.48);
+}
+.sidebar-title{
+  color:#FFF4F6;
+  text-shadow:0 1px 2px rgba(0,0,0,.20);
+}
+.sidebar-title::after,
+.sidebar-decoration{color:#F2D6DE;}
+
+.nav a{
+  color:#FBEFF2;
+  font-weight:600;
+  text-shadow:0 1px 2px rgba(0,0,0,.20);
+}
+.nav a:not(.active):hover{background:rgba(255,255,255,.14);}
+.nav a.active{
+  color:#FFFDF8;
+  background:rgba(201,133,152,.94);
+  text-shadow:none;
+}
+
+.total-card{
+  background:rgba(231,201,192,.94);
+  border-color:rgba(176,104,126,.34);
+  box-shadow:
+    0 12px 27px rgba(91,55,65,.20),
+    inset 0 1px 0 rgba(255,255,255,.30);
+}
+.total-number{
+  color:#934E64;
+  text-shadow:0 1px 2px rgba(255,255,255,.45);
+}
+.total-small,.total-text{color:#704852;}
+
+.card{
+  border-color:rgba(176,104,126,.38);
+  box-shadow:
+    0 12px 27px rgba(82,47,57,.19),
+    inset 0 1px 0 rgba(255,255,255,.27);
+}
+.card-read{background:rgba(227,188,198,.94);}
+.card-tbr{background:rgba(237,206,213,.94);}
+.card h2{
+  color:#68404D;
+  text-shadow:0 1px 1px rgba(255,255,255,.45);
+}
+.card p{color:#76535D;font-weight:600;}
+.card-bottom{
+  background:rgba(255,247,244,.48);
+  color:#704653;
+}
+.card-icon{color:#9F566C;}
+
+.home-button{
+  background:rgba(252,241,240,.76);
+  color:#69434E;
+  border-color:rgba(176,104,126,.28);
+}
+
+.rightbar{
+  border-left:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.rightbar .widget{
+  background:rgba(116,72,86,.48);
+  border-color:rgba(255,255,255,.30);
+  box-shadow:
+    0 12px 28px rgba(55,32,40,.22),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.widget h3{
+  color:#FFF0F4;
+  text-shadow:0 1px 2px rgba(0,0,0,.20);
+}
+.big-number{
+  color:#FFE5EC;
+  text-shadow:0 1px 3px rgba(0,0,0,.18);
+}
+.small-text,
+.progress-percent{color:#ECD8DE;}
+.quote{
+  color:#F4E2E7;
+  text-shadow:0 1px 2px rgba(0,0,0,.17);
+}
+.quote-symbol{color:#F0D4DC;}
+
+.progress{
+  background:rgba(255,240,244,.24);
+  border-color:rgba(255,255,255,.24);
+}
+
+.footer{
+  background:rgba(255,240,242,.25);
+  color:#704852;
+}
+
+.header{margin-bottom:17px;}
+.total-card{margin-bottom:16px;}
+.cards{gap:14px;}
+.home-button{margin-top:13px;}
+.footer{margin-top:15px;}
+
+@media(max-width:650px){
+  .cards{gap:10px;}
+}
+
 </style>
 
 </head>
