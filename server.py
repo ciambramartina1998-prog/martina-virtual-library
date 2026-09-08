@@ -26,7 +26,9 @@ DATABASE_URL = os.environ.get(
 
 
 def parametro_chiave_google():
-    """Usa Google Books in modalità pubblica, senza dipendere dalla key di Render."""
+    """Aggiunge la chiave Google Books quando configurata su Render."""
+    if GOOGLE_BOOKS_API_KEY:
+        return "&key=" + quote_plus(GOOGLE_BOOKS_API_KEY)
     return ""
 
 
@@ -823,7 +825,7 @@ def cerca_metadati_google_books(titolo):
             variante,
             "intitle:" + variante,
         ])
-    queries = list(dict.fromkeys(queries))
+    queries = list(dict.fromkeys(queries))[:2]
     candidati = []
 
     for query in queries:
@@ -831,7 +833,8 @@ def cerca_metadati_google_books(titolo):
             url = (
                 "https://www.googleapis.com/books/v1/volumes"
                 "?q=" + quote_plus(query)
-                + "&maxResults=40&printType=books&orderBy=relevance"
+                + "&maxResults=20&printType=books&orderBy=relevance"
+                + parametro_chiave_google()
             )
             dati = scarica_json(url)
 
@@ -896,19 +899,24 @@ def cerca_metadati_google_books(titolo):
 
 def cerca_trama_automatica(titolo):
 
+    # Una sola ricerca Google per evitare richieste duplicate e blocchi 429.
     metadati = cerca_metadati_google_books(titolo)
     trama = str(metadati.get("trama", "") or "").strip()
 
     if trama and not sembra_trama_inglese(trama):
         return trama
 
-    trama = cerca_trama_google_books(titolo)
+    # Se Google non ha una trama italiana, usa prima il fallback locale.
+    trama = cerca_trama_fallback_italiana(titolo)
+    if trama:
+        return trama
 
+    # Open Library può essere utile come ultima risorsa, ma scartiamo l'inglese.
+    trama = cerca_trama_open_library(titolo)
     if trama and not sembra_trama_inglese(trama):
         return trama
 
-    return cerca_trama_fallback_italiana(titolo)
-
+    return ""
 
 def correggi_trame_inglesi_salvate():
 
@@ -3000,10 +3008,13 @@ def aggiorna_trame_all_avvio():
     completa_trame_mancanti()
 
 
-threading.Thread(
-    target=aggiorna_trame_all_avvio,
-    daemon=True
-).start()
+# IMPORTANTE: non avviare una scansione massiva a ogni deploy di Render.
+# Le trame vengono cercate quando aggiungi/salvi il singolo libro.
+# La scansione automatica causava troppe richieste a Google Books (HTTP 429).
+# threading.Thread(
+#     target=aggiorna_trame_all_avvio,
+#     daemon=True
+# ).start()
 
 
 try:
