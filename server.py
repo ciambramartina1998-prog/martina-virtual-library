@@ -24,6 +24,29 @@ DATABASE_URL = os.environ.get(
     "DATABASE_URL"
 )
 
+# Se Google Books risponde 429, lo mettiamo temporaneamente in pausa.
+# Render condivide spesso gli IP tra più servizi: continuare a richiamare Google
+# durante il blocco peggiora soltanto il rate limit.
+GOOGLE_BOOKS_PAUSA_SECONDI = int(
+    os.environ.get("GOOGLE_BOOKS_PAUSA_SECONDI", "21600")  # 6 ore
+)
+_google_books_bloccato_fino = 0.0
+_google_books_lock = threading.Lock()
+
+
+def google_books_disponibile():
+    with _google_books_lock:
+        return time.time() >= _google_books_bloccato_fino
+
+
+def blocca_temporaneamente_google_books():
+    global _google_books_bloccato_fino
+    with _google_books_lock:
+        _google_books_bloccato_fino = max(
+            _google_books_bloccato_fino,
+            time.time() + GOOGLE_BOOKS_PAUSA_SECONDI
+        )
+
 
 def parametro_chiave_google():
     """Aggiunge la chiave Google Books quando configurata su Render."""
@@ -86,6 +109,24 @@ def scarica_json(url):
                 "utf-8"
             )
         )
+
+
+def scarica_json_google(url):
+    """Scarica JSON da Google Books rispettando il cooldown dopo un 429."""
+    if not google_books_disponibile():
+        return None
+
+    try:
+        return scarica_json(url)
+    except HTTPError as errore:
+        if errore.code == 429:
+            blocca_temporaneamente_google_books()
+            print(
+                "⏸️ Google Books in pausa dopo HTTP 429; uso Open Library.",
+                flush=True
+            )
+            return None
+        raise
 
 
 # ==========================================
@@ -813,72 +854,69 @@ def cerca_trama_fallback_italiana(titolo):
 
 
 def cerca_metadati_google_books(titolo):
-    """Cerca insieme copertina e trama italiana della migliore edizione."""
+    """Cerca insieme copertina e trama italiana della migliore edizione Google."""
     titolo = str(titolo or "").strip()
-    if not titolo:
+    if not titolo or not google_books_disponibile():
         return {}
 
-    queries = []
-    for variante in varianti_titolo_trama(titolo):
-        queries.extend([
-            'intitle:"' + variante + '"',
-            variante,
-            "intitle:" + variante,
-        ])
-    queries = list(dict.fromkeys(queries))[:2]
+    # Una sola query ben formata: evita 2-6 chiamate per lo stesso libro.
+    query = 'intitle:"' + varianti_titolo_trama(titolo)[0] + '"'
+    url = (
+        "https://www.googleapis.com/books/v1/volumes"
+        "?q=" + quote_plus(query)
+        + "&maxResults=20&printType=books&orderBy=relevance"
+        + parametro_chiave_google()
+    )
+
+    try:
+        dati = scarica_json_google(url)
+    except Exception as errore:
+        print("Ricerca metadati Google non disponibile:", errore, flush=True)
+        return {}
+
+    if not dati:
+        return {}
+
     candidati = []
+    for item in dati.get("items", []):
+        info = item.get("volumeInfo", {})
+        trovato = str(info.get("title", "")).strip()
+        if not trovato:
+            continue
 
-    for query in queries:
-        try:
-            url = (
-                "https://www.googleapis.com/books/v1/volumes"
-                "?q=" + quote_plus(query)
-                + "&maxResults=20&printType=books&orderBy=relevance"
-                + parametro_chiave_google()
-            )
-            dati = scarica_json(url)
+        punteggio = punteggio_titolo_trama(titolo, trovato)
+        if punteggio <= 0:
+            continue
 
-            for item in dati.get("items", []):
-                info = item.get("volumeInfo", {})
-                trovato = str(info.get("title", "")).strip()
-                if not trovato:
-                    continue
+        lingua = str(info.get("language", "")).lower().strip()
+        if lingua == "it":
+            punteggio += 80
 
-                punteggio = punteggio_titolo_trama(titolo, trovato)
-                if punteggio <= 0:
-                    continue
+        immagini = info.get("imageLinks", {}) or {}
+        copertina = (
+            immagini.get("extraLarge") or immagini.get("large")
+            or immagini.get("medium") or immagini.get("small")
+            or immagini.get("thumbnail") or immagini.get("smallThumbnail")
+            or ""
+        )
+        if copertina:
+            copertina = copertina.replace("http://", "https://")
+            punteggio += 15
 
-                lingua = str(info.get("language", "")).lower().strip()
-                if lingua == "it":
-                    punteggio += 80
+        trama = pulisci_trama_google(info.get("description", ""))
+        if trama and not sembra_trama_inglese(trama):
+            punteggio += 20
+        else:
+            trama = ""
 
-                immagini = info.get("imageLinks", {}) or {}
-                copertina = (
-                    immagini.get("extraLarge") or immagini.get("large")
-                    or immagini.get("medium") or immagini.get("small")
-                    or immagini.get("thumbnail") or immagini.get("smallThumbnail")
-                    or ""
-                )
-                if copertina:
-                    copertina = copertina.replace("http://", "https://")
-                    punteggio += 15
-
-                trama = pulisci_trama_google(info.get("description", ""))
-                if trama and not sembra_trama_inglese(trama):
-                    punteggio += 20
-                else:
-                    trama = ""
-
-                candidati.append((punteggio, {
-                    "titolo": trovato,
-                    "copertina": copertina,
-                    "trama": trama,
-                    "autori": info.get("authors", []) or [],
-                    "lingua": lingua,
-                    "fonte": "Google Books"
-                }))
-        except Exception as errore:
-            print("Ricerca metadati Google non disponibile:", errore, flush=True)
+        candidati.append((punteggio, {
+            "titolo": trovato,
+            "copertina": copertina,
+            "trama": trama,
+            "autori": info.get("authors", []) or [],
+            "lingua": lingua,
+            "fonte": "Google Books"
+        }))
 
     if not candidati:
         return {}
@@ -897,26 +935,98 @@ def cerca_metadati_google_books(titolo):
     return migliore
 
 
-def cerca_trama_automatica(titolo):
+def cerca_metadati_open_library(titolo):
+    """Fallback per copertina/metadati quando Google non risponde o è in 429."""
+    titolo = str(titolo or "").strip()
+    if not titolo:
+        return {}
 
-    # Una sola ricerca Google per evitare richieste duplicate e blocchi 429.
+    url = (
+        "https://openlibrary.org/search.json"
+        "?title=" + quote_plus(titolo)
+        + "&limit=20"
+        + "&fields=key,title,author_name,cover_i,first_publish_year,isbn,language,publisher"
+    )
+
+    try:
+        dati = scarica_json(url)
+    except Exception as errore:
+        print("Ricerca metadati Open Library non disponibile:", errore, flush=True)
+        return {}
+
+    candidati = []
+    for doc in dati.get("docs", []):
+        trovato = str(doc.get("title", "") or "").strip()
+        punteggio = punteggio_titolo_trama(titolo, trovato)
+        if punteggio <= 0:
+            continue
+
+        cover_id = doc.get("cover_i")
+        copertina = (
+            "https://covers.openlibrary.org/b/id/" + str(cover_id) + "-L.jpg"
+            if cover_id else ""
+        )
+        if copertina:
+            punteggio += 15
+
+        lingue = doc.get("language", []) or []
+        lingua = str(lingue[0]) if isinstance(lingue, list) and lingue else ""
+        if "ita" in lingue or "it" in lingue:
+            punteggio += 30
+
+        candidati.append((punteggio, {
+            "titolo": trovato,
+            "copertina": copertina,
+            "trama": "",
+            "autori": doc.get("author_name", []) or [],
+            "lingua": lingua,
+            "fonte": "Open Library"
+        }))
+
+    if not candidati:
+        return {}
+
+    candidati.sort(key=lambda x: x[0], reverse=True)
+    return dict(candidati[0][1])
+
+
+def cerca_metadati_automatici(titolo):
+    """Google se disponibile; Open Library come fallback immediato."""
     metadati = cerca_metadati_google_books(titolo)
-    trama = str(metadati.get("trama", "") or "").strip()
+    if metadati.get("copertina") or metadati.get("trama"):
+        # Completa la copertina da Open Library se a Google manca.
+        if not metadati.get("copertina"):
+            ol = cerca_metadati_open_library(titolo)
+            if ol.get("copertina"):
+                metadati["copertina"] = ol["copertina"]
+        return metadati
 
-    if trama and not sembra_trama_inglese(trama):
-        return trama
+    return cerca_metadati_open_library(titolo)
 
-    # Se Google non ha una trama italiana, usa prima il fallback locale.
+
+def cerca_trama_automatica(titolo):
+    titolo = str(titolo or "").strip()
+    if not titolo:
+        return ""
+
+    # Le trame locali non consumano API e sono già in italiano.
     trama = cerca_trama_fallback_italiana(titolo)
     if trama:
         return trama
 
-    # Open Library può essere utile come ultima risorsa, ma scartiamo l'inglese.
+    # Una sola richiesta Google, solo se Google non è in pausa.
+    metadati = cerca_metadati_google_books(titolo)
+    trama = str(metadati.get("trama", "") or "").strip()
+    if trama and not sembra_trama_inglese(trama):
+        return trama
+
+    # Ultima risorsa: Open Library. Se la descrizione è inglese la scartiamo.
     trama = cerca_trama_open_library(titolo)
     if trama and not sembra_trama_inglese(trama):
         return trama
 
     return ""
+
 
 def correggi_trame_inglesi_salvate():
 
@@ -1261,9 +1371,9 @@ def cerca_google_books(
         parametro_chiave_google()
     )
 
-    dati = scarica_json(
-        google_url
-    )
+    dati = scarica_json_google(google_url)
+    if not dati:
+        return
 
     for item in dati.get(
         "items",
@@ -1871,7 +1981,7 @@ class LibreriaHandler(
 
                 metadati_automatici = {}
                 try:
-                    metadati_automatici = cerca_metadati_google_books(titolo)
+                    metadati_automatici = cerca_metadati_automatici(titolo)
                 except Exception as errore:
                     print("Metadati automatici non disponibili:", errore, flush=True)
 
@@ -2967,7 +3077,7 @@ if GOOGLE_BOOKS_API_KEY:
 else:
 
     print(
-        "✅ Google Books API attiva senza chiave (modalità pubblica)"
+        "ℹ️ Google Books senza chiave; Open Library è il fallback principale in caso di 429"
     )
 
 
