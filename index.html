@@ -6,6 +6,141 @@
 <link rel="manifest" href="/manifest.json">
 <title>Martina's Virtual Library</title>
 
+/* =========================================================
+   ULTIME RIFINITURE HOME
+   Più leggibile + spazi più armoniosi
+========================================================= */
+
+/* 1. TESTI PIÙ LEGGIBILI */
+.main,
+.sidebar,
+.rightbar{
+  color:#432F22;
+}
+
+.section-label,
+.current-empty,
+.current-category,
+.summary-title,
+.small-text,
+.progress-percent,
+.quote-small{
+  color:#493426;
+}
+
+.subtitle,
+.diary-text{
+  color:#493426;
+  text-shadow:0 1px 3px rgba(255,255,255,.88);
+}
+
+/* I riquadri diventano appena più coprenti:
+   lo sfondo rimane visibile ma non disturba il testo */
+.current-reading-main,
+.summary-card,
+.widget,
+.quote-section{
+  background:rgba(255,255,255,.48);
+}
+
+
+/* 2. MENU LATERALE PIÙ LEGGIBILE */
+.sidebar{
+  background:rgba(247,244,239,.48);
+}
+
+.nav a{
+  color:#432F22;
+  font-weight:600;
+  text-shadow:0 1px 2px rgba(255,255,255,.75);
+}
+
+.nav a:not(.active):hover{
+  background:rgba(255,255,255,.60);
+}
+
+.nav a.active{
+  color:#fff;
+  text-shadow:none;
+}
+
+
+/* 3. PIÙ RESPIRO TRA LE SEZIONI */
+.coffee-table{
+  margin:14px 0 16px;
+}
+
+.search{
+  margin:10px auto 16px;
+}
+
+.summary-row{
+  margin-bottom:17px;
+}
+
+.shelves-title{
+  margin:8px 0 12px;
+}
+
+.shelves{
+  gap:12px;
+}
+
+.quote-section{
+  margin-top:16px;
+}
+
+.manage-card{
+  margin-top:13px;
+}
+
+.footer{
+  margin-top:11px;
+}
+
+
+/* 4. COLONNA DESTRA PIÙ NITIDA */
+.rightbar{
+  background:rgba(247,244,239,.40);
+}
+
+.widget{
+  margin-bottom:12px;
+}
+
+
+/* 5. TITOLI E NUMERI PIÙ DEFINITI */
+.summary-number,
+.big-number,
+.mini-total{
+  color:#3F2C20;
+  text-shadow:0 1px 2px rgba(255,255,255,.65);
+}
+
+.widget h3,
+.shelves-title,
+.sidebar-title{
+  color:#432F22;
+}
+
+
+/* Mantiene tutto ordinato sugli schermi piccoli */
+@media(max-width:720px){
+
+  .coffee-table{
+    margin:11px 0 13px;
+  }
+
+  .summary-row{
+    margin-bottom:13px;
+  }
+
+  .shelves{
+    gap:8px;
+  }
+
+}
+  
 <style>
 
 *{box-sizing:border-box}
