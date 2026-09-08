@@ -935,6 +935,122 @@ def cerca_metadati_google_books(titolo):
     return migliore
 
 
+def cerca_internet_archive(titolo, autore="", isbn="", risultati=None, viste=None):
+    """Terza fonte di riserva per copertine e metadati: Internet Archive."""
+    titolo = str(titolo or "").strip()
+    autore = str(autore or "").strip()
+    isbn = str(isbn or "").strip()
+
+    if not titolo and not isbn:
+        return []
+
+    parti = []
+    if isbn:
+        parti.append('isbn:"' + isbn.replace('"', '') + '"')
+    elif titolo:
+        parti.append('title:"' + titolo.replace('"', '') + '"')
+        if autore:
+            parti.append('creator:"' + autore.replace('"', '') + '"')
+
+    query = " AND ".join(parti)
+    url = (
+        "https://archive.org/advancedsearch.php"
+        "?q=" + quote_plus(query)
+        + "&fl[]=identifier&fl[]=title&fl[]=creator&fl[]=year&fl[]=language"
+        + "&rows=20&page=1&output=json"
+    )
+
+    try:
+        dati = scarica_json(url)
+    except Exception as errore:
+        print("Internet Archive non disponibile:", errore, flush=True)
+        return []
+
+    trovati = []
+    for doc in dati.get("response", {}).get("docs", []):
+        identificatore = str(doc.get("identifier", "") or "").strip()
+        titolo_trovato = str(doc.get("title", "") or "").strip()
+        if not identificatore or not titolo_trovato:
+            continue
+
+        punteggio = punteggio_titolo_trama(titolo, titolo_trovato) if titolo else 60
+        if titolo and punteggio <= 0:
+            continue
+
+        copertina = "https://archive.org/services/img/" + quote_plus(identificatore)
+        creator = doc.get("creator", []) or []
+        if isinstance(creator, str):
+            creator = [creator]
+
+        lingua = doc.get("language", "") or ""
+        if isinstance(lingua, list):
+            lingua_testo = str(lingua[0]) if lingua else ""
+        else:
+            lingua_testo = str(lingua)
+
+        elemento = {
+            "titolo": titolo_trovato,
+            "autori": creator,
+            "copertina": copertina,
+            "fonte": "Internet Archive",
+            "isbn": isbn,
+            "editore": "",
+            "anno": str(doc.get("year", "") or ""),
+            "lingua": lingua_testo,
+            "identifier": identificatore,
+            "punteggio": punteggio,
+        }
+        trovati.append(elemento)
+
+        if risultati is not None and viste is not None:
+            aggiungi_risultato(
+                risultati, viste, titolo_trovato, creator, copertina,
+                "Internet Archive", isbn, "", elemento["anno"], lingua_testo
+            )
+
+    trovati.sort(key=lambda e: e.get("punteggio", 0), reverse=True)
+    return trovati
+
+
+def cerca_metadati_internet_archive(titolo):
+    risultati = cerca_internet_archive(titolo)
+    if not risultati:
+        return {}
+    migliore = risultati[0]
+    return {
+        "titolo": migliore.get("titolo", ""),
+        "copertina": migliore.get("copertina", ""),
+        "trama": "",
+        "autori": migliore.get("autori", []) or [],
+        "lingua": migliore.get("lingua", ""),
+        "fonte": "Internet Archive",
+    }
+
+
+def cerca_trama_internet_archive(titolo):
+    """Prova a leggere la descrizione dei migliori record Internet Archive."""
+    risultati = cerca_internet_archive(titolo)
+    for elemento in risultati[:3]:
+        identificatore = elemento.get("identifier", "")
+        if not identificatore:
+            continue
+        try:
+            meta = scarica_json(
+                "https://archive.org/metadata/" + quote_plus(identificatore)
+            )
+        except Exception:
+            continue
+
+        metadata = meta.get("metadata", {}) or {}
+        descrizione = metadata.get("description", "") or ""
+        if isinstance(descrizione, list):
+            descrizione = " ".join(str(x) for x in descrizione if x)
+        descrizione = pulisci_trama_google(descrizione)
+        if descrizione and not sembra_trama_inglese(descrizione):
+            return descrizione
+    return ""
+
+
 def cerca_metadati_open_library(titolo):
     """Fallback per copertina/metadati quando Google non risponde o è in 429."""
     titolo = str(titolo or "").strip()
@@ -991,17 +1107,24 @@ def cerca_metadati_open_library(titolo):
 
 
 def cerca_metadati_automatici(titolo):
-    """Google se disponibile; Open Library come fallback immediato."""
+    """Google -> Open Library -> Internet Archive."""
     metadati = cerca_metadati_google_books(titolo)
     if metadati.get("copertina") or metadati.get("trama"):
-        # Completa la copertina da Open Library se a Google manca.
         if not metadati.get("copertina"):
             ol = cerca_metadati_open_library(titolo)
             if ol.get("copertina"):
                 metadati["copertina"] = ol["copertina"]
+            else:
+                ia = cerca_metadati_internet_archive(titolo)
+                if ia.get("copertina"):
+                    metadati["copertina"] = ia["copertina"]
         return metadati
 
-    return cerca_metadati_open_library(titolo)
+    ol = cerca_metadati_open_library(titolo)
+    if ol.get("copertina") or ol.get("trama"):
+        return ol
+
+    return cerca_metadati_internet_archive(titolo)
 
 
 def cerca_trama_automatica(titolo):
@@ -1020,8 +1143,13 @@ def cerca_trama_automatica(titolo):
     if trama and not sembra_trama_inglese(trama):
         return trama
 
-    # Ultima risorsa: Open Library. Se la descrizione è inglese la scartiamo.
+    # Seconda risorsa: Open Library. Se la descrizione è inglese la scartiamo.
     trama = cerca_trama_open_library(titolo)
+    if trama and not sembra_trama_inglese(trama):
+        return trama
+
+    # Terza risorsa: Internet Archive.
+    trama = cerca_trama_internet_archive(titolo)
     if trama and not sembra_trama_inglese(trama):
         return trama
 
@@ -1893,6 +2021,17 @@ class LibreriaHandler(
 
                     print(
                         "Open Library non disponibile:",
+                        errore,
+                        flush=True
+                    )
+
+                try:
+                    cerca_internet_archive(
+                        titolo, autore, isbn, risultati, viste
+                    )
+                except Exception as errore:
+                    print(
+                        "Internet Archive non disponibile:",
                         errore,
                         flush=True
                     )
