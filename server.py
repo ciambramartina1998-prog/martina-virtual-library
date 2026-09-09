@@ -323,25 +323,88 @@ def _isbn_da_testo(testo):
 
 
 def _descrizione_visibile(html, titolo):
-    """Ultimo ripiego: prende un paragrafo lungo e pertinente dalla pagina."""
-    blocchi = re.findall(r'(?is)<p\b[^>]*>(.*?)</p>', html or "")
+    """Estrae in modo generico una sinossi leggibile dalla pagina del libro."""
+    html = html or ""
     candidati = []
+
+    # Molti editori non mettono la sinossi in un semplice <p>: proviamo anche
+    # article/section/div e contenitori con classi che richiamano descrizione/sinossi.
+    pattern_blocchi = [
+        r'(?is)<p\b[^>]*>(.*?)</p>',
+        r'(?is)<article\b[^>]*>(.*?)</article>',
+        r'(?is)<section\b[^>]*>(.*?)</section>',
+        r'(?is)<div\b[^>]*(?:class|id)=["\'][^"\']*(?:descr|sinoss|trama|scheda|abstract|summary|content|testo)[^"\']*["\'][^>]*>(.*?)</div>',
+    ]
+
+    blocchi = []
+    for pattern in pattern_blocchi:
+        blocchi.extend(re.findall(pattern, html))
+
+    # Aggiungiamo anche porzioni del testo visibile della pagina. Questo aiuta
+    # i siti che costruiscono la scheda con molti div annidati.
+    testo_intero = _testo_html_semplice(html)
+    righe = [r.strip() for r in testo_intero.split("\n") if r.strip()]
+    for i in range(len(righe)):
+        pezzi = []
+        totale = 0
+        for j in range(i, min(i + 14, len(righe))):
+            pezzo = righe[j]
+            if totale + len(pezzo) > 4500:
+                break
+            pezzi.append(pezzo)
+            totale += len(pezzo) + 1
+            if totale >= 300:
+                blocchi.append(" ".join(pezzi))
+
+    titolo_norm = normalizza_titolo_google(titolo)
+    parole_trama = (
+        "romanzo", "storia", "quando", "mentre", "dovrà", "scopre", "scoprirà",
+        "amore", "segreto", "vita", "famiglia", "assassino", "indagine", "cuore",
+        "protagonista", "lei", "lui", "perché", "perche"
+    )
+    parole_scarto = (
+        "cookie", "privacy", "newsletter", "spedizione", "pagamento", "acquista",
+        "carrello", "copyright", "tutti i diritti riservati", "login", "registrati",
+        "menu", "wishlist", "condizioni di vendita", "contatti", "seguici su"
+    )
+
+    viste = set()
     for blocco in blocchi:
         testo = pulisci_trama_google(_testo_html_semplice(blocco))
-        if len(testo) < 120 or len(testo) > 5000:
+        testo = re.sub(r'\s+', ' ', testo).strip()
+        if len(testo) < 140 or len(testo) > 5000:
             continue
+
+        chiave = testo[:500].lower()
+        if chiave in viste:
+            continue
+        viste.add(chiave)
+
         basso = testo.lower()
-        if any(x in basso for x in (
-            "cookie", "privacy", "newsletter", "spedizione", "pagamento",
-            "acquista", "carrello", "copyright", "tutti i diritti riservati"
-        )):
+        if any(x in basso for x in parole_scarto):
             continue
-        punti = min(len(testo), 1500) / 100
-        if normalizza_titolo_google(titolo) and normalizza_titolo_google(titolo) in normalizza_titolo_google(testo):
-            punti += 5
+        if sembra_trama_inglese(testo):
+            continue
+
+        # Una sinossi normalmente contiene diverse frasi e parole narrative.
+        frasi = len(re.findall(r'[.!?…](?:\s|$)', testo))
+        narrativa = sum(1 for parola in parole_trama if parola in basso)
+        if frasi < 2 and narrativa < 2:
+            continue
+
+        punti = min(len(testo), 2200) / 90
+        punti += narrativa * 2.0
+        punti += min(frasi, 10) * 0.8
+        if titolo_norm and titolo_norm in normalizza_titolo_google(testo):
+            punti += 8
+        if any(x in basso for x in ("isbn", "pagine:", "ebook", "cop. flessibile")):
+            punti -= 5
+
         candidati.append((punti, testo))
+
     if not candidati:
         return ""
+
     candidati.sort(key=lambda x: x[0], reverse=True)
     return candidati[0][1]
 
@@ -455,7 +518,7 @@ def _link_risultati_duckduckgo(html):
     return links
 
 
-def cerca_metadati_web(titolo, autore="", isbn=""):
+def cerca_metadati_web(titolo, autore="", isbn="", richiedi_trama=False):
     """
     Fallback generico: cerca la scheda pubblica del libro sul web e legge
     JSON-LD/OpenGraph. Non contiene eccezioni per titoli specifici.
@@ -469,7 +532,10 @@ def cerca_metadati_web(titolo, autore="", isbn=""):
     chiave = "|".join([normalizza_titolo_google(titolo), autore.lower(), isbn])
     cached = _cache_web_get(chiave)
     if cached is not None:
-        return dict(cached)
+        # Se la chiamata serve specificamente per la trama e la cache contiene
+        # soltanto la copertina, riproviamo la pagina invece di restituire vuoto.
+        if not richiedi_trama or cached.get("trama"):
+            return dict(cached)
 
     parti = []
     if titolo:
@@ -1592,7 +1658,7 @@ def cerca_trama_automatica(titolo):
         return trama
 
     # Terza risorsa: cerca automaticamente la pagina dell'editore/libreria sul web.
-    web = cerca_metadati_web(titolo)
+    web = cerca_metadati_web(titolo, richiedi_trama=True)
     trama = str(web.get("trama", "") or "").strip()
     if trama and not sembra_trama_inglese(trama):
         return trama
