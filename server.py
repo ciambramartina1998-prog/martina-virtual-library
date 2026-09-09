@@ -5,7 +5,7 @@ import threading
 import time
 from html import unescape
 
-from urllib.parse import urlparse, parse_qs, quote_plus
+from urllib.parse import urlparse, parse_qs, quote_plus, unquote, urljoin
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -208,6 +208,341 @@ def cerca_google_books_html(titolo):
 
     candidati.sort(key=lambda x: x[0], reverse=True)
     return dict(candidati[0][1])
+
+
+
+# ==========================================
+# FALLBACK WEB GENERICO (NESSUN TITOLO HARDCODED)
+# ==========================================
+
+_WEB_CACHE = {}
+_WEB_CACHE_LOCK = threading.Lock()
+_WEB_CACHE_TTL = 60 * 60 * 24  # 24 ore
+
+
+def _cache_web_get(chiave):
+    with _WEB_CACHE_LOCK:
+        voce = _WEB_CACHE.get(chiave)
+        if not voce:
+            return None
+        quando, valore = voce
+        if time.time() - quando > _WEB_CACHE_TTL:
+            _WEB_CACHE.pop(chiave, None)
+            return None
+        return valore
+
+
+def _cache_web_set(chiave, valore):
+    with _WEB_CACHE_LOCK:
+        _WEB_CACHE[chiave] = (time.time(), valore)
+
+
+def _testo_html_semplice(html):
+    if not html:
+        return ""
+    testo = re.sub(r"(?is)<script[^>]*>.*?</script>", " ", html)
+    testo = re.sub(r"(?is)<style[^>]*>.*?</style>", " ", testo)
+    testo = re.sub(r"(?i)</?(?:p|div|br|li|section|article|h[1-6])[^>]*>", "\n", testo)
+    testo = re.sub(r"(?s)<[^>]+>", " ", testo)
+    testo = unescape(testo)
+    testo = re.sub(r"[ \t\r\f\v]+", " ", testo)
+    testo = re.sub(r"\n\s*\n+", "\n", testo)
+    return testo.strip()
+
+
+def _jsonld_oggetti(html):
+    oggetti = []
+    if not html:
+        return oggetti
+    scripts = re.findall(
+        r'(?is)<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+        html,
+    )
+    for raw in scripts:
+        raw = unescape(raw).strip()
+        if not raw:
+            continue
+        try:
+            dato = json.loads(raw)
+        except Exception:
+            # Alcuni siti hanno caratteri di controllo o commenti non validi.
+            try:
+                dato = json.loads(re.sub(r"[\x00-\x1f]+", " ", raw))
+            except Exception:
+                continue
+        pila = dato if isinstance(dato, list) else [dato]
+        while pila:
+            obj = pila.pop(0)
+            if isinstance(obj, dict):
+                oggetti.append(obj)
+                grafo = obj.get("@graph")
+                if isinstance(grafo, list):
+                    pila.extend(grafo)
+            elif isinstance(obj, list):
+                pila.extend(obj)
+    return oggetti
+
+
+def _prima_stringa(valore):
+    if isinstance(valore, str):
+        return valore.strip()
+    if isinstance(valore, list):
+        for elemento in valore:
+            trovato = _prima_stringa(elemento)
+            if trovato:
+                return trovato
+    if isinstance(valore, dict):
+        for chiave in ("url", "contentUrl", "name", "value", "@id"):
+            trovato = _prima_stringa(valore.get(chiave))
+            if trovato:
+                return trovato
+    return ""
+
+
+def _autori_jsonld(valore):
+    elementi = valore if isinstance(valore, list) else [valore]
+    nomi = []
+    for elemento in elementi:
+        if isinstance(elemento, str):
+            nome = elemento.strip()
+        elif isinstance(elemento, dict):
+            nome = str(elemento.get("name", "") or "").strip()
+        else:
+            nome = ""
+        if nome and nome not in nomi:
+            nomi.append(nome)
+    return nomi
+
+
+def _isbn_da_testo(testo):
+    for m in re.finditer(r'(?i)ISBN(?:-1[03])?\s*[:\-]?\s*([0-9Xx\- ]{10,20})', str(testo or "")):
+        isbn = re.sub(r'[^0-9Xx]', '', m.group(1)).upper()
+        if len(isbn) in (10, 13):
+            return isbn
+    return ""
+
+
+def _descrizione_visibile(html, titolo):
+    """Ultimo ripiego: prende un paragrafo lungo e pertinente dalla pagina."""
+    blocchi = re.findall(r'(?is)<p\b[^>]*>(.*?)</p>', html or "")
+    candidati = []
+    for blocco in blocchi:
+        testo = pulisci_trama_google(_testo_html_semplice(blocco))
+        if len(testo) < 120 or len(testo) > 5000:
+            continue
+        basso = testo.lower()
+        if any(x in basso for x in (
+            "cookie", "privacy", "newsletter", "spedizione", "pagamento",
+            "acquista", "carrello", "copyright", "tutti i diritti riservati"
+        )):
+            continue
+        punti = min(len(testo), 1500) / 100
+        if normalizza_titolo_google(titolo) and normalizza_titolo_google(titolo) in normalizza_titolo_google(testo):
+            punti += 5
+        candidati.append((punti, testo))
+    if not candidati:
+        return ""
+    candidati.sort(key=lambda x: x[0], reverse=True)
+    return candidati[0][1]
+
+
+def estrai_metadati_pagina_web(url, titolo_cercato):
+    try:
+        html = scarica_testo(url)
+    except Exception as errore:
+        print("Pagina web non disponibile:", url, errore, flush=True)
+        return {}
+
+    pagina_titolo = _meta_html(html, "og:title")
+    if not pagina_titolo:
+        m = re.search(r'(?is)<title[^>]*>(.*?)</title>', html)
+        pagina_titolo = _testo_html_semplice(m.group(1)) if m else ""
+
+    migliore = {
+        "titolo": pagina_titolo,
+        "copertina": "",
+        "trama": "",
+        "autori": [],
+        "isbn": "",
+        "fonte": urlparse(url).netloc.replace("www.", ""),
+        "url": url,
+    }
+
+    for obj in _jsonld_oggetti(html):
+        tipo = obj.get("@type", "")
+        tipi = tipo if isinstance(tipo, list) else [tipo]
+        tipi = {str(x).lower() for x in tipi}
+        if not tipi.intersection({"book", "product", "creativework", "publicationissue"}):
+            continue
+
+        nome = str(obj.get("name") or obj.get("headline") or "").strip()
+        punteggio = punteggio_titolo_trama(titolo_cercato, nome or pagina_titolo)
+        if punteggio <= 0:
+            continue
+
+        immagine = _prima_stringa(obj.get("image"))
+        descrizione = pulisci_trama_google(obj.get("description", ""))
+        isbn = str(obj.get("isbn", "") or "").strip()
+        autori = _autori_jsonld(obj.get("author", []))
+
+        if immagine and not migliore["copertina"]:
+            migliore["copertina"] = urljoin(url, immagine).replace("http://", "https://")
+        if descrizione and len(descrizione) >= 80 and not sembra_trama_inglese(descrizione):
+            if len(descrizione) > len(migliore["trama"]):
+                migliore["trama"] = descrizione
+        if isbn and not migliore["isbn"]:
+            migliore["isbn"] = re.sub(r'[^0-9Xx]', '', isbn).upper()
+        if autori and not migliore["autori"]:
+            migliore["autori"] = autori
+        if nome and punteggio_titolo_trama(titolo_cercato, nome) >= punteggio_titolo_trama(titolo_cercato, migliore["titolo"]):
+            migliore["titolo"] = nome
+
+    # Meta OpenGraph: molto comune sui siti degli editori.
+    if not migliore["copertina"]:
+        immagine = _meta_html(html, "og:image") or _meta_html(html, "twitter:image")
+        if immagine:
+            migliore["copertina"] = urljoin(url, immagine).replace("http://", "https://")
+
+    if not migliore["trama"]:
+        descrizione = _meta_html(html, "description") or _meta_html(html, "og:description")
+        descrizione = pulisci_trama_google(descrizione)
+        if descrizione and len(descrizione) >= 80 and not sembra_trama_inglese(descrizione):
+            migliore["trama"] = descrizione
+
+    testo_pagina = _testo_html_semplice(html)
+    if not migliore["isbn"]:
+        migliore["isbn"] = _isbn_da_testo(testo_pagina)
+    if not migliore["trama"]:
+        descrizione = _descrizione_visibile(html, titolo_cercato)
+        if descrizione and not sembra_trama_inglese(descrizione):
+            migliore["trama"] = descrizione
+
+    if punteggio_titolo_trama(titolo_cercato, migliore["titolo"]) <= 0:
+        # A volte il <title> contiene editore/sito; controlliamo il testo della pagina.
+        titolo_norm = normalizza_titolo_google(titolo_cercato)
+        testo_norm = normalizza_titolo_google(testo_pagina[:15000])
+        if not titolo_norm or titolo_norm not in testo_norm:
+            return {}
+
+    return migliore
+
+
+def _link_risultati_duckduckgo(html):
+    links = []
+    for href in re.findall(r'(?i)href=["\']([^"\']+)["\']', html or ""):
+        href = unescape(href)
+        if href.startswith("//"):
+            href = "https:" + href
+        if "duckduckgo.com/l/" in href:
+            try:
+                qs = parse_qs(urlparse(href).query)
+                href = unquote((qs.get("uddg") or [""])[0])
+            except Exception:
+                continue
+        if not href.startswith(("http://", "https://")):
+            continue
+        dominio = urlparse(href).netloc.lower()
+        if not dominio or "duckduckgo.com" in dominio:
+            continue
+        # Evita social/video e pagine che quasi mai contengono schede libro utili.
+        if any(x in dominio for x in (
+            "facebook.com", "instagram.com", "tiktok.com", "youtube.com",
+            "pinterest.", "x.com", "twitter.com", "reddit.com"
+        )):
+            continue
+        if href not in links:
+            links.append(href)
+    return links
+
+
+def cerca_metadati_web(titolo, autore="", isbn=""):
+    """
+    Fallback generico: cerca la scheda pubblica del libro sul web e legge
+    JSON-LD/OpenGraph. Non contiene eccezioni per titoli specifici.
+    """
+    titolo = str(titolo or "").strip()
+    autore = str(autore or "").strip()
+    isbn = str(isbn or "").strip()
+    if not titolo and not isbn:
+        return {}
+
+    chiave = "|".join([normalizza_titolo_google(titolo), autore.lower(), isbn])
+    cached = _cache_web_get(chiave)
+    if cached is not None:
+        return dict(cached)
+
+    parti = []
+    if titolo:
+        parti.append('"' + titolo.replace('"', '') + '"')
+    if autore:
+        parti.append('"' + autore.replace('"', '') + '"')
+    if isbn:
+        parti.append(isbn)
+    parti.append("libro")
+    query = " ".join(parti)
+
+    try:
+        ricerca = scarica_testo(
+            "https://html.duckduckgo.com/html/?q=" + quote_plus(query)
+        )
+        links = _link_risultati_duckduckgo(ricerca)
+    except Exception as errore:
+        print("Ricerca web non disponibile:", errore, flush=True)
+        _cache_web_set(chiave, {})
+        return {}
+
+    domini_preferiti = (
+        "newtoncompton", "mondadori", "rizzolilibri", "feltrinellieditore",
+        "einaudi", "garzanti", "longanesi", "adelphi", "salani", "giunti",
+        "hoepli", "ibs.it", "lafeltrinelli.it", "mondadoristore.it",
+        "libreriauniversitaria.it", "edizionieo", "fazi", "nord", "tre60",
+        "harpercollins", "penguin", "macmillan", "simonandschuster"
+    )
+
+    def priorita(link):
+        dominio = urlparse(link).netloc.lower()
+        return 0 if any(d in dominio for d in domini_preferiti) else 1
+
+    links.sort(key=priorita)
+    candidati = []
+    for link in links[:10]:
+        meta = estrai_metadati_pagina_web(link, titolo)
+        if not meta:
+            continue
+        punteggio = punteggio_titolo_trama(titolo, meta.get("titolo", "")) if titolo else 60
+        if punteggio <= 0:
+            continue
+        dominio = urlparse(link).netloc.lower()
+        if any(d in dominio for d in domini_preferiti):
+            punteggio += 35
+        if meta.get("copertina"):
+            punteggio += 20
+        if meta.get("trama"):
+            punteggio += 25
+        if meta.get("isbn"):
+            punteggio += 10
+        if autore and any(normalizza_titolo_google(autore) in normalizza_titolo_google(a) for a in meta.get("autori", [])):
+            punteggio += 25
+        candidati.append((punteggio, meta))
+        # Una scheda editore con entrambi i dati è già sufficiente.
+        if punteggio >= 150 and meta.get("copertina") and meta.get("trama"):
+            break
+
+    if not candidati:
+        _cache_web_set(chiave, {})
+        return {}
+
+    candidati.sort(key=lambda x: x[0], reverse=True)
+    migliore = dict(candidati[0][1])
+    _cache_web_set(chiave, migliore)
+    print(
+        "🌐 Fallback web trovato:", titolo,
+        "fonte:", migliore.get("fonte", ""),
+        "copertina:", bool(migliore.get("copertina")),
+        "trama:", bool(migliore.get("trama")),
+        flush=True
+    )
+    return migliore
 
 
 def scarica_json_google(url):
@@ -1206,18 +1541,31 @@ def cerca_metadati_open_library(titolo):
 
 
 def cerca_metadati_automatici(titolo):
-    """Google API -> Google Books HTML -> Open Library -> Internet Archive."""
+    """Google API -> Open Library -> web strutturato -> Internet Archive."""
     metadati = cerca_metadati_google_books(titolo)
-    if metadati.get("copertina") or metadati.get("trama"):
+    if metadati.get("copertina") and metadati.get("trama"):
         return metadati
+
+    # Se Google dà solo uno dei due dati, proviamo a completarlo con le altre fonti.
+    migliore = dict(metadati or {})
+
+    ol = cerca_metadati_open_library(titolo)
+    for campo in ("titolo", "copertina", "trama", "autori", "lingua"):
+        if not migliore.get(campo) and ol.get(campo):
+            migliore[campo] = ol[campo]
+    if migliore.get("copertina") and migliore.get("trama"):
+        return migliore
+
+    web = cerca_metadati_web(titolo)
+    for campo in ("titolo", "copertina", "trama", "autori", "lingua", "isbn", "fonte"):
+        if not migliore.get(campo) and web.get(campo):
+            migliore[campo] = web[campo]
+    if migliore.get("copertina") or migliore.get("trama"):
+        return migliore
 
     html = cerca_google_books_html(titolo)
     if html.get("copertina") or html.get("trama"):
         return html
-
-    ol = cerca_metadati_open_library(titolo)
-    if ol.get("copertina") or ol.get("trama"):
-        return ol
 
     return cerca_metadati_internet_archive(titolo)
 
@@ -1238,18 +1586,24 @@ def cerca_trama_automatica(titolo):
     if trama and not sembra_trama_inglese(trama):
         return trama
 
-    # Seconda risorsa: pagina pubblica Google Books, senza API.
+    # Seconda risorsa: Open Library.
+    trama = cerca_trama_open_library(titolo)
+    if trama and not sembra_trama_inglese(trama):
+        return trama
+
+    # Terza risorsa: cerca automaticamente la pagina dell'editore/libreria sul web.
+    web = cerca_metadati_web(titolo)
+    trama = str(web.get("trama", "") or "").strip()
+    if trama and not sembra_trama_inglese(trama):
+        return trama
+
+    # Quarta risorsa: pagina pubblica Google Books, senza API.
     html = cerca_google_books_html(titolo)
     trama = str(html.get("trama", "") or "").strip()
     if trama and not sembra_trama_inglese(trama):
         return trama
 
-    # Terza risorsa: Open Library. Se la descrizione è inglese la scartiamo.
-    trama = cerca_trama_open_library(titolo)
-    if trama and not sembra_trama_inglese(trama):
-        return trama
-
-    # Quarta risorsa: Internet Archive.
+    # Quinta risorsa: Internet Archive.
     trama = cerca_trama_internet_archive(titolo)
     if trama and not sembra_trama_inglese(trama):
         return trama
@@ -2138,6 +2492,21 @@ class LibreriaHandler(
                         errore,
                         flush=True
                     )
+
+                try:
+                    web_meta = cerca_metadati_web(titolo, autore, isbn)
+                    if web_meta.get("copertina"):
+                        aggiungi_risultato(
+                            risultati, viste,
+                            web_meta.get("titolo", titolo),
+                            web_meta.get("autori", []),
+                            web_meta.get("copertina", ""),
+                            "Web · " + web_meta.get("fonte", "scheda libro"),
+                            web_meta.get("isbn", isbn),
+                            "", "", "it"
+                        )
+                except Exception as errore:
+                    print("Fallback web non disponibile:", errore, flush=True)
 
                 try:
                     cerca_internet_archive(
