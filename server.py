@@ -113,16 +113,42 @@ def scarica_json(url):
 
 
 
-def scarica_testo(url):
+def scarica_testo(url, tentativi=2, timeout=15):
+    """Scarica una pagina HTML con retry breve sui timeout/reti instabili."""
     richiesta = Request(
         url,
         headers={
-            "User-Agent": "Mozilla/5.0 (compatible; MartinaVirtualLibrary/1.0)",
-            "Accept": "text/html,application/xhtml+xml"
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+            ),
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "it-IT,it;q=0.9,en;q=0.5",
+            "Cache-Control": "no-cache",
         }
     )
-    with urlopen(richiesta, timeout=20) as risposta:
-        return risposta.read().decode("utf-8", errors="ignore")
+
+    ultimo_errore = None
+    for numero in range(max(1, int(tentativi))):
+        try:
+            # Aumenta leggermente il tempo solo al secondo tentativo.
+            timeout_corrente = timeout + (numero * 8)
+            with urlopen(richiesta, timeout=timeout_corrente) as risposta:
+                return risposta.read().decode("utf-8", errors="ignore")
+        except HTTPError as errore:
+            # Errori HTTP definitivi: non ha senso ripetere 404/403 ecc.
+            ultimo_errore = errore
+            if errore.code not in (408, 425, 429, 500, 502, 503, 504):
+                raise
+        except (URLError, TimeoutError, OSError) as errore:
+            ultimo_errore = errore
+
+        if numero < max(1, int(tentativi)) - 1:
+            time.sleep(1.0 + numero)
+
+    if ultimo_errore:
+        raise ultimo_errore
+    raise RuntimeError("Download pagina non riuscito")
 
 
 def _meta_html(html, nome):
@@ -234,6 +260,11 @@ def _cache_web_get(chiave):
 
 def _cache_web_set(chiave, valore):
     with _WEB_CACHE_LOCK:
+        # Non conserviamo per 24 ore un fallimento temporaneo (timeout, rete, ecc.).
+        # In questo modo una ricerca successiva può riprovare davvero.
+        if not valore:
+            _WEB_CACHE.pop(chiave, None)
+            return
         _WEB_CACHE[chiave] = (time.time(), valore)
 
 
@@ -411,7 +442,7 @@ def _descrizione_visibile(html, titolo):
 
 def estrai_metadati_pagina_web(url, titolo_cercato):
     try:
-        html = scarica_testo(url)
+        html = scarica_testo(url, tentativi=2, timeout=12)
     except Exception as errore:
         print("Pagina web non disponibile:", url, errore, flush=True)
         return {}
@@ -518,6 +549,69 @@ def _link_risultati_duckduckgo(html):
     return links
 
 
+def _link_risultati_bing(html):
+    """Estrae i link organici dalla pagina HTML di Bing."""
+    links = []
+    if not html:
+        return links
+
+    # Struttura principale: <li class="b_algo"> ... <h2><a href="...">
+    blocchi = re.findall(
+        r'(?is)<li[^>]+class=["\'][^"\']*b_algo[^"\']*["\'][^>]*>(.*?)</li>',
+        html,
+    )
+    candidati_html = blocchi if blocchi else [html]
+
+    for blocco in candidati_html:
+        for href in re.findall(r'(?is)<a[^>]+href=["\'](https?://[^"\']+)["\']', blocco):
+            href = unescape(href).strip()
+            dominio = urlparse(href).netloc.lower()
+            if not dominio or "bing.com" in dominio or "microsoft.com" in dominio:
+                continue
+            if any(x in dominio for x in (
+                "facebook.com", "instagram.com", "tiktok.com", "youtube.com",
+                "pinterest.", "x.com", "twitter.com", "reddit.com"
+            )):
+                continue
+            if href not in links:
+                links.append(href)
+    return links
+
+
+def _cerca_link_web(query):
+    """Prova più motori: un timeout di DuckDuckGo non blocca la trama."""
+    errori = []
+
+    motori = [
+        (
+            "DuckDuckGo",
+            "https://html.duckduckgo.com/html/?q=" + quote_plus(query),
+            _link_risultati_duckduckgo,
+        ),
+        (
+            "Bing",
+            "https://www.bing.com/search?q=" + quote_plus(query) + "&setlang=it-IT",
+            _link_risultati_bing,
+        ),
+    ]
+
+    for nome, url, parser in motori:
+        try:
+            html = scarica_testo(url, tentativi=2, timeout=12)
+            links = parser(html)
+            if links:
+                print("🔎 Ricerca web via", nome, "- link trovati:", len(links), flush=True)
+                return links
+            errori.append(nome + ": nessun link utile")
+        except Exception as errore:
+            errori.append(nome + ": " + str(errore))
+            print("Ricerca", nome, "non disponibile:", errore, flush=True)
+
+    if errori:
+        print("Ricerca web esaurita - " + " | ".join(errori), flush=True)
+    return []
+
+
 def cerca_metadati_web(titolo, autore="", isbn="", richiedi_trama=False):
     """
     Fallback generico: cerca la scheda pubblica del libro sul web e legge
@@ -547,15 +641,11 @@ def cerca_metadati_web(titolo, autore="", isbn="", richiedi_trama=False):
     parti.append("libro")
     query = " ".join(parti)
 
-    try:
-        ricerca = scarica_testo(
-            "https://html.duckduckgo.com/html/?q=" + quote_plus(query)
-        )
-        links = _link_risultati_duckduckgo(ricerca)
-    except Exception as errore:
-        print("Ricerca web non disponibile:", errore, flush=True)
-        _cache_web_set(chiave, {})
-        return {}
+    links = _cerca_link_web(query)
+    if not links:
+        # Se avevamo già una copertina in cache, non la perdiamo; per la trama
+        # lasciamo proseguire gli altri fallback della funzione chiamante.
+        return dict(cached) if cached else {}
 
     domini_preferiti = (
         "newtoncompton", "mondadori", "rizzolilibri", "feltrinellieditore",
