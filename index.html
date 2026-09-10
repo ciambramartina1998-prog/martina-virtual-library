@@ -1552,6 +1552,337 @@ button,input{
   }
 }
 
+
+/* =========================================================
+   HOME — RIFINITURA FINALE PC + TELEFONO
+   SOLO ESTETICA: funzioni e struttura preservate
+========================================================= */
+
+/* ---------- PC ---------- */
+@media (min-width: 900px){
+
+  .main{
+    padding:18px 20px 16px;
+  }
+
+  .header{
+    padding-top:5px;
+    padding-bottom:10px;
+  }
+
+  .coffee-table{
+    grid-template-columns:minmax(0,1fr) 132px;
+    gap:14px;
+  }
+
+  .current-reading-main{
+    min-height:150px;
+    padding:16px 18px;
+  }
+
+  .current-book-row{
+    align-items:flex-start;
+    gap:16px;
+  }
+
+  .current-cover{
+    width:72px;
+    height:104px;
+  }
+
+  .current-info{
+    padding-top:1px;
+  }
+
+  .current-label{
+    font-size:8px;
+    padding:4px 8px;
+  }
+
+  .current-title{
+    font-size:14px;
+    margin-bottom:4px;
+  }
+
+  .current-category{
+    font-size:9px;
+  }
+
+  .current-page-progress{
+    width:min(500px,100%);
+    margin:9px 0;
+  }
+
+  .current-page-text{
+    font-size:12px;
+  }
+
+  .current-page-details{
+    font-size:10px;
+  }
+
+  .current-page-bar{
+    height:9px;
+  }
+
+  .current-page-editor{
+    width:min(500px,100%);
+    margin:9px 0;
+    padding:10px;
+  }
+
+  .current-page-editor-row{
+    gap:10px;
+  }
+
+  .current-page-field label{
+    font-size:9px;
+  }
+
+  .current-page-field input{
+    font-size:11px;
+    padding:8px 9px;
+  }
+
+  .current-page-save,
+  .finish-reading{
+    font-size:9px;
+    padding:8px 12px;
+  }
+
+  .coffee-deco{
+    min-height:150px;
+  }
+
+  .summary-card{
+    min-height:78px;
+  }
+
+  .shelf{
+    min-height:138px;
+  }
+}
+
+/* ---------- TELEFONO ---------- */
+@media (max-width: 720px){
+
+  body{
+    padding:5px;
+  }
+
+  .library-app{
+    border-radius:22px;
+  }
+
+  /* Menu più compatto, stesse voci e stessi link */
+  .sidebar{
+    padding:10px 7px 8px;
+  }
+
+  .sidebar-title{
+    margin-bottom:6px;
+  }
+
+  .sidebar-title::after{
+    margin-top:4px;
+  }
+
+  .nav{
+    gap:3px 4px;
+  }
+
+  .nav a{
+    padding:5px 7px;
+    font-size:8.5px;
+    border-radius:9px;
+  }
+
+  .sidebar-divider{
+    margin:4px 0;
+  }
+
+  .sidebar-decoration{
+    margin-top:7px;
+  }
+
+  .main{
+    padding:12px 10px 11px;
+  }
+
+  .header{
+    padding:3px 0 8px;
+  }
+
+  .script-title{
+    font-size:37px;
+  }
+
+  .virtual-title{
+    font-size:11px;
+    letter-spacing:4.5px;
+  }
+
+  .subtitle{
+    font-size:11px;
+  }
+
+  /* Sto leggendo resta in alto ma più equilibrato */
+  .coffee-table{
+    margin:10px 0 12px;
+  }
+
+  .current-reading-main{
+    min-height:0;
+    padding:12px;
+    border-radius:17px;
+  }
+
+  .current-book-row{
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .current-cover{
+    width:54px;
+    height:79px;
+  }
+
+  .current-title{
+    font-size:10px;
+  }
+
+  .current-page-progress{
+    margin:6px 0;
+  }
+
+  .current-page-text{
+    font-size:8px;
+  }
+
+  .current-page-details{
+    font-size:7px;
+  }
+
+  .current-page-bar{
+    height:7px;
+  }
+
+  .current-page-editor{
+    width:100%;
+    margin:6px 0;
+    padding:7px;
+  }
+
+  .current-page-editor-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:7px;
+  }
+
+  .current-page-field label{
+    font-size:7px;
+  }
+
+  .current-page-field input{
+    font-size:9px;
+    padding:6px 7px;
+  }
+
+  .current-page-save{
+    grid-column:1 / -1;
+    justify-self:center;
+    min-width:78px;
+    font-size:8px;
+    padding:6px 10px;
+  }
+
+  .finish-reading{
+    font-size:8px;
+    padding:6px 9px;
+  }
+
+  .coffee-deco{
+    min-height:88px;
+    padding:7px;
+  }
+
+  .coffee-deco .plant{
+    font-size:23px;
+  }
+
+  .coffee-deco span{
+    font-size:7px;
+  }
+
+  .search{
+    margin:8px auto 12px;
+  }
+
+  .summary-row{
+    gap:6px;
+    margin-bottom:12px;
+  }
+
+  .summary-card{
+    min-height:66px;
+    padding:8px 5px;
+  }
+
+  .summary-number{
+    font-size:18px;
+  }
+
+  .summary-title{
+    font-size:6.7px;
+  }
+
+  .shelves-title{
+    margin:7px 0 9px;
+  }
+
+  .shelves{
+    gap:8px;
+  }
+
+  .shelf{
+    min-height:112px;
+    padding:13px 8px;
+    border-radius:17px;
+  }
+
+  .shelf-top{
+    font-size:27px;
+  }
+
+  .shelf-name{
+    font-size:8.3px;
+    padding:7px 8px;
+  }
+
+  .quote-section{
+    margin-top:12px;
+    padding:12px 34px;
+  }
+
+  .quote-main{
+    font-size:11.5px;
+  }
+
+  .manage-card{
+    min-height:43px;
+    margin-top:10px;
+  }
+
+  .rightbar{
+    padding:10px 8px;
+  }
+
+  .widget{
+    padding:10px 9px;
+    margin-bottom:7px;
+  }
+}
+
 </style>
 </head>
 
