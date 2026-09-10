@@ -339,6 +339,62 @@ button,input{
   background:linear-gradient(90deg,#7A8267,#9da489,#C68B59);
 }
 
+.current-page-editor{
+  width:min(330px,100%);
+  margin:7px 0;
+  padding:7px;
+  border:1px solid rgba(78,53,36,.14);
+  border-radius:10px;
+  background:rgba(255,255,255,.34);
+}
+
+.current-page-editor-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:flex-end;
+}
+
+.current-page-field{
+  flex:1 1 90px;
+  min-width:0;
+}
+
+.current-page-field label{
+  display:block;
+  margin-bottom:3px;
+  color:#5A3E2B;
+  font-size:6.5px;
+  font-weight:700;
+}
+
+.current-page-field input{
+  width:100%;
+  box-sizing:border-box;
+  padding:5px 6px;
+  border:1px solid rgba(78,53,36,.20);
+  border-radius:7px;
+  background:rgba(255,255,255,.82);
+  color:#4E3524;
+  font-size:8px;
+  outline:none;
+}
+
+.current-page-save{
+  padding:6px 9px;
+  border:0;
+  border-radius:8px;
+  background:#C68B59;
+  color:white;
+  font-size:7px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.current-page-save:hover{
+  opacity:.90;
+}
+
 .finish-reading{
   padding:5px 8px;
   border:1px solid rgba(255,255,255,.30);
@@ -2634,6 +2690,58 @@ function mostraLetturaAttuale(){
 
         ${progressoPagine}
 
+        <div class="current-page-editor">
+          <div class="current-page-editor-row">
+
+            <div class="current-page-field">
+              <label for="pagineTotaliHome">
+                Pagine totali
+              </label>
+              <input
+                id="pagineTotaliHome"
+                type="number"
+                min="1"
+                step="1"
+                placeholder="es. 380"
+                value="${
+                  libro.pagine_totali !== null &&
+                  libro.pagine_totali !== ""
+                    ? Number(libro.pagine_totali)
+                    : ""
+                }"
+              >
+            </div>
+
+            <div class="current-page-field">
+              <label for="paginaAttualeHome">
+                Pagina attuale
+              </label>
+              <input
+                id="paginaAttualeHome"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="es. 125"
+                value="${
+                  libro.pagina_attuale !== null &&
+                  libro.pagina_attuale !== ""
+                    ? Number(libro.pagina_attuale)
+                    : ""
+                }"
+              >
+            </div>
+
+            <button
+              class="current-page-save"
+              type="button"
+              onclick="aggiornaProgressoLettura(${Number(libro.id)})"
+            >
+              Aggiorna
+            </button>
+
+          </div>
+        </div>
+
         <button
           class="finish-reading"
           onclick="terminaLettura(${Number(libro.id)})"
@@ -2645,6 +2753,121 @@ function mostraLetturaAttuale(){
 
     </div>
     `;
+
+}
+
+
+/* =========================
+   AGGIORNA PROGRESSO LETTURA
+========================= */
+
+async function aggiornaProgressoLettura(id){
+
+  const libro =
+    libriCloud.find(
+      function(item){
+        return item.id === id;
+      }
+    );
+
+  if(!libro){
+    alert("Libro non trovato.");
+    return;
+  }
+
+  const inputTotali =
+    document.getElementById("pagineTotaliHome");
+
+  const inputAttuale =
+    document.getElementById("paginaAttualeHome");
+
+  const totaleRaw =
+    inputTotali ? inputTotali.value.trim() : "";
+
+  const attualeRaw =
+    inputAttuale ? inputAttuale.value.trim() : "";
+
+  if(totaleRaw === ""){
+    alert("Inserisci il numero totale di pagine.");
+    return;
+  }
+
+  if(attualeRaw === ""){
+    alert("Inserisci la pagina a cui sei arrivata.");
+    return;
+  }
+
+  const pagineTotali = Number(totaleRaw);
+  const paginaAttuale = Number(attualeRaw);
+
+  if(
+    !Number.isInteger(pagineTotali) ||
+    pagineTotali <= 0
+  ){
+    alert("Le pagine totali devono essere un numero maggiore di 0.");
+    return;
+  }
+
+  if(
+    !Number.isInteger(paginaAttuale) ||
+    paginaAttuale < 0
+  ){
+    alert("La pagina attuale deve essere 0 o un numero maggiore.");
+    return;
+  }
+
+  if(paginaAttuale > pagineTotali){
+    alert("La pagina attuale non può superare le pagine totali.");
+    return;
+  }
+
+  try{
+
+    const risposta =
+      await fetch(
+        "https://martina-virtual-library.onrender.com/api/libri/" + id,
+        {
+          method:"PUT",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            titolo: libro.titolo,
+            categoria: libro.categoria,
+            stato: libro.stato,
+            copertina: libro.copertina || "",
+            lettura_attuale: true,
+            pagine_totali: pagineTotali,
+            pagina_attuale: paginaAttuale
+          })
+        }
+      );
+
+    const dati =
+      await risposta.json();
+
+    if(!risposta.ok){
+      throw new Error(
+        dati.errore ||
+        "Impossibile aggiornare il progresso."
+      );
+    }
+
+    await caricaCloud();
+
+  }catch(errore){
+
+    console.error(
+      "Errore aggiornamento progresso:",
+      errore
+    );
+
+    alert(
+      errore.message ||
+      "Impossibile aggiornare il progresso."
+    );
+
+  }
 
 }
 
