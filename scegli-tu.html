@@ -1011,6 +1011,86 @@ h1{margin:7px 0 3px;font-size:clamp(40px,4.7vw,55px)}
   }
 }
 
+
+/* ===== SCEGLI TU: DUE COLONNE NELL'AREA PRINCIPALE ===== */
+
+/* Su PC l'area a destra è divisa davvero in due colonne */
+@media(min-width:651px){
+  .scelta-area{
+    width:min(760px,100%);
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:16px;
+    align-items:stretch;
+  }
+
+  .scelta-area::after{
+    content:"❦\A\A“Lascia che sia la libreria\Aa scegliere la tua\Aprossima storia.”\A\A♡";
+    white-space:pre-line;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    border:1px solid rgba(255,255,255,.48);
+    border-radius:22px;
+    background:rgba(242,232,221,.62);
+    color:#5A4232;
+    box-shadow:
+      0 13px 30px rgba(67,53,39,.14),
+      inset 0 1px 0 rgba(255,255,255,.26);
+    text-align:center;
+    font-size:13px;
+    font-style:italic;
+    line-height:1.65;
+  }
+
+  .intro{
+    width:100%;
+    height:100%;
+    min-height:260px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* Quando viene scelto un libro, la sua scheda usa la colonna sinistra */
+  .libro-card{
+    width:100%;
+    grid-template-columns:125px minmax(0,1fr);
+    gap:16px;
+    padding:17px;
+  }
+
+  .libro-card .cover{
+    width:125px;
+    height:185px;
+  }
+
+  .libro-card .titolo-libro{
+    font-size:18px;
+  }
+}
+
+/* Sul telefono restano due riquadri ordinati uno sotto l'altro */
+@media(max-width:650px){
+  .scelta-area::after{
+    content:"❦  “Lascia che sia la libreria a scegliere la tua prossima storia.”  ♡";
+    display:block;
+    margin-top:7px;
+    padding:10px 12px;
+    border:1px solid rgba(255,255,255,.42);
+    border-radius:14px;
+    background:rgba(242,232,221,.58);
+    color:#5A4232;
+    text-align:center;
+    font-size:9px;
+    font-style:italic;
+    line-height:1.4;
+  }
+}
+
 </style>
 
 </head>
