@@ -1252,6 +1252,296 @@ body{
   }
 }
 
+
+/* =========================================================
+   DA LEGGERE — RIFINITURA PC + TELEFONO
+   SOLO ESTETICA: funzioni e JavaScript preservati
+========================================================= */
+
+/* ---------- PC ---------- */
+@media (min-width: 901px){
+
+  .main{
+    padding:18px 18px 17px;
+  }
+
+  .header{
+    margin-bottom:16px;
+  }
+
+  .script-title{
+    font-size:clamp(42px,4.6vw,56px);
+  }
+
+  .top-row{
+    width:min(760px,100%);
+    gap:12px;
+    margin-bottom:17px;
+  }
+
+  .search-box{
+    padding:7px 12px;
+    border-radius:20px;
+  }
+
+  .search-box input{
+    font-size:10px;
+    padding:6px 2px;
+  }
+
+  .counter-box{
+    min-width:106px;
+    padding:9px 12px;
+    border-radius:17px;
+  }
+
+  .counter-box strong{
+    font-size:20px;
+  }
+
+  .book-grid{
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:15px 12px;
+  }
+
+  .book-card{
+    min-height:100%;
+    padding:8px;
+    border-radius:15px;
+  }
+
+  .book-info{
+    min-height:86px;
+    padding:8px 3px 4px;
+  }
+
+  .book-title{
+    min-height:40px;
+    font-size:9.5px;
+    line-height:1.34;
+  }
+
+  .book-status{
+    font-size:7.5px;
+    padding:3px 7px;
+  }
+
+  .reading-action{
+    margin-top:8px;
+    padding:7px 8px;
+    border-radius:9px;
+    font-size:8.2px;
+  }
+
+  .rightbar{
+    padding:16px 10px;
+  }
+
+  .rightbar .widget{
+    padding:13px 10px;
+    border-radius:18px;
+  }
+
+  .widget h3{
+    font-size:8.5px;
+  }
+
+  .small-text{
+    font-size:8.5px;
+  }
+
+  .quote{
+    font-size:11.5px;
+  }
+}
+
+/* ---------- TABLET ---------- */
+@media (min-width: 651px) and (max-width: 900px){
+
+  .book-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px 10px;
+  }
+
+  .book-title{
+    font-size:8.6px;
+  }
+
+  .reading-action{
+    font-size:7.5px;
+  }
+}
+
+/* ---------- TELEFONO ---------- */
+@media (max-width: 650px){
+
+  body{
+    padding:5px;
+  }
+
+  .library-app{
+    border-radius:22px;
+  }
+
+  /* Menu compatto come le pagine già approvate */
+  .sidebar{
+    padding:8px 6px 6px;
+  }
+
+  .sidebar-title{
+    margin-bottom:4px;
+    font-size:8.5px;
+    letter-spacing:1.1px;
+  }
+
+  .sidebar-title::after{
+    margin-top:3px;
+  }
+
+  .nav{
+    gap:2px 3px;
+  }
+
+  .nav a{
+    gap:5px;
+    padding:4px 6px;
+    border-radius:9px;
+    font-size:8px;
+    line-height:1.08;
+  }
+
+  .nav-icon{
+    width:14px;
+    font-size:10px;
+  }
+
+  .sidebar-divider{
+    flex-basis:100%;
+    width:100%;
+    margin:3px 0;
+  }
+
+  .sidebar-decoration{
+    margin-top:5px;
+    font-size:11px;
+    letter-spacing:3px;
+  }
+
+  .main{
+    padding:11px 9px 12px;
+  }
+
+  .header{
+    margin-bottom:10px;
+  }
+
+  .script-title{
+    font-size:36px;
+  }
+
+  .subtitle{
+    font-size:11px;
+    line-height:1.4;
+    padding:0 8px;
+  }
+
+  .top-row{
+    width:100%;
+    gap:7px;
+    margin-bottom:12px;
+    align-items:stretch;
+  }
+
+  .search-box{
+    min-width:0;
+    padding:5px 8px;
+    border-radius:16px;
+  }
+
+  .search-box span{
+    font-size:11px;
+  }
+
+  .search-box input{
+    font-size:8.5px;
+  }
+
+  .counter-box{
+    min-width:80px;
+    padding:6px 7px;
+    border-radius:14px;
+    font-size:7px;
+  }
+
+  .counter-box strong{
+    font-size:16px;
+  }
+
+  /* Sempre 2 libri per riga sul telefono */
+  .book-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px 8px;
+  }
+
+  .book-card{
+    padding:6px;
+    border-radius:13px;
+  }
+
+  .book-info{
+    min-height:78px;
+    padding:6px 2px 3px;
+  }
+
+  .book-title{
+    min-height:34px;
+    font-size:8px;
+    line-height:1.3;
+  }
+
+  .book-status{
+    font-size:6.8px;
+    padding:2px 6px;
+  }
+
+  .reading-action{
+    margin-top:6px;
+    padding:6px 5px;
+    border-radius:8px;
+    font-size:7px;
+  }
+
+  .rightbar{
+    padding:9px 7px;
+  }
+
+  .rightbar .widget{
+    margin-bottom:7px;
+    padding:10px 8px;
+    border-radius:15px;
+  }
+
+  .widget h3{
+    font-size:8px;
+  }
+
+  .big-number{
+    font-size:24px;
+  }
+
+  .small-text{
+    font-size:7.5px;
+  }
+
+  .quote{
+    font-size:10.5px;
+  }
+
+  .footer-note{
+    margin-top:9px;
+  }
+}
+
 </style>
 </head>
 
