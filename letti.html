@@ -1600,6 +1600,53 @@ body{
   }
 }
 
+
+/* ===== SCHEDA TRAMA · I MIEI LIBRI ===== */
+.book-modal{
+  position:fixed; inset:0; z-index:9999; display:none;
+  align-items:center; justify-content:center; padding:18px;
+  background:rgba(54,38,31,.62);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+}
+.book-modal.open{display:flex;}
+.book-modal-card{
+  position:relative; width:min(720px,94vw); max-height:90vh; overflow:auto;
+  display:grid; grid-template-columns:190px minmax(0,1fr); gap:24px;
+  padding:24px; border:1px solid rgba(116,83,54,.28); border-radius:24px;
+  background:linear-gradient(145deg,rgba(255,250,244,.98),rgba(239,221,202,.98));
+  box-shadow:0 28px 70px rgba(55,39,28,.35);
+}
+.book-modal-close{
+  position:absolute; top:11px; right:13px; width:34px; height:34px;
+  border:1px solid rgba(116,83,54,.24); border-radius:50%;
+  background:rgba(255,255,255,.62); color:#5A3E2B; font:20px Georgia,serif; cursor:pointer;
+}
+.book-modal-cover{
+  width:190px; aspect-ratio:2/3; overflow:hidden; display:flex;
+  align-items:center; justify-content:center; border-radius:14px;
+  background:linear-gradient(145deg,#E8D6C2,#F2E7DC);
+  box-shadow:0 12px 26px rgba(84,64,46,.20); color:#7A5A43; font-size:34px;
+}
+.book-modal-cover img{width:100%;height:100%;object-fit:cover;}
+.book-modal-content{min-width:0;padding-top:4px;}
+.book-modal-category{margin:0 42px 7px 0;color:#8A6042;font-size:10px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;}
+.book-modal-title{margin:0 42px 10px 0;color:#4E3524;font-size:27px;line-height:1.15;font-weight:normal;font-style:italic;}
+.book-modal-status{display:inline-block;margin-bottom:17px;padding:5px 9px;border-radius:20px;background:rgba(122,130,103,.18);color:#596047;font-size:9px;font-weight:bold;}
+.book-modal-section-title{margin:5px 0 8px;color:#5A3E2B;font-size:12px;font-weight:bold;}
+.book-modal-plot{margin:0;color:#513B2D;font-size:12px;line-height:1.65;white-space:pre-line;}
+.book-cover{cursor:pointer;}
+
+@media(max-width:650px){
+  .book-modal{padding:9px;}
+  .book-modal-card{display:block;width:96vw;padding:16px;border-radius:20px;}
+  .book-modal-cover{width:135px;margin:0 auto 14px;}
+  .book-modal-category{margin:0 0 6px;text-align:center;}
+  .book-modal-title{margin:0 0 9px;font-size:22px;text-align:center;}
+  .book-modal-status{display:block;width:max-content;margin:0 auto 15px;}
+  .book-modal-section-title{font-size:11px;}
+  .book-modal-plot{font-size:11px;line-height:1.55;}
+}
+
 </style>
 </head>
 
@@ -1821,6 +1868,21 @@ racconta un piccolo viaggio.
 
 </div>
 
+
+
+<div class="book-modal" id="bookModal" aria-hidden="true">
+  <div class="book-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitolo">
+    <button class="book-modal-close" id="modalChiudi" type="button" aria-label="Chiudi">×</button>
+    <div class="book-modal-cover" id="modalCopertina">♡</div>
+    <div class="book-modal-content">
+      <div class="book-modal-category" id="modalCategoria"></div>
+      <h2 class="book-modal-title" id="modalTitolo"></h2>
+      <div class="book-modal-status">✓ Letto</div>
+      <div class="book-modal-section-title">📖 Trama</div>
+      <p class="book-modal-plot" id="modalTrama">Cerco la trama...</p>
+    </div>
+  </div>
+</div>
 
 <script>
 
@@ -2237,7 +2299,10 @@ function creaElencoFinale(){
             libro.stato,
 
           copertina:
-            libro.copertina || ""
+            libro.copertina || "",
+
+          trama:
+            libro.trama || ""
         }
       );
 
@@ -2314,6 +2379,15 @@ function creaScheda(libro){
       libro.copertina;
 
   }
+
+
+  cover.title="Apri la trama del libro";
+  cover.addEventListener(
+    "click",
+    function(){
+      apriSchedaLibro(libro);
+    }
+  );
 
 
   if(copertina){
@@ -2628,6 +2702,110 @@ input.addEventListener(
 
   }
 );
+
+
+
+/* =========================
+   SCHEDA TRAMA
+========================= */
+
+const bookModal=document.getElementById("bookModal");
+const modalTitolo=document.getElementById("modalTitolo");
+const modalCategoria=document.getElementById("modalCategoria");
+const modalCopertina=document.getElementById("modalCopertina");
+const modalTrama=document.getElementById("modalTrama");
+
+function chiudiSchedaLibro(){
+  bookModal.classList.remove("open");
+  bookModal.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+
+async function apriSchedaLibro(libro){
+  modalTitolo.textContent=libro.titolo || "";
+  modalCategoria.textContent=libro.categoria || "Libro";
+  modalCopertina.innerHTML="";
+
+  const copertina=
+    libro.copertina ||
+    trovaCopertinaLocale(libro.titolo) ||
+    "";
+
+  if(copertina){
+    const img=document.createElement("img");
+    img.src=copertina;
+    img.alt=libro.titolo || "Copertina";
+    img.addEventListener("error",function(){
+      modalCopertina.textContent="♡";
+    });
+    modalCopertina.appendChild(img);
+  }else{
+    modalCopertina.textContent="♡";
+  }
+
+  bookModal.classList.add("open");
+  bookModal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+
+  const tramaSalvata=String(libro.trama || "").trim();
+
+  if(tramaSalvata){
+    modalTrama.textContent=tramaSalvata;
+    return;
+  }
+
+  modalTrama.textContent="Cerco la trama...";
+
+  try{
+    const risposta=await fetch(
+      "https://martina-virtual-library.onrender.com/api/trama-automatica?titolo="+
+      encodeURIComponent(libro.titolo),
+      {cache:"no-store"}
+    );
+
+    if(!risposta.ok) throw new Error("Trama non disponibile");
+
+    const dati=await risposta.json();
+    const trama=String(dati.trama || "").trim();
+
+    if(!trama){
+      modalTrama.textContent="Trama non disponibile per questo libro.";
+      return;
+    }
+
+    libro.trama=trama;
+    modalTrama.textContent=trama;
+
+    if(libro.id){
+      fetch(
+        "https://martina-virtual-library.onrender.com/api/trama/"+
+        encodeURIComponent(libro.id),
+        {
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({trama:trama})
+        }
+      ).catch(function(errore){
+        console.error("Salvataggio trama:",errore);
+      });
+    }
+  }catch(errore){
+    console.error("Caricamento trama:",errore);
+    modalTrama.textContent="Trama non disponibile per questo libro.";
+  }
+}
+
+document.getElementById("modalChiudi").addEventListener("click",chiudiSchedaLibro);
+
+bookModal.addEventListener("click",function(evento){
+  if(evento.target===bookModal) chiudiSchedaLibro();
+});
+
+document.addEventListener("keydown",function(evento){
+  if(evento.key==="Escape" && bookModal.classList.contains("open")){
+    chiudiSchedaLibro();
+  }
+});
 
 
 /* =========================
