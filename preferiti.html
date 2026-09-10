@@ -54,6 +54,397 @@ body{color:#4E3524;background:linear-gradient(rgba(48,40,31,.12),rgba(48,40,31,.
 .modal-category,.modal-section-title,.rating-message,.plot-message{color:#5A3E2B;}.modal-title{color:#4E3524;}.modal-badge{background:rgba(122,130,103,.14);color:#536047;}.star-button{color:#C68B59;}.star-button.selected{color:#7A8267;}.plot-text{background:rgba(255,255,255,.58);color:#4E3524;border-color:rgba(111,76,48,.22);}.save-plot{background:rgba(122,130,103,.90);color:white;border-color:rgba(255,255,255,.30);}.save-plot:hover:not(:disabled){background:#6D765C;}
 @media(max-width:900px){.rightbar{border-left:none!important;border-top:1px solid rgba(255,255,255,.30)!important;}}
 
+
+/* =========================================================
+   PREFERITI — RIFINITURA PC + TELEFONO
+   Solo estetica: JavaScript e funzioni invariati
+========================================================= */
+
+/* ---------- PC ---------- */
+@media (min-width: 901px){
+
+  .main{
+    padding:18px 18px 17px;
+  }
+
+  .header{
+    margin-bottom:15px;
+  }
+
+  .script-title{
+    font-size:clamp(42px,4.6vw,56px);
+  }
+
+  .virtual-title{
+    font-size:11.5px;
+    letter-spacing:3.4px;
+  }
+
+  .topbar{
+    gap:12px;
+    margin-bottom:16px;
+  }
+
+  .search-box{
+    padding:7px 12px;
+    border-radius:20px;
+  }
+
+  .search{
+    font-size:10px;
+    padding:6px 2px;
+  }
+
+  .back{
+    padding:9px 13px;
+    border-radius:15px;
+    font-size:9.5px;
+  }
+
+  .book-grid{
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:15px 12px;
+  }
+
+  .book-card{
+    padding:8px;
+    border-radius:15px;
+  }
+
+  .book-info{
+    min-height:92px;
+    padding:8px 3px 4px;
+  }
+
+  .book-title{
+    min-height:40px;
+    font-size:9.4px;
+    line-height:1.33;
+  }
+
+  .book-category{
+    font-size:7.4px;
+    padding:3px 7px;
+  }
+
+  .book-status{
+    font-size:7.3px;
+  }
+
+  .favorite-button{
+    padding:3px 8px;
+    font-size:7.5px;
+  }
+
+  .rightbar{
+    padding:16px 10px;
+  }
+
+  .widget{
+    padding:13px 10px;
+    border-radius:18px;
+  }
+
+  .widget-title{
+    font-size:8.5px;
+  }
+
+  .small{
+    font-size:8.5px;
+  }
+
+  .quote{
+    font-size:11.5px;
+  }
+
+  /* Modale più ariosa su PC */
+  .book-modal-box{
+    width:min(740px,95vw);
+    padding:26px;
+  }
+
+  .modal-content{
+    gap:26px;
+  }
+
+  .modal-title{
+    font-size:27px;
+  }
+}
+
+/* ---------- TABLET ---------- */
+@media (min-width: 651px) and (max-width: 900px){
+
+  .book-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px 10px;
+  }
+
+  .book-title{
+    font-size:8.7px;
+  }
+}
+
+/* ---------- TELEFONO ---------- */
+@media (max-width: 650px){
+
+  body{
+    padding:5px;
+  }
+
+  .library-app{
+    border-radius:22px;
+  }
+
+  /* Menu compatto come le altre pagine approvate */
+  .sidebar{
+    padding:8px 6px 6px;
+  }
+
+  .sidebar-title{
+    margin-bottom:4px;
+    font-size:8.5px;
+    letter-spacing:1.1px;
+  }
+
+  .sidebar-title::after{
+    margin-top:3px;
+  }
+
+  .nav{
+    gap:2px 3px;
+  }
+
+  .nav a{
+    gap:5px;
+    padding:4px 6px;
+    border-radius:9px;
+    font-size:8px;
+    line-height:1.08;
+  }
+
+  .nav-icon{
+    width:14px;
+    font-size:10px;
+  }
+
+  .sidebar-divider{
+    flex-basis:100%;
+    width:100%;
+    margin:3px 0;
+  }
+
+  .sidebar-decoration{
+    margin-top:5px;
+    font-size:11px;
+    letter-spacing:3px;
+  }
+
+  .main{
+    padding:11px 9px 12px;
+  }
+
+  .header{
+    margin-bottom:10px;
+  }
+
+  .script-title{
+    font-size:36px;
+  }
+
+  .virtual-title{
+    margin-top:3px;
+    font-size:9px;
+    letter-spacing:2.5px;
+  }
+
+  .header-decoration{
+    margin:5px auto 3px;
+  }
+
+  .subtitle{
+    font-size:10.5px;
+    line-height:1.4;
+    padding:0 8px;
+  }
+
+  .topbar{
+    gap:7px;
+    margin-bottom:12px;
+    align-items:stretch;
+  }
+
+  .search-box{
+    min-width:0;
+    padding:5px 8px;
+    border-radius:16px;
+  }
+
+  .search-icon{
+    font-size:11px;
+  }
+
+  .search{
+    font-size:8.5px;
+  }
+
+  .back{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 8px;
+    border-radius:13px;
+    font-size:7.5px;
+  }
+
+  /* Sempre 2 libri per riga */
+  .book-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px 8px;
+  }
+
+  .book-card{
+    padding:6px;
+    border-radius:13px;
+  }
+
+  .book-info{
+    min-height:82px;
+    padding:6px 2px 3px;
+  }
+
+  .book-title{
+    min-height:34px;
+    font-size:8px;
+    line-height:1.3;
+  }
+
+  .book-category{
+    font-size:6.6px;
+    padding:2px 5px;
+  }
+
+  .book-status{
+    font-size:6.6px;
+  }
+
+  .favorite-row{
+    padding-top:3px;
+  }
+
+  .favorite-button{
+    padding:2px 6px;
+    font-size:6.7px;
+  }
+
+  .rightbar{
+    padding:9px 7px;
+  }
+
+  .widget{
+    margin-bottom:7px;
+    padding:10px 8px;
+    border-radius:15px;
+  }
+
+  .widget-title{
+    font-size:8px;
+  }
+
+  .big-number{
+    font-size:24px;
+  }
+
+  .small{
+    font-size:7.5px;
+  }
+
+  .quote{
+    font-size:10.5px;
+  }
+
+  /* Modale ottimizzata per telefono */
+  .book-modal{
+    padding:10px;
+    align-items:flex-start;
+    overflow-y:auto;
+  }
+
+  .book-modal-box{
+    width:100%;
+    max-height:none;
+    margin:10px 0;
+    padding:17px 14px 16px;
+    border-radius:20px;
+  }
+
+  .modal-content{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .modal-cover{
+    width:132px;
+    margin:0 auto;
+    border-radius:12px;
+  }
+
+  .modal-category{
+    margin-top:2px;
+    text-align:center;
+    font-size:8px;
+  }
+
+  .modal-title{
+    margin:0 26px 7px;
+    text-align:center;
+    font-size:21px;
+    line-height:1.18;
+  }
+
+  .modal-divider{
+    margin:9px 0 12px;
+  }
+
+  .modal-status,
+  .stars{
+    justify-content:center;
+  }
+
+  .modal-badge{
+    padding:4px 8px;
+    font-size:8px;
+  }
+
+  .modal-section-title{
+    margin:12px 0 6px;
+    font-size:10px;
+  }
+
+  .star-button{
+    font-size:27px;
+  }
+
+  .plot-text{
+    min-height:120px;
+    padding:10px;
+    font-size:10px;
+  }
+
+  .save-plot{
+    padding:7px 11px;
+    font-size:8.5px;
+  }
+
+  .modal-close{
+    top:9px;
+    right:10px;
+    width:30px;
+    height:30px;
+    font-size:17px;
+  }
+}
+
 </style>
 </head>
 <body>
