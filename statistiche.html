@@ -1428,6 +1428,171 @@ button,input{
   .stats-grid{grid-template-columns:1fr}
 }
 
+
+/* =========================================================
+   STATISTICHE — RIFINITURA PC + TELEFONO
+   Duplicati visivi rimossi, calcoli originali preservati
+========================================================= */
+
+@media (min-width:901px){
+  .main{padding:17px 18px 16px}
+  .header{padding:5px 0 8px}
+  .script-title{font-size:clamp(42px,4.6vw,55px)}
+  .virtual-title{font-size:12px;letter-spacing:5px}
+  .subtitle{font-size:11.5px}
+
+  .stats-grid{
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:12px 0;
+  }
+  .stat-card{
+    min-height:88px;
+    padding:10px 8px;
+  }
+  .stat-icon{font-size:19px}
+  .stat-number{font-size:21px}
+  .stat-label{font-size:7.2px}
+
+  .stats-section{
+    margin-top:10px;
+    padding:12px 14px;
+    border-radius:18px;
+  }
+  .stats-section-title{margin-bottom:10px}
+  .category-row{margin:8px 0}
+  .category-track{height:9px}
+
+  .reading-split{gap:10px}
+  .split-card{padding:10px}
+  .split-big{font-size:22px}
+  .split-bar{height:8px}
+
+  .rightbar{padding:14px 10px}
+  .rightbar .widget{
+    padding:15px 10px;
+    margin-bottom:0;
+  }
+}
+
+@media (min-width:651px) and (max-width:900px){
+  .stats-grid{grid-template-columns:repeat(3,1fr)}
+  .reading-split{grid-template-columns:repeat(2,1fr)}
+}
+
+/* TELEFONO */
+@media (max-width:650px){
+  body{padding:5px}
+  .library-app{border-radius:22px}
+
+  .sidebar{padding:8px 6px 6px}
+  .sidebar-title{
+    margin-bottom:4px;
+    font-size:8.5px;
+    letter-spacing:1.1px;
+  }
+  .sidebar-title::after{margin-top:3px}
+  .nav{gap:2px 3px}
+  .nav a{
+    gap:5px;
+    padding:4px 6px;
+    border-radius:9px;
+    font-size:8px;
+    line-height:1.08;
+  }
+  .nav-icon{width:14px;font-size:10px}
+  .sidebar-divider{
+    flex-basis:100%;
+    width:100%;
+    margin:3px 0;
+  }
+  .sidebar-decoration{
+    margin-top:5px;
+    font-size:11px;
+    letter-spacing:3px;
+  }
+
+  .main{padding:11px 9px 12px}
+  .header{padding:3px 0 7px}
+  .script-title{font-size:36px}
+  .virtual-title{
+    margin-top:3px;
+    font-size:9px;
+    letter-spacing:3.5px;
+  }
+  .header-line{margin:5px auto 3px}
+  .subtitle{font-size:10px}
+
+  /* Tre statistiche principali compatte */
+  .stats-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+    margin:10px 0;
+  }
+  .stat-card{
+    min-height:78px;
+    padding:8px 4px;
+    border-radius:14px;
+  }
+  .stat-icon{font-size:16px;margin-bottom:3px}
+  .stat-number{font-size:16px}
+  #categoriaPiuLetta,
+  #scaffaleGrande{
+    font-size:11px;
+  }
+  .stat-label{
+    margin-top:3px;
+    font-size:6px;
+    line-height:1.2;
+    letter-spacing:.35px;
+  }
+
+  .stats-section{
+    margin-top:8px;
+    padding:10px 9px;
+    border-radius:16px;
+  }
+  .stats-section-title{
+    margin-bottom:8px;
+    font-size:8px;
+    letter-spacing:.7px;
+  }
+
+  .category-row{margin:7px 0}
+  .category-head{font-size:7.5px}
+  .category-track{height:8px}
+
+  /* Le coppie restano affiancate anche sul telefono */
+  .reading-split{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+  }
+  .split-card{
+    padding:9px 5px;
+    border-radius:13px;
+  }
+  .split-big{font-size:18px}
+  .split-label{font-size:6.5px}
+  .split-bar{height:7px;margin-top:6px}
+
+  .loading-note{margin-top:9px;font-size:7px}
+  .footer{margin-top:8px;font-size:10px}
+
+  .rightbar{
+    display:block;
+    padding:8px 7px;
+  }
+  .rightbar .widget{
+    margin:0;
+    padding:10px 8px;
+    border-radius:15px;
+  }
+  .rightbar .widget h3{margin-bottom:5px;font-size:7.5px}
+  .rightbar .widget-icon{font-size:17px}
+  .rightbar .big-number{font-size:19px}
+  .rightbar .small-text{font-size:7px}
+}
+
 </style>
 </head>
 <body>
@@ -1527,19 +1692,13 @@ button,input{
     <div class="big-number" id="scaffaleGrande">—</div>
     <div class="small-text" id="scaffaleGrandeTesto">categoria con più libri</div>
   </div>
-
-  <div class="widget">
-    <h3>MEDIA DELLE MIE STELLE</h3>
-    <div class="widget-icon">★</div>
-    <div class="big-number" id="mediaDestra">—</div>
-    <div class="small-text">media dei libri valutati</div>
-  </div>
-
-  <div class="widget">
-    <h3>LIBRI VALUTATI</h3>
-    <div class="widget-icon">✎</div>
     <div class="mini-total" id="votatiDestra">0</div>
     <div class="small-text">libri a cui hai dato un voto</div>
+  </div>
+
+  <div aria-hidden="true" style="display:none">
+    <span id="mediaDestra">—</span>
+    <span id="votatiDestra">0</span>
   </div>
 </aside>
 
