@@ -1136,6 +1136,147 @@ select:focus{
   color:#493426;
 }
 
+
+/* ===== RIFINITURA FINALE PC + TELEFONO — GESTISCI LIBRI ===== */
+
+/* Un po' meno spazio verticale senza cambiare i contenuti */
+.main{
+  padding:13px 15px 10px;
+}
+.subtitle{
+  margin-bottom:12px;
+}
+.section{
+  margin-bottom:9px;
+  padding:10px;
+}
+.toggle-button{
+  min-height:42px;
+  padding:9px 12px;
+}
+.collapsible{
+  margin-top:9px;
+}
+.collapsible.open{
+  padding-top:2px;
+}
+.actions{
+  margin-top:8px;
+}
+.preview{
+  margin-top:8px;
+}
+.results{
+  margin-top:9px;
+}
+
+/* Menu telefono compatto e coerente con le altre pagine */
+@media(max-width:650px){
+  body{padding:5px;}
+
+  .library-app{
+    min-height:calc(100vh - 10px);
+    border-radius:22px;
+  }
+
+  .sidebar{
+    padding:8px 6px 6px;
+  }
+
+  .logo{
+    margin-bottom:4px;
+    font-size:8.5px;
+    line-height:1.15;
+  }
+  .logo br{display:none;}
+  .logo::after{
+    margin-top:3px;
+    font-size:7px;
+  }
+
+  .menu{
+    gap:2px 3px;
+  }
+  .menu a{
+    margin:0;
+    padding:4px 6px;
+    border-radius:9px;
+    font-size:8px;
+    line-height:1.08;
+  }
+
+  .main{
+    padding:10px 8px 8px;
+  }
+
+  h1{
+    font-size:32px;
+  }
+  .subtitle{
+    width:96%;
+    margin:5px auto 9px;
+    padding-bottom:6px;
+    font-size:8px;
+  }
+
+  .section{
+    margin-bottom:7px;
+    padding:7px;
+    border-radius:14px;
+  }
+
+  .toggle-button{
+    min-height:36px;
+    padding:7px 9px;
+    border-radius:11px;
+  }
+  .toggle-left{font-size:9px;}
+  .toggle-right{
+    padding:3px 6px;
+    font-size:7px;
+  }
+
+  .collapsible{margin-top:7px;}
+  .form-grid{gap:7px;}
+
+  label{font-size:8px;}
+  input,
+  select{
+    padding:7px 8px;
+    font-size:9px;
+  }
+
+  button{
+    padding:7px 9px;
+    font-size:8px;
+  }
+
+  .actions{
+    gap:5px;
+    margin-top:7px;
+  }
+
+  .results{
+    grid-template-columns:repeat(2,1fr);
+    gap:6px;
+  }
+
+  .book-list{gap:6px;}
+  .book-row{
+    padding:6px;
+    gap:7px;
+  }
+  .book-name{font-size:8.5px;}
+  .book-meta{font-size:7.5px;}
+}
+
+/* PC: evita che la pagina sembri inutilmente troppo lunga quando i pannelli sono chiusi */
+@media(min-width:901px){
+  .library-app{
+    min-height:min(720px,calc(100vh - 24px));
+  }
+}
+
 </style>
 
 </head>
