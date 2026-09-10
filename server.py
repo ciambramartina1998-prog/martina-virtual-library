@@ -83,8 +83,98 @@ def libro_json(riga):
             riga[9].isoformat()
             if riga[9]
             else None
+        ),
+        "pagine_totali": (
+            riga[10]
+            if len(riga) > 10
+            else None
+        ),
+        "pagina_attuale": (
+            riga[11]
+            if len(riga) > 11
+            else None
         )
     }
+
+
+def leggi_pagine_opzionali(dati):
+    """Legge e valida i dati di avanzamento dei libri cartacei."""
+
+    pagine_inviate = (
+        "pagine_totali" in dati
+        or
+        "pagina_attuale" in dati
+    )
+
+    if not pagine_inviate:
+        return False, None, None
+
+    totale_raw = dati.get("pagine_totali")
+    attuale_raw = dati.get("pagina_attuale")
+
+    try:
+        pagine_totali = (
+            None
+            if totale_raw in (None, "")
+            else int(totale_raw)
+        )
+
+        pagina_attuale = (
+            None
+            if attuale_raw in (None, "")
+            else int(attuale_raw)
+        )
+
+    except (TypeError, ValueError):
+        raise ValueError(
+            "Le pagine devono essere numeri interi."
+        )
+
+    if pagine_totali is not None and pagine_totali < 1:
+        raise ValueError(
+            "Le pagine totali devono essere maggiori di 0."
+        )
+
+    if pagina_attuale is not None and pagina_attuale < 0:
+        raise ValueError(
+            "La pagina attuale non può essere negativa."
+        )
+
+    if pagina_attuale is not None and pagine_totali is None:
+        raise ValueError(
+            "Inserisci anche le pagine totali."
+        )
+
+    if (
+        pagina_attuale is not None
+        and
+        pagine_totali is not None
+        and
+        pagina_attuale > pagine_totali
+    ):
+        raise ValueError(
+            "La pagina attuale non può superare le pagine totali."
+        )
+
+    return True, pagine_totali, pagina_attuale
+
+
+def assicura_colonne_pagine():
+    """Aggiunge le due colonne al database senza cancellare i libri esistenti."""
+
+    with connessione_database() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                ALTER TABLE libri
+                ADD COLUMN IF NOT EXISTS pagine_totali INTEGER
+            """)
+
+            cur.execute("""
+                ALTER TABLE libri
+                ADD COLUMN IF NOT EXISTS pagina_attuale INTEGER
+            """)
+
+        conn.commit()
 
 
 def scarica_json(url):
@@ -2471,7 +2561,9 @@ class LibreriaHandler(
                                 preferito,
                                 voto,
                                 trama,
-                                creato_il
+                                creato_il,
+                                pagine_totali,
+                                pagina_attuale
                             FROM libri
                             ORDER BY
                                 creato_il ASC,
@@ -2757,6 +2849,20 @@ class LibreriaHandler(
                     )
                 )
 
+                try:
+                    (
+                        pagine_inviate,
+                        pagine_totali,
+                        pagina_attuale
+                    ) = leggi_pagine_opzionali(dati)
+
+                except ValueError as errore_pagine:
+                    self.invia_json({
+                        "ok": False,
+                        "errore": str(errore_pagine)
+                    }, 400)
+                    return
+
                 metadati_automatici = {}
                 try:
                     metadati_automatici = cerca_metadati_automatici(titolo)
@@ -2875,6 +2981,14 @@ class LibreriaHandler(
                                         copertina = %s,
                                         lettura_attuale = %s,
                                         preferito = %s,
+                                        pagine_totali = CASE
+                                            WHEN %s THEN %s
+                                            ELSE pagine_totali
+                                        END,
+                                        pagina_attuale = CASE
+                                            WHEN %s THEN %s
+                                            ELSE pagina_attuale
+                                        END,
                                         trama = CASE
                                             WHEN COALESCE(TRIM(trama), '') = ''
                                             THEN %s
@@ -2891,7 +3005,9 @@ class LibreriaHandler(
                                         preferito,
                                         voto,
                                         trama,
-                                        creato_il
+                                        creato_il,
+                                        pagine_totali,
+                                        pagina_attuale
                                 """, (
                                     titolo,
                                     categoria,
@@ -2899,6 +3015,10 @@ class LibreriaHandler(
                                     copertina,
                                     lettura_attuale,
                                     preferito,
+                                    pagine_inviate,
+                                    pagine_totali,
+                                    pagine_inviate,
+                                    pagina_attuale,
                                     trama_automatica,
                                     esistente[0]
                                 ))
@@ -2913,6 +3033,14 @@ class LibreriaHandler(
                                         stato = %s,
                                         copertina = %s,
                                         lettura_attuale = %s,
+                                        pagine_totali = CASE
+                                            WHEN %s THEN %s
+                                            ELSE pagine_totali
+                                        END,
+                                        pagina_attuale = CASE
+                                            WHEN %s THEN %s
+                                            ELSE pagina_attuale
+                                        END,
                                         trama = CASE
                                             WHEN COALESCE(TRIM(trama), '') = ''
                                             THEN %s
@@ -2929,13 +3057,19 @@ class LibreriaHandler(
                                         preferito,
                                         voto,
                                         trama,
-                                        creato_il
+                                        creato_il,
+                                        pagine_totali,
+                                        pagina_attuale
                                 """, (
                                     titolo,
                                     categoria,
                                     stato,
                                     copertina,
                                     lettura_attuale,
+                                    pagine_inviate,
+                                    pagine_totali,
+                                    pagine_inviate,
+                                    pagina_attuale,
                                     trama_automatica,
                                     esistente[0]
                                 ))
@@ -2950,9 +3084,13 @@ class LibreriaHandler(
                                     copertina,
                                     lettura_attuale,
                                     preferito,
-                                    trama
+                                    trama,
+                                    pagine_totali,
+                                    pagina_attuale
                                 )
                                 VALUES (
+                                    %s,
+                                    %s,
                                     %s,
                                     %s,
                                     %s,
@@ -2971,7 +3109,9 @@ class LibreriaHandler(
                                     preferito,
                                     voto,
                                     trama,
-                                    creato_il
+                                    creato_il,
+                                    pagine_totali,
+                                    pagina_attuale
                             """, (
                                 titolo,
                                 categoria,
@@ -2979,7 +3119,9 @@ class LibreriaHandler(
                                 copertina,
                                 lettura_attuale,
                                 preferito,
-                                trama_automatica
+                                trama_automatica,
+                                pagine_totali,
+                                pagina_attuale
                             ))
 
                         riga = (
@@ -3553,6 +3695,20 @@ class LibreriaHandler(
                     )
                 )
 
+                try:
+                    (
+                        pagine_inviate,
+                        pagine_totali,
+                        pagina_attuale
+                    ) = leggi_pagine_opzionali(dati)
+
+                except ValueError as errore_pagine:
+                    self.invia_json({
+                        "ok": False,
+                        "errore": str(errore_pagine)
+                    }, 400)
+                    return
+
                 if not titolo:
 
                     self.invia_json({
@@ -3598,7 +3754,15 @@ class LibreriaHandler(
                                     stato = %s,
                                     copertina = %s,
                                     lettura_attuale = %s,
-                                    preferito = %s
+                                    preferito = %s,
+                                    pagine_totali = CASE
+                                        WHEN %s THEN %s
+                                        ELSE pagine_totali
+                                    END,
+                                    pagina_attuale = CASE
+                                        WHEN %s THEN %s
+                                        ELSE pagina_attuale
+                                    END
                                 WHERE id = %s
                                 RETURNING
                                     id,
@@ -3610,7 +3774,9 @@ class LibreriaHandler(
                                     preferito,
                                     voto,
                                     trama,
-                                    creato_il
+                                    creato_il,
+                                    pagine_totali,
+                                    pagina_attuale
                             """, (
                                 titolo,
                                 categoria,
@@ -3618,6 +3784,10 @@ class LibreriaHandler(
                                 copertina,
                                 lettura_attuale,
                                 preferito,
+                                pagine_inviate,
+                                pagine_totali,
+                                pagine_inviate,
+                                pagina_attuale,
                                 id_libro
                             ))
 
@@ -3630,7 +3800,15 @@ class LibreriaHandler(
                                     categoria = %s,
                                     stato = %s,
                                     copertina = %s,
-                                    lettura_attuale = %s
+                                    lettura_attuale = %s,
+                                    pagine_totali = CASE
+                                        WHEN %s THEN %s
+                                        ELSE pagine_totali
+                                    END,
+                                    pagina_attuale = CASE
+                                        WHEN %s THEN %s
+                                        ELSE pagina_attuale
+                                    END
                                 WHERE id = %s
                                 RETURNING
                                     id,
@@ -3642,13 +3820,19 @@ class LibreriaHandler(
                                     preferito,
                                     voto,
                                     trama,
-                                    creato_il
+                                    creato_il,
+                                    pagine_totali,
+                                    pagina_attuale
                             """, (
                                 titolo,
                                 categoria,
                                 stato,
                                 copertina,
                                 lettura_attuale,
+                                pagine_inviate,
+                                pagine_totali,
+                                pagine_inviate,
+                                pagina_attuale,
                                 id_libro
                             ))
 
@@ -3829,6 +4013,25 @@ class LibreriaHandler(
 
         self.wfile.write(
             contenuto
+        )
+
+
+if DATABASE_URL:
+
+    try:
+
+        assicura_colonne_pagine()
+
+        print(
+            "✅ Colonne progresso lettura pronte"
+        )
+
+    except Exception as errore:
+
+        print(
+            "⚠️ Impossibile preparare le colonne progresso lettura:",
+            errore,
+            flush=True
         )
 
 
