@@ -1296,42 +1296,6 @@ Stato
 </div>
 
 
-<div>
-
-<label>
-Pagine totali
-(facoltativo — solo cartaceo)
-</label>
-
-<input
-id="pagineTotali"
-type="number"
-min="1"
-step="1"
-placeholder="Es. 380"
->
-
-</div>
-
-
-<div>
-
-<label>
-Pagina attuale
-(facoltativo — solo cartaceo)
-</label>
-
-<input
-id="paginaAttuale"
-type="number"
-min="0"
-step="1"
-placeholder="Es. 125"
->
-
-</div>
-
-
 <div class="full">
 
 <label>
@@ -2748,36 +2712,6 @@ async function salvaLibro(){
     document.getElementById(
       "stato"
     ).value;
-
-
-  const pagineTotaliValore =
-    document.getElementById(
-      "pagineTotali"
-    ).value.trim();
-
-
-  const paginaAttualeValore =
-    document.getElementById(
-      "paginaAttuale"
-    ).value.trim();
-
-
-  const pagineTotali =
-    pagineTotaliValore === ""
-    ?
-    null
-    :
-    Number(pagineTotaliValore);
-
-
-  const paginaAttuale =
-    paginaAttualeValore === ""
-    ?
-    null
-    :
-    Number(paginaAttualeValore);
-
-
   const linkManuale =
     document.getElementById(
       "copertinaManuale"
@@ -2806,82 +2740,6 @@ async function salvaLibro(){
     return;
 
   }
-
-
-  if(
-    pagineTotali !== null
-    &&
-    (
-      !Number.isInteger(pagineTotali)
-      ||
-      pagineTotali < 1
-    )
-  ){
-
-    mostraMessaggio(
-      messaggio,
-      "Le pagine totali devono essere un numero maggiore di 0."
-    );
-
-    return;
-
-  }
-
-
-  if(
-    paginaAttuale !== null
-    &&
-    (
-      !Number.isInteger(paginaAttuale)
-      ||
-      paginaAttuale < 0
-    )
-  ){
-
-    mostraMessaggio(
-      messaggio,
-      "La pagina attuale deve essere 0 o un numero maggiore."
-    );
-
-    return;
-
-  }
-
-
-  if(
-    paginaAttuale !== null
-    &&
-    pagineTotali === null
-  ){
-
-    mostraMessaggio(
-      messaggio,
-      "Per usare la pagina attuale, inserisci anche le pagine totali."
-    );
-
-    return;
-
-  }
-
-
-  if(
-    paginaAttuale !== null
-    &&
-    pagineTotali !== null
-    &&
-    paginaAttuale > pagineTotali
-  ){
-
-    mostraMessaggio(
-      messaggio,
-      "La pagina attuale non può superare le pagine totali."
-    );
-
-    return;
-
-  }
-
-
   const libro = {
 
     titolo:
@@ -2892,12 +2750,6 @@ async function salvaLibro(){
 
     stato:
       stato,
-
-    pagine_totali:
-      pagineTotali,
-
-    pagina_attuale:
-      paginaAttuale,
 
     copertina:
       linkManuale
@@ -3063,20 +2915,6 @@ function pulisciForm(){
     "titolo"
   ).value =
     "";
-
-
-  document.getElementById(
-    "pagineTotali"
-  ).value =
-    "";
-
-
-  document.getElementById(
-    "paginaAttuale"
-  ).value =
-    "";
-
-
   document.getElementById(
     "copertinaManuale"
   ).value =
@@ -4081,20 +3919,6 @@ function preparaModifica(id){
     "stato"
   ).value =
     libro.stato;
-
-
-  document.getElementById(
-    "pagineTotali"
-  ).value =
-    libro.pagine_totali ?? "";
-
-
-  document.getElementById(
-    "paginaAttuale"
-  ).value =
-    libro.pagina_attuale ?? "";
-
-
   document.getElementById(
     "copertinaManuale"
   ).value =
