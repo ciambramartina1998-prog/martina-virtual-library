@@ -306,6 +306,39 @@ button,input{
   font-weight:600;
 }
 
+.current-page-progress{
+  width:min(330px,100%);
+  margin:5px 0 7px;
+}
+
+.current-page-text{
+  color:#4E3524;
+  font-size:7.5px;
+  line-height:1.35;
+}
+
+.current-page-details{
+  margin-top:2px;
+  color:#5A3E2B;
+  font-size:6.5px;
+  font-weight:600;
+}
+
+.current-page-bar{
+  width:100%;
+  height:6px;
+  margin-top:4px;
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(78,53,36,.14);
+}
+
+.current-page-bar-inner{
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#7A8267,#9da489,#C68B59);
+}
+
 .finish-reading{
   padding:5px 8px;
   border:1px solid rgba(255,255,255,.30);
@@ -2306,7 +2339,13 @@ function creaCatalogoFinale(){
           lettura_attuale:
             Boolean(
               libro.lettura_attuale
-            )
+            ),
+
+          pagine_totali:
+            libro.pagine_totali ?? null,
+
+          pagina_attuale:
+            libro.pagina_attuale ?? null
         }
       );
 
@@ -2502,6 +2541,75 @@ function mostraLetturaAttuale(){
   }
 
 
+  let progressoPagine = "";
+
+  const pagineTotali =
+    Number(libro.pagine_totali);
+
+  const paginaAttuale =
+    Number(libro.pagina_attuale);
+
+  if(
+    libro.pagine_totali !== null
+    &&
+    libro.pagine_totali !== ""
+    &&
+    libro.pagina_attuale !== null
+    &&
+    libro.pagina_attuale !== ""
+    &&
+    Number.isFinite(pagineTotali)
+    &&
+    pagineTotali > 0
+    &&
+    Number.isFinite(paginaAttuale)
+    &&
+    paginaAttuale >= 0
+  ){
+
+    const paginaSicura =
+      Math.min(
+        paginaAttuale,
+        pagineTotali
+      );
+
+    const rimanenti =
+      Math.max(
+        pagineTotali - paginaSicura,
+        0
+      );
+
+    const percentuale =
+      Math.min(
+        paginaSicura / pagineTotali * 100,
+        100
+      );
+
+    progressoPagine =
+      `
+      <div class="current-page-progress">
+        <div class="current-page-text">
+          📖 Pagina <strong>${paginaSicura}</strong> di
+          <strong>${pagineTotali}</strong>
+        </div>
+
+        <div class="current-page-details">
+          ${paginaSicura} lette · ${rimanenti} rimanenti ·
+          ${percentuale.toFixed(1)}%
+        </div>
+
+        <div class="current-page-bar">
+          <div
+            class="current-page-bar-inner"
+            style="width:${percentuale}%"
+          ></div>
+        </div>
+      </div>
+      `;
+
+  }
+
+
   box.innerHTML =
     `
     <div class="current-book-row">
@@ -2523,6 +2631,8 @@ function mostraLetturaAttuale(){
         <div class="current-category">
           ${escapeHtml(libro.categoria)}
         </div>
+
+        ${progressoPagine}
 
         <button
           class="finish-reading"
